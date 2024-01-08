@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('intervals__supermarket_posting', function (Blueprint $table) {
+        Schema::create('statistics__visit', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('city_id');
-            $table->string('date');
-            $table->string('time');
-            $table->smallInteger('capacity')->default(0);
-            $table->smallInteger('used')->default(0);
+            $table->smallInteger('year');
+            $table->smallInteger('month');
+            $table->smallInteger('day');
+            $table->bigInteger('view');
+            $table->integer('google_input');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('intervals__supermarket_posting');
+        Schema::dropIfExists('statistics__visit');
     }
 };
