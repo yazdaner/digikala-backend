@@ -9,12 +9,24 @@ use Modules\brands\App\Models\Brand;
 
 class BrandTest extends TestCase
 {
-    public function test_store_validate(): void
+    public function test_index(): void
     {
-        $response = $this->post('api/admin/brands',[]);
+        $response = $this->get('api/admin/brands');
+        $body = json_decode($response->getContent(),true);
         //
-        $response->assertSessionHasErrors()
-        ->assertStatus(302);
+        $this->assertArrayHasKey('brands',$body);
+        $response->assertOk();
+    }
+
+    public function test_index_search(): void
+    {
+        $response = $this->get('api/admin/brands?trashed=true&name=app');
+        $body = json_decode($response->getContent(),true);
+        $count = Brand::onlyTrashed()->where('name','like','%app%')->count();
+        //
+        $this->assertEquals($body['brands']['total'],$count);
+        $this->assertArrayHasKey('brands',$body);
+        $response->assertOk();
     }
 
     public function test_store(): void
@@ -50,7 +62,7 @@ class BrandTest extends TestCase
             'name' => $name,
             'en_name' => $en_name,
         ]);
-        // 
+        //
         $this->assertDatabaseHas('products__brands',[
             'id' => $brand->id,
             'name' => $name,

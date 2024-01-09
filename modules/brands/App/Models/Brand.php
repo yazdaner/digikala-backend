@@ -18,6 +18,20 @@ class Brand extends Model
     {
         return BrandFactory::new();
     }
+
+    public static function search($data)
+    {
+        $brands = Brand::orderBy('id','DESC');
+        if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
+        {
+            $brands = $brands->onlyTrashed();
+        }
+        if(array_key_exists('name',$data) && !empty($data['name']))
+        {
+            $brands = $brands->where('name','like','%'.$data['name'].'%');
+        }
+        return $brands->paginate(10);
+    }
 }
 
 

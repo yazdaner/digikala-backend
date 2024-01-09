@@ -2,12 +2,26 @@
 
 namespace Modules\brands\App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\brands\App\Models\Brand;
 use Modules\brands\App\Http\Requests\BrandRequest;
+use Modules\core\App\Http\Controllers\CrudController;
 
-class BrandController extends Controller
+class BrandController extends CrudController
 {
+
+    protected $model = Brand::class;
+
+    public function index(Request $request)
+    {
+        $brands = Brand::search($request->all());
+        return [
+            'brands' => $brands,
+            'trashCount' => Brand::onlyTrashed()->count(),
+        ];
+    }
+
     public function store(BrandRequest $request)
     {
         $brand = new Brand($request->all());
