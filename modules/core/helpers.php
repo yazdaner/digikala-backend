@@ -38,4 +38,16 @@ function addModulesProviders()
 }
 
 
+function upload_file($request,$name,$dir,$pix='')
+{
+    if($request->hasFile($name)){
+        $fileName = $pix.time().'.'.$request->file($name)->getClientOriginalExtension();
+        if($request->file($name)->move('public/'.$dir,$fileName)){
+            return $fileName;
+        }
+    }
+    return null;
+}
+
+
 
