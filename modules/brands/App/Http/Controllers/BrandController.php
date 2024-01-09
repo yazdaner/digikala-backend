@@ -19,6 +19,21 @@ class BrandController extends Controller
         return ['status' => 'ok'];
     }
 
+    public function show($id)
+    {
+        return Brand::findOrFail($id);
+    }
+
+    public function update($id,BrandRequest $request)
+    {
+        $data = $request->all();
+        $brand = Brand::findOrFail($id);
+        $image = upload_file($request,'icon','upload');
+        if($image){
+            $data['icon'] = $image ;
+        }
+        $brand->update($data);
+    }
 }
 
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\brand;
 
+use Tests\TestCase;
+use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Modules\brands\App\Models\Brand;
-use Tests\TestCase;
 
 class BrandTest extends TestCase
 {
@@ -27,6 +28,34 @@ class BrandTest extends TestCase
         $brand = Brand::latest()->first();
         //
         $this->assertNotNull($brand->icon);
+        $response->assertOk();
+    }
+
+    public function test_show(): void
+    {
+        $brand = Brand::factory()->create();
+        $response = $this->get('api/admin/brands/'.$brand->id);
+        $body = json_decode($response->getContent());
+        //
+        $this->assertEquals($brand->id,$body->id);
+        $response->assertOk();
+    }
+
+    public function test_update(): void
+    {
+        $name = Str::random(10);
+        $en_name = Str::random(10);
+        $brand = Brand::factory()->create();
+        $response = $this->put('api/admin/brands/'.$brand->id,[
+            'name' => $name,
+            'en_name' => $en_name,
+        ]);
+        // 
+        $this->assertDatabaseHas('products__brands',[
+            'id' => $brand->id,
+            'name' => $name,
+            'en_name' => $en_name,
+        ]);
         $response->assertOk();
     }
 }
