@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\brand;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
@@ -67,6 +68,30 @@ class BrandTest extends TestCase
             'id' => $brand->id,
             'name' => $name,
             'en_name' => $en_name,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_destroy(): void
+    {
+        $brand = Brand::factory()->create();
+        $response = $this->delete('api/admin/brands/'.$brand->id);
+        $this->assertDatabaseMissing('products__brands',[
+            'id' => $brand->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_restore(): void
+    {
+        $brand = Brand::factory()->create([
+            'deleted_at' => Carbon::now()
+        ]);
+        $response = $this->post('api/admin/brands/'.$brand->id.'/restore');
+        $this->assertDatabaseHas('products__brands',[
+            'id' => $brand->id,
+            'deleted_at' => null,
         ]);
         $response->assertOk();
     }

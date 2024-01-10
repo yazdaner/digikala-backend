@@ -8,12 +8,15 @@ class CrudController extends Controller
 {
     public function destroy($id)
     {
-        $where = ['id',$id];
-
+        $where = ['id'=>$id];
+        if(method_exists($this->model,'findWhere')){
+            $where = array_merge($where,$this->middleware::findWhere());
+        }
         try {
+
             $row = $this->model::where($where)->withTrashed()->firstOrFail();
 
-        } catch () {
+        } catch (\Exception $exception) {
             $row = $this->model::where($where)->firstOrFail();
         }
 
@@ -27,7 +30,7 @@ class CrudController extends Controller
 
     public function restore($id)
     {
-        $where = ['id',$id];
+        $where = ['id'=>$id];
         $row = $this->model::where($where)->onlyTrashed()->firstOrFail();
         $row->restore();
         return ['status'=>'ok'];

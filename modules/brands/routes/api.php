@@ -8,6 +8,8 @@ Route::prefix('admin')->middleware([])->group(function(){
     Route::resource('brands',BrandController::class)
     ->except(['create','edit']);
 
+    Route::post('brands/{id}/restore',[BrandController::class,'restore']);
+
 });
 
 
