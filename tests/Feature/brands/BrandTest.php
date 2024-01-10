@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\brand;
+namespace Tests\Feature\brands;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -93,6 +93,15 @@ class BrandTest extends TestCase
             'id' => $brand->id,
             'deleted_at' => null,
         ]);
+        $response->assertOk();
+    }
+
+    public function test_all(): void
+    {
+        $response = $this->get('api/brands/list');
+        $body = json_decode($response->getContent(),true);
+        $brands = Brand::get();
+        $this->assertEquals(sizeof($brands),sizeof($body));
         $response->assertOk();
     }
 }

@@ -12,5 +12,5 @@ Route::prefix('admin')->middleware([])->group(function(){
 
 });
 
-
+Route::get('brands/list',[BrandController::class,'all']);
 

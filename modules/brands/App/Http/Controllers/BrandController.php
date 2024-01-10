@@ -3,7 +3,6 @@
 namespace Modules\brands\App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Modules\brands\App\Models\Brand;
 use Modules\brands\App\Http\Requests\BrandRequest;
 use Modules\core\App\Http\Controllers\CrudController;
@@ -47,6 +46,11 @@ class BrandController extends CrudController
             $data['icon'] = $image ;
         }
         $brand->update($data);
+    }
+
+    public function all()
+    {
+        return Brand::select(['id','name','en_name'])->get();
     }
 }
 
