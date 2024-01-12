@@ -5,7 +5,6 @@ namespace Tests\Feature\color;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
-use Illuminate\Http\UploadedFile;
 use Modules\colors\App\Models\Color;
 
 class ColorTest extends TestCase
