@@ -13,6 +13,10 @@ class Warranty extends Model
 
     protected $table = 'products__warranties';
     protected $guarded = [];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     protected static function newFactory()
     {

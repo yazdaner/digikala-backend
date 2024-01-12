@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\colors\App\Http\Controllers\ColorController;
 
-Route::prefix('admin')->middleware([])->group(function(){
+Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 
     Route::resource('colors',ColorController::class)
     ->except(['create','edit']);

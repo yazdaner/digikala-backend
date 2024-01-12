@@ -13,7 +13,8 @@ class WarrantyFactory extends Factory
     {
         return [
             'name' => fake()->text(10),
-            'en_name' => fake()->text(10)
+            'link' => fake()->url(),
+            'phone_number' => fake()->phoneNumber()
         ];
     }
 }

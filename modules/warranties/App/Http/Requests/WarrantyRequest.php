@@ -15,8 +15,9 @@ class WarrantyRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => ['required','string'],
-            'en_name' => ['required','string'],
+            'name' => ['required','string','max:255'],
+            'link' => ['nullable','string','url','max:255'],
+            'phone_number' => ['nullable'],
         ];
 
         if($this->hasFile('icon')){
@@ -29,8 +30,9 @@ class WarrantyRequest extends FormRequest
     public function attributes() :array
     {
        return [
-            'name' => 'نام',
-            'en_name' => 'نام',
+            'name' => 'نام گارانتی',
+            'link' => 'لینک وب سایت',
+            'phone_number' => 'شماره تماس',
        ];
     }
 }

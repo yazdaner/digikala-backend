@@ -30,7 +30,7 @@ class BrandRequest extends FormRequest
     {
        return [
             'name' => 'نام',
-            'en_name' => 'نام',
+            'en_name' => 'نام انگلیسی',
        ];
     }
 }
