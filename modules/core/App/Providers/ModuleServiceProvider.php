@@ -9,8 +9,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register() :void
     {
        require_once base_path('modules/core/helpers.php');
-       define('AdminMiddleware',['auth','isAdmin']);
-    }
+    //    'auth','isAdmin'
+        if(!defined('AdminMiddleware')){
+            define('AdminMiddleware',[]);
+        }
+}
 
     public function boot() :void
     {

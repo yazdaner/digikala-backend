@@ -9,6 +9,50 @@ use Modules\warranties\App\Models\Warranty;
 
 class WarrantyTest extends TestCase
 {
+
+    public function test_create(): void
+    {
+        $warranty = Warranty::factory()->make();
+        $response = $this->post('api/admin/warranties', [
+            'name' => $warranty->name,
+            'link' => $warranty->link,
+            'phone_number' => $warranty->phone_number,
+        ]);
+        //
+        $response->assertOk();
+    }
+
+    public function test_update(): void
+    {
+        $name = Str::random(10);
+        $link = fake()->url();
+        $phone_number = fake()->phoneNumber();
+        $warranty = Warranty::factory()->create();
+        $response = $this->put('api/admin/warranties/' . $warranty->id, [
+            'name' => $name,
+            'link' => $link,
+            'phone_number' => $phone_number,
+        ]);
+        //
+        $this->assertDatabaseHas('warranties', [
+            'id' => $warranty->id,
+            'name' => $name,
+            'link' => $link,
+            'phone_number' => $phone_number,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_show(): void
+    {
+        $warranty = Warranty::factory()->create();
+        $response = $this->get('api/admin/warranties/' . $warranty->id);
+        $body = json_decode($response->getContent());
+        //
+        $this->assertEquals($warranty->id, $body->id);
+        $response->assertOk();
+    }
+
     public function test_index(): void
     {
         $response = $this->get('api/admin/warranties');
@@ -26,46 +70,6 @@ class WarrantyTest extends TestCase
         //
         $this->assertEquals($body['warranties']['total'],$count);
         $this->assertArrayHasKey('warranties',$body);
-        $response->assertOk();
-    }
-
-    public function test_store(): void
-    {
-        $warranty = Warranty::factory()->make();
-        $response = $this->post('api/admin/warranties',[
-            'name' => $warranty->name,
-            'code' => $warranty->code,
-        ]);
-        $warranty = Warranty::latest()->first();
-        //
-        $response->assertOk();
-    }
-
-    public function test_show(): void
-    {
-        $warranty = Warranty::factory()->create();
-        $response = $this->get('api/admin/warranties/'.$warranty->id);
-        $body = json_decode($response->getContent());
-        //
-        $this->assertEquals($warranty->id,$body->id);
-        $response->assertOk();
-    }
-
-    public function test_update(): void
-    {
-        $name = Str::random(10);
-        $code = Str::random(10);
-        $warranty = Warranty::factory()->create();
-        $response = $this->put('api/admin/warranties/'.$warranty->id,[
-            'name' => $name,
-            'code' => $code,
-        ]);
-        //
-        $this->assertDatabaseHas('warranties',[
-            'id' => $warranty->id,
-            'name' => $name,
-            'code' => $code,
-        ]);
         $response->assertOk();
     }
 

@@ -10,8 +10,7 @@ use Modules\warranties\database\factories\WarrantyFactory;
 class Warranty extends Model
 {
     use SoftDeletes,HasFactory;
-
-    protected $table = 'products__warranties';
+    protected $table = 'warranties';
     protected $guarded = [];
     protected $hidden = [
         'created_at',

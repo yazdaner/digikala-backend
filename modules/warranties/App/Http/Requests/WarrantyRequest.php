@@ -3,6 +3,7 @@
 namespace Modules\warranties\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\warranties\App\Rules\PhoneNumber;
 
 class WarrantyRequest extends FormRequest
 {
@@ -17,7 +18,7 @@ class WarrantyRequest extends FormRequest
         $rules = [
             'name' => ['required','string','max:255'],
             'link' => ['nullable','string','url','max:255'],
-            'phone_number' => ['nullable'],
+            'phone_number' => ['nullable','string',new PhoneNumber],
         ];
 
         if($this->hasFile('icon')){
