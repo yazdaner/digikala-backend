@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\warranty;
+namespace Tests\Feature\warranties;
 
 use Carbon\Carbon;
 use Tests\TestCase;
