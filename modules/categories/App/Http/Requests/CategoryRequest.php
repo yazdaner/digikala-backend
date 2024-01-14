@@ -1,11 +1,10 @@
 <?php
 
-namespace Modules\warranties\App\Http\Requests;
+namespace Modules\categories\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\warranties\App\Rules\PhoneNumber;
 
-class WarrantyRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -15,11 +14,12 @@ class WarrantyRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['required','string','max:255'],
             'link' => ['nullable','string','url','max:255'],
-            'phone_number' => ['nullable','string',new PhoneNumber],
         ];
+
+        return $rules;
     }
 
     public function attributes() :array
