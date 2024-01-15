@@ -31,10 +31,9 @@ class Category extends Model
         }
         if(array_key_exists('name',$data) && !empty($data['name']))
         {
-            $categories = $categories->where('name','like','%'.$data['name'].'%');
+            $categories = $categories->where('name','like','%'.$data['name'].'%')
+            ->orWhere('en_name','like','%'.$data['name'].'%');
         }
         return $categories->paginate(10);
     }
 }
-
-
