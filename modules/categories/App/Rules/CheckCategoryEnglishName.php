@@ -21,6 +21,14 @@ class CheckCategoryEnglishName implements ValidationRule
         ->select(['id','en_name','parent_id'])
         ->where('id','!=',$this->categoryId)
         ->get();
+        $request = request();
+        if(sizeof($categories) > 0){
+            foreach($categories as $category){
+                if($category->parent_id == $request->get('parent_id')){
+                    $fail('نام انتخابی برای دسته بندی تکراری می باشد');
+                }
+            }
+        }
     }
 
 }
