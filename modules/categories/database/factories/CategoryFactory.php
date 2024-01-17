@@ -13,8 +13,8 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->text(10),
-            'link' => fake()->url(),
-            'phone_number' => fake()->phoneNumber()
+            'en_name' => fake()->name(),
+            'icon' => "['fas', 'music']",
         ];
     }
 }

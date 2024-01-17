@@ -33,9 +33,10 @@ class CategoryRequest extends FormRequest
     public function attributes() :array
     {
        return [
-            'name' => 'نام گارانتی',
-            'link' => 'لینک وب سایت',
-            'phone_number' => 'شماره تماس',
+            'name' => 'نام',
+            'en_name' => 'نام انگلیسی',
+            'image' => 'تصویر',
+            'url' => 'آدرس',
        ];
     }
 }
