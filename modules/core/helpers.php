@@ -50,4 +50,12 @@ function upload_file($request,$name,$dir,$pix='')
 }
 
 
+function replaceSpace($string)
+{
+    $string = str_replace('-',' ',$string);
+    $string = str_replace('-',' ',$string);
+    return preg_replace('/\s+/','-',$string);
+}
+
+
 

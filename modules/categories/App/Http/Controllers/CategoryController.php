@@ -23,12 +23,13 @@ class CategoryController extends CrudController
 
     public function store(CategoryRequest $request)
     {
-        $brand = new Category($request->all());
-        $image = upload_file($request,'icon','upload');
+        $category = new Category($request->all());
+        $category->slug = replaceSpace($request->get('en_name'));
+        $image = upload_file($request,'image','upload');
         if($image){
-            $brand->icon = $image;
+            $category->image = $image;
         }
-        $brand->saveOrFail();
+        $category->saveOrFail();
         return ['status' => 'ok'];
     }
 
@@ -40,12 +41,12 @@ class CategoryController extends CrudController
     public function update($id,CategoryRequest $request)
     {
         $data = $request->all();
-        $brand = Category::findOrFail($id);
+        $category = Category::findOrFail($id);
         $image = upload_file($request,'icon','upload');
         if($image){
             $data['icon'] = $image ;
         }
-        $brand->update($data);
+        $category->update($data);
     }
 
     public function all()
