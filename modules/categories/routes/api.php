@@ -11,3 +11,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::post('categories/{id}/restore',[CategoryController::class,'restore']);
 
 });
+
+Route::get('categories/list',[CategoryController::class,'all']);

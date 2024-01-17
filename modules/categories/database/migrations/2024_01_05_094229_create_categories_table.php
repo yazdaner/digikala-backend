@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('url')->nullable();
             $table->bigInteger('parent_id')->default(0);
+            $table->boolean('nonsignificant')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

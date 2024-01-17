@@ -11,7 +11,6 @@ function modulesList()
     return $modules;
 }
 
-
 function addModulesProviders()
 {
     $modules = modulesList();
@@ -37,7 +36,6 @@ function addModulesProviders()
 
 }
 
-
 function upload_file($request,$name,$dir,$pix='')
 {
     if($request->hasFile($name)){
@@ -49,13 +47,9 @@ function upload_file($request,$name,$dir,$pix='')
     return null;
 }
 
-
 function replaceSpace($string)
 {
     $string = str_replace('-',' ',$string);
     $string = str_replace('-',' ',$string);
     return preg_replace('/\s+/','-',$string);
 }
-
-
-

@@ -3,6 +3,7 @@
 namespace Modules\categories\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\categories\App\Rules\CheckCategoryEnglishName;
 
 class CategoryRequest extends FormRequest
 {
@@ -16,9 +17,16 @@ class CategoryRequest extends FormRequest
     {
         $rules = [
             'name' => ['required','string','max:255'],
-            'link' => ['nullable','string','url','max:255'],
         ];
-
+        if($this->hasFile('image')){
+            $rules['image'] = ['image','max:512'];
+        }
+        if(empty($this->request->get('en_name'))){
+            $rules['url'] = ['required'];
+        }
+        else{
+            $rules['en_name'] = ['required','string','max:255',new CheckCategoryEnglishName($this->category)];
+        }
         return $rules;
     }
 

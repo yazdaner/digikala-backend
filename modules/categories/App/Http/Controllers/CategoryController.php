@@ -29,6 +29,8 @@ class CategoryController extends CrudController
         if($image){
             $category->image = $image;
         }
+        $nonsignificant = $request->get('nonsignificant') == 'true' ? 1 : 0;
+        $category->nonsignificant = $nonsignificant;
         $category->saveOrFail();
         return ['status' => 'ok'];
     }
@@ -42,15 +44,20 @@ class CategoryController extends CrudController
     {
         $data = $request->all();
         $category = Category::findOrFail($id);
-        $image = upload_file($request,'icon','upload');
+        $category->slug = replaceSpace($request->get('en_name'));
+        $image = upload_file($request,'image','upload');
         if($image){
-            $data['icon'] = $image ;
+            $category->image = $image;
         }
+        $nonsignificant = $request->get('nonsignificant') == 'true' ? 1 : 0;
+        $category->nonsignificant = $nonsignificant;
+        unset($data['nonsignificant']);
         $category->update($data);
+        return ['status' => 'ok'];
     }
 
     public function all()
     {
-        return Category::select(['id','name','en_name'])->get();
+        return Category::all();
     }
 }
