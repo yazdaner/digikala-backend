@@ -24,7 +24,7 @@ class Category extends Model
 
     public static function search($data)
     {
-        $categories = Category::orderBy('id','DESC');
+        $categories = self::orderBy('id','DESC');
         if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
         {
             $categories = $categories->onlyTrashed();

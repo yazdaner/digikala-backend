@@ -23,12 +23,12 @@ class WarrantyController extends CrudController
 
     public function store(WarrantyRequest $request)
     {
-        $brand = new Warranty($request->all());
+        $warranty = new Warranty($request->all());
         $image = upload_file($request,'icon','upload');
         if($image){
-            $brand->icon = $image;
+            $warranty->icon = $image;
         }
-        $brand->saveOrFail();
+        $warranty->saveOrFail();
         return ['status' => 'ok'];
     }
 
@@ -40,12 +40,9 @@ class WarrantyController extends CrudController
     public function update($id,WarrantyRequest $request)
     {
         $data = $request->all();
-        $brand = Warranty::findOrFail($id);
-        $image = upload_file($request,'icon','upload');
-        if($image){
-            $data['icon'] = $image ;
-        }
-        $brand->update($data);
+        $warranty = Warranty::findOrFail($id);
+        $warranty->update($data);
+        return ['status' => 'ok'];
     }
 
     public function all()

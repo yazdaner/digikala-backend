@@ -24,7 +24,7 @@ class Warranty extends Model
 
     public static function search($data)
     {
-        $warranties = Warranty::orderBy('id','DESC');
+        $warranties = self::orderBy('id','DESC');
         if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
         {
             $warranties = $warranties->onlyTrashed();

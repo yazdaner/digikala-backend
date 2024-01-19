@@ -46,6 +46,7 @@ class BrandController extends CrudController
             $data['icon'] = $image ;
         }
         $brand->update($data);
+        return ['status' => 'ok'];
     }
 
     public function all()

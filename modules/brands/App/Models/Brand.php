@@ -21,7 +21,7 @@ class Brand extends Model
 
     public static function search($data)
     {
-        $brands = Brand::orderBy('id','DESC');
+        $brands = self::orderBy('id','DESC');
         if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
         {
             $brands = $brands->onlyTrashed();
