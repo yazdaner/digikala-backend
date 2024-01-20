@@ -12,9 +12,8 @@ class SliderFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->text(10),
-            'link' => fake()->url(),
-            'phone_number' => fake()->phoneNumber()
+            'title' => fake()->text(10),
+            'url' => fake()->url(),
         ];
     }
 }

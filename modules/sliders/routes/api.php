@@ -11,3 +11,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::post('sliders/{id}/restore',[SliderController::class,'restore']);
 
 });
+
+Route::get('sliders/list',[SliderController::class,'all']);

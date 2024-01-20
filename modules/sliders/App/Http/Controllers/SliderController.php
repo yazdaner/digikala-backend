@@ -25,7 +25,7 @@ class SliderController extends CrudController
     {
         $slider = new Slider($request->all());
         $image = upload_file($request,'image','slider','desktop');
-        $mobile_image = upload_file($request,'image','slider','mobile');
+        $mobile_image = upload_file($request,'mobile_image','slider','mobile');
         if($image){
             $slider->image = $image;
         }
@@ -46,7 +46,7 @@ class SliderController extends CrudController
         $data = $request->all();
         $slider = Slider::findOrFail($id);
         $image = upload_file($request,'image','slider','desktop');
-        $mobile_image = upload_file($request,'image','slider','mobile');
+        $mobile_image = upload_file($request,'mobile_image','slider','mobile');
         if($image){
             $slider->image = $image ;
         }
@@ -60,9 +60,10 @@ class SliderController extends CrudController
 
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return Slider::select(['id','name','en_name'])->get();
+        $group = $request->get('group');
+        return Slider::where('group',$group)->get();
     }
 }
 

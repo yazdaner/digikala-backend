@@ -12,11 +12,7 @@ class Slider extends Model
     use SoftDeletes,HasFactory;
     protected $table = 'sliders';
     protected $guarded = [];
-    protected $hidden = [
-        'created_at',
-        'updated_at'
-    ];
-
+ 
     protected static function newFactory()
     {
         return SliderFactory::new();
