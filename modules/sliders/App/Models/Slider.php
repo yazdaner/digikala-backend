@@ -12,7 +12,7 @@ class Slider extends Model
     use SoftDeletes,HasFactory;
     protected $table = 'sliders';
     protected $guarded = [];
- 
+
     protected static function newFactory()
     {
         return SliderFactory::new();
@@ -26,6 +26,21 @@ class Slider extends Model
             $sliders = $sliders->onlyTrashed();
         }
         return $sliders->paginate(10);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($slider){
+            if($slider->isForceDeleting()){
+                if(!empty($slider->image) && file_exists('slider/'.$slider->image)){
+                    unlink('slider/'.$slider->image);
+                }
+                if(!empty($slider->mobile_image) && file_exists('slider/'.$slider->mobile_image)){
+                    unlink('slider/'.$slider->mobile_image);
+                }
+            }
+        });
     }
 }
 
