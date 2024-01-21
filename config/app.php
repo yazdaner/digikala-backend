@@ -193,4 +193,5 @@ return [
     ])->toArray(),
 
     'modules' => [],
+    'events' => [],
 ];

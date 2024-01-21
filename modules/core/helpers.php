@@ -53,3 +53,44 @@ function replaceSpace($string)
     $string = str_replace('-',' ',$string);
     return preg_replace('/\s+/','-',$string);
 }
+
+function addEvent($name,$object)
+{
+    $events = config('app.events');
+    if(array_key_exists($name,$events)){
+        $add = false;
+        foreach ($events[$name] as $event) {
+            if($event !== $object){
+                $add = true;
+            }
+        }
+        if($add){
+            $events[$name][] = $object;
+        }
+    }else{
+        $events[$name][] = $object;
+    }
+    config()->set('app.events',$events);
+
+}
+
+
+function addEvent($name,$object)
+{
+    $events = config('app.events');
+    if(array_key_exists($name,$events)){
+        $add = false;
+        foreach ($events[$name] as $event) {
+            if($event !== $object){
+                $add = true;
+            }
+        }
+        if($add){
+            $events[$name][] = $object;
+        }
+    }else{
+        $events[$name][] = $object;
+    }
+    config()->set('app.events',$events);
+
+}
