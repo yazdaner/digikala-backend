@@ -6,41 +6,35 @@ function modulesList()
 {
     $path = base_path('modules');
     $modules = scandir($path);
-    $modules = array_diff($modules,['.','..']);
-    config()->set('app.modules',$modules);
+    $modules = array_diff($modules, ['.', '..']);
+    config()->set('app.modules', $modules);
     return $modules;
 }
 
 function addModulesProviders()
 {
     $modules = modulesList();
-    foreach($modules as $module)
-    {
-        $providersDir = base_path('modules/'.$module.'/App/Providers');
-        if(is_dir($providersDir))
-        {
+    foreach ($modules as $module) {
+        $providersDir = base_path('modules/' . $module . '/App/Providers');
+        if (is_dir($providersDir)) {
             $files = scandir($providersDir);
-            $files = array_diff($files,['.','..']);
-            foreach($files as $file)
-            {
-                $className = str_replace('.php','',$file);
-                $class = '\\Modules\\'.$module.'\\App\\Providers\\'.$className;
-                if(class_exists($class) && $class != '\Modules\core\App\Providers\ModuleRouteServiceProvider' )
-                {
+            $files = array_diff($files, ['.', '..']);
+            foreach ($files as $file) {
+                $className = str_replace('.php', '', $file);
+                $class = '\\Modules\\' . $module . '\\App\\Providers\\' . $className;
+                if (class_exists($class) && $class != '\Modules\core\App\Providers\ModuleRouteServiceProvider') {
                     App::register($class);
                 }
             }
-
         }
     }
-
 }
 
-function upload_file($request,$name,$dir,$pix='')
+function upload_file($request, $name, $dir, $pix = '')
 {
-    if($request->hasFile($name)){
-        $fileName = $pix.time().'.'.$request->file($name)->getClientOriginalExtension();
-        if($request->file($name)->move('public/'.$dir,$fileName)){
+    if ($request->hasFile($name)) {
+        $fileName = $pix . time() . '.' . $request->file($name)->getClientOriginalExtension();
+        if ($request->file($name)->move('public/' . $dir, $fileName)) {
             return $fileName;
         }
     }
@@ -49,48 +43,50 @@ function upload_file($request,$name,$dir,$pix='')
 
 function replaceSpace($string)
 {
-    $string = str_replace('-',' ',$string);
-    $string = str_replace('-',' ',$string);
-    return preg_replace('/\s+/','-',$string);
+    $string = str_replace('-', ' ', $string);
+    $string = str_replace('-', ' ', $string);
+    return preg_replace('/\s+/', '-', $string);
 }
 
-function addEvent($name,$object)
+function addEvent($name, $object)
 {
     $events = config('app.events');
-    if(array_key_exists($name,$events)){
+    if (array_key_exists($name, $events)) {
         $add = false;
         foreach ($events[$name] as $event) {
-            if($event !== $object){
+            if ($event !== $object) {
                 $add = true;
             }
         }
-        if($add){
+        if ($add) {
             $events[$name][] = $object;
         }
-    }else{
+    } else {
         $events[$name][] = $object;
     }
-    config()->set('app.events',$events);
-
+    config()->set('app.events', $events);
 }
 
 
-function addEvent($name,$object)
+function runEvent($name, $data, $return = false)
 {
     $events = config('app.events');
-    if(array_key_exists($name,$events)){
-        $add = false;
+    if (array_key_exists($name, $events)) {
         foreach ($events[$name] as $event) {
-            if($event !== $object){
-                $add = true;
+            $object = new $event;
+            if ($return) {
+                $result = $object->handle();
+                if($result !== null){
+                    $data = $result;
+                }
+            }
+            else{
+                $object->handle();
             }
         }
-        if($add){
-            $events[$name][] = $object;
-        }
-    }else{
-        $events[$name][] = $object;
     }
-    config()->set('app.events',$events);
 
+    if ($return) {
+        return $data;
+    }
 }

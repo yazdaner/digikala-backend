@@ -3,7 +3,6 @@
 namespace Modules\products\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\warranties\App\Rules\PhoneNumber;
 
 class ProductRequest extends FormRequest
 {
@@ -15,19 +14,18 @@ class ProductRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'name' => ['required','string','max:255'],
-            'link' => ['nullable','string','url','max:255'],
-            'phone_number' => ['nullable','string',new PhoneNumber],
+        $rules = [
+            'title' => ['required','string','max:255'],
+            'en_title' => ['required','string','max:255'],
         ];
+        return runEvent('create-product-rules',$rules,true);
     }
 
     public function attributes() :array
     {
        return [
-            'name' => 'نام گارانتی',
-            'link' => 'لینک وب سایت',
-            'phone_number' => 'شماره تماس',
+            'title' => 'عنوان',
+            'en_title' => 'عنوان انگلیسی',
        ];
     }
 }

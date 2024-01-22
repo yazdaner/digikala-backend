@@ -12,9 +12,10 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->text(10),
-            'link' => fake()->url(),
-            'phone_number' => fake()->phoneNumber()
+            'title' => fake()->text(10),
+            'en_title' => fake()->text(12),
+            'description' => fake()->paragraph(),
+            'content' => fake()->paragraph()
         ];
     }
 }
