@@ -8,6 +8,8 @@ use Modules\products\App\Http\Actions\CreateProduct;
 use Modules\core\App\Http\Controllers\CrudController;
 use Modules\products\App\Http\Requests\ProductRequest;
 use Modules\products\App\Http\Actions\ProductPagination;
+use Modules\products\App\Http\Actions\UpdateProduct;
+use Modules\products\App\Models\ProductsDetail;
 
 class ProductController extends CrudController
 {
@@ -26,6 +28,21 @@ class ProductController extends CrudController
     public function store(ProductRequest $request,CreateProduct $createProduct)
     {
         return $createProduct($request);
+    }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id)->makeVisible(['content']);
+        $options = ProductsDetail::where('product_id',$id)->get();
+        foreach($options as $option){
+            $product->{$option->name} = $option->value;
+        }
+        return $product;
+    }
+
+    public function update($id,ProductRequest $request,UpdateProduct $updateProduct)
+    {
+        return $updateProduct($request,$id);
     }
 
 }
