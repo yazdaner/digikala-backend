@@ -66,7 +66,6 @@ class SliderTest extends TestCase
         $response->assertOk();
     }
 
-
     public function test_destroy(): void
     {
         $slider = Slider::factory()->create();

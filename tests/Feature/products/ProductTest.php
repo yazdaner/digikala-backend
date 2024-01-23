@@ -24,4 +24,12 @@ class ProductTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_index(): void
+    {
+        $response = $this->get('api/admin/products');
+        $body = json_decode($response->getContent(),true);
+        $this->assertArrayHasKey('products',$body);
+        $response->assertOk();
+    }
+
 }
