@@ -75,13 +75,13 @@ function runEvent($name, $data, $return = false)
         foreach ($events[$name] as $event) {
             $object = new $event;
             if ($return) {
-                $result = $object->handle();
+                $result = $object->handle($data);
                 if($result !== null){
                     $data = $result;
                 }
             }
             else{
-                $object->handle();
+                $object->handle($data);
             }
         }
     }

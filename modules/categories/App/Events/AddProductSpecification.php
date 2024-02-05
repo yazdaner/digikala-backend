@@ -14,23 +14,25 @@ class AddProductSpecification
         DB::table('products__specifications')->where([
             'product_id' => $product_id
         ])->delete();
-        foreach ($values as $key => $value) {
-            if (!empty($value)) {
-                $e = explode('_', $key);
-                if (sizeof($e) == 2) {
-                    if ($value == 'true' && empty($values[$e[0]])) {
+        if(is_array($values)){
+            foreach ($values as $key => $value) {
+                if (!empty($value)) {
+                    $e = explode('_', $key);
+                    if (sizeof($e) == 2) {
+                        if ($value == 'true' && empty($values[$e[0]])) {
+                            DB::table('products__specifications')->insert([
+                                'product_id' => $product_id,
+                                'characteristic_id' => $e[0],
+                                'value' => $e[1],
+                            ]);
+                        }
+                    } else {
                         DB::table('products__specifications')->insert([
                             'product_id' => $product_id,
-                            'characteristic_id' => $e[0],
-                            'value' => $e[1],
+                            'characteristic_id' => $key,
+                            'value' => $value,
                         ]);
                     }
-                } else {
-                    DB::table('products__specifications')->insert([
-                        'product_id' => $product_id,
-                        'characteristic_id' => $key,
-                        'value' => $value,
-                    ]);
                 }
             }
         }
