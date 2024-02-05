@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->smallInteger('position');
             $table->string('name');
-            $table->smallInteger('important')->default(0);
+            $table->boolean('important')->default(false);
             $table->bigInteger('parent_id')->default(0);
             $table->timestamps();
         });

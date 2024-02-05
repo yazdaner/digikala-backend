@@ -13,6 +13,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function boot() :void
     {
+       require_once base_path('modules/categories/helpers.php');
     }
 
 }
