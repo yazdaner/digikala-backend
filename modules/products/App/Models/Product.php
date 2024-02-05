@@ -11,7 +11,7 @@ class Product extends Model
 {
     use SoftDeletes,HasFactory;
     protected $table = 'products';
-    protected $guarded = [];
+    protected $guarded = ['pic'];
     protected $hidden = [
         'content',
         'product_count',

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\categories\App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',function()
-{
-//    dd(config('app.modules'));
-//    dd(config('app.events'));
+Route::get('/', function () {
+    //    dd(config('app.modules'));
+    //    dd(config('app.events'));
 });
 

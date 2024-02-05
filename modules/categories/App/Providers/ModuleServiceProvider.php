@@ -2,6 +2,7 @@
 namespace Modules\categories\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\categories\App\Events\SavingProduct;
 use Modules\categories\App\Events\AddProductSpecification;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -12,6 +13,8 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(base_path('modules/categories/database/migrations'));
         addEvent('product.created',AddProductSpecification::class);
         addEvent('product.updated',AddProductSpecification::class);
+        addEvent('product.created',SavingProduct::class);
+        addEvent('product.updated',SavingProduct::class);
     }
 
     public function boot() :void

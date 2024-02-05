@@ -36,4 +36,9 @@ class Category extends Model
         }
         return $categories->paginate(10);
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class,'parent_id','id');
+    }
 }

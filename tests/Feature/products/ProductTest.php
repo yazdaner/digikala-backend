@@ -19,6 +19,9 @@ class ProductTest extends TestCase
             'description' => $product->description,
             'content' => $product->content,
             'status' => 0,
+            'category_id' => 7,
+            'weight' => fake()->numberBetween(100,999),
+            'barcode' => fake()->ean13(),
         ]);
         $latest = Product::latest('id')->first();
         //
