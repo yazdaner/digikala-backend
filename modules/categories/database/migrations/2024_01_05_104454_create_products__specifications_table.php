@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('characteristic_id');
             $table->string('value');
-            $table->timestamps();
         });
     }
 

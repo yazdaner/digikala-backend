@@ -17,13 +17,13 @@ class CategoryVariationController extends Controller
 
     public function store($category_id, Request $request)
     {
-        CategoryVariation::createOrUpdate(
+        CategoryVariation::updateOrCreate(
             [
                 'category_id' => $category_id
             ],
             [
                 'item1' => $request->post('item1'),
-                'item1' => $request->post('item2')
+                'item2' => $request->post('item2')
             ]
         );
     }

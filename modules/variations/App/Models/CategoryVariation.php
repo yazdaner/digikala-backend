@@ -7,5 +7,5 @@ class CategoryVariation extends Model
 {
     protected $table = 'categories__variations';
     protected $guarded = [];
-    protected $timestamps = false;
+    public $timestamps = false;
 }

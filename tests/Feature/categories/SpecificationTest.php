@@ -69,8 +69,4 @@ class SpecificationTest extends TestCase
         ]);
         $response->assertOk();
     }
-
-
-
-
 }
