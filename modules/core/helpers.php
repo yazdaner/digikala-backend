@@ -73,15 +73,16 @@ function runEvent($name, $data, $return = false)
     $events = config('app.events');
     if (array_key_exists($name, $events)) {
         foreach ($events[$name] as $event) {
-            $object = new $event;
-            if ($return) {
-                $result = $object->handle($data);
-                if($result !== null){
-                    $data = $result;
+            if ($event != null) {
+                $object = new $event;
+                if ($return) {
+                    $result = $object->handle($data);
+                    if ($result !== null) {
+                        $data = $result;
+                    }
+                } else {
+                    $object->handle($data);
                 }
-            }
-            else{
-                $object->handle($data);
             }
         }
     }

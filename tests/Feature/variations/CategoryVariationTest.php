@@ -3,14 +3,13 @@
 namespace Tests\Feature\variations;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\Log;
 use Modules\colors\App\Models\Color;
 use Modules\warranties\App\Models\Warranty;
 
-class VariationTest extends TestCase
+class CategoryVariationTest extends TestCase
 {
 
-    public function test_create_categories_variations(): void
+    public function test_create(): void
     {
         $category = runEvent('category:query', function ($query) {
             return $query->first();
@@ -23,7 +22,7 @@ class VariationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_index_categories_variations(): void
+    public function test_index(): void
     {
         $category = runEvent('category:query', function ($query) {
             return $query->first();

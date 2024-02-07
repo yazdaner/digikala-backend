@@ -17,8 +17,8 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::resource('products/{product_id}/variations', VariationController::class)
         ->except(['create', 'edit']);
 
-        Route::post(
-            'products/{product_id}/variations/{id}/restore',
-            [VariationController::class, 'restore']
-        );
+    Route::post(
+        'products/{product_id}/variations/{id}/restore',
+        [VariationController::class, 'restore']
+    );
 });

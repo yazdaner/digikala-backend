@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('products__variations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->softDeletes();
             $table->integer('price1');
             $table->integer('price2')->nullable();
             $table->smallInteger('preparation_time')->default(0);
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('sender')->default('self');
             $table->boolean('selected_by_box')->default(0);
             $table->boolean('status')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

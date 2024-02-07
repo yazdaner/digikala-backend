@@ -2,19 +2,23 @@
 
 namespace Modules\variations\App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Modules\variations\App\Models\Variation;
 use Modules\core\App\Http\Controllers\CrudController;
+use Modules\variations\App\Http\Requests\VariationRequest;
 
 class VariationController extends CrudController
 {
     protected string $model = Variation::class;
 
-    public function index($category_id)
+    public function store($product_id, VariationRequest $request)
     {
+        runEvent('variation:add', $product_id, true);
+        return ['status' => 'ok'];
     }
 
-    public function store($category_id, Request $request)
+    public function show($product_id)
     {
+
     }
+
 }
