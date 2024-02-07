@@ -30,7 +30,7 @@ class ProductVariationTest extends TestCase
         $response->assertOk();
     }
 
-    // public function test_index(): void
+    // public function test_update(): void
     // {
 
     // }

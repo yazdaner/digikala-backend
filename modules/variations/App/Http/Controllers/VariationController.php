@@ -16,9 +16,14 @@ class VariationController extends CrudController
         return ['status' => 'ok'];
     }
 
-    public function show($product_id)
+    public function show($product_id, $id)
     {
-
+        return Variation::findtOrFial($id);
     }
 
+    public function update($product_id, $id, VariationRequest $request)
+    {
+        runEvent('variation:update', $id, true);
+        return ['status' => 'ok'];
+    }
 }
