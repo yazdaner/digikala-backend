@@ -22,7 +22,9 @@ class UpdateProductVariation
                 unset($data[$value]);
             }
         }
-        $data['status'] = $data['status'] == 'true' ? 1 : 0;
+        if(isset($data['status'])){
+            $data['status'] = $data['status'] == 'true' ? 1 : 0;
+        }
         $variation->update($data);
         return ['status' => 'ok'];
     }
