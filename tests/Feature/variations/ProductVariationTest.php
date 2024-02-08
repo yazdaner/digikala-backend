@@ -59,4 +59,27 @@ class ProductVariationTest extends TestCase
         ]);
         $response->assertOk();
     }
+
+
+    public function test_destroy(): void
+    {
+        $variation = Variation::first();
+        $response = $this->delete("api/admin/products/variations/{$variation->id}/destroy");
+        $this->assertDatabaseMissing('products__variations',[
+            'id' => $variation->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_restore(): void
+    {
+        $variation = Variation::first();
+        $response = $this->post("api/admin/products/variations/{$variation->id}/destroy");
+        $this->assertDatabaseHas('products__variations',[
+            'id' => $variation->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
 }
