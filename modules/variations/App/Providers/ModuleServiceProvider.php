@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\variations\App\Models\Variation;
 use Modules\variations\App\Events\AddProductVariation;
+use Modules\variations\App\Events\VariationsPagination;
 use Modules\variations\App\Events\UpdateProductVariation;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(base_path('modules/variations/database/migrations'));
         addEvent('variation:add',AddProductVariation::class);
         addEvent('variation:update',UpdateProductVariation::class);
+        addEvent('variations:pagination',VariationsPagination::class);
     }
 
     public function boot(): void

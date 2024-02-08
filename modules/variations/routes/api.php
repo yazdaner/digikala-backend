@@ -14,10 +14,10 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
         [CategoryVariationController::class, 'store']
     );
 
-    // Route::get(
-    //     'products/{product_id}/variations',
-    //     [VariationController::class, 'index']
-    // );
+    Route::get(
+        'products/{product_id}/variations',
+        [VariationController::class, 'index']
+    );
 
     Route::post(
         'products/{product_id}/variations/store',
