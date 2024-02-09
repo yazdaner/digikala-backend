@@ -30,7 +30,7 @@ class Page extends Model
         {
             $pages = $pages->where('title','like','%'.$data['title'].'%');
         }
-        return $pages->paginate(10);
+        return $pages->paginate(env('PAGINATE'));
     }
 }
 

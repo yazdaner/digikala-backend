@@ -33,7 +33,7 @@ class Warranty extends Model
         {
             $warranties = $warranties->where('name','like','%'.$data['name'].'%');
         }
-        return $warranties->paginate(10);
+        return $warranties->paginate(env('PAGINATE'));
     }
 }
 

@@ -37,7 +37,7 @@ class Product extends Model
         {
             $products = $products->where('name','like','%'.$data['name'].'%');
         }
-        return $products->paginate(10);
+        return $products->paginate(env('PAGINATE'));
     }
 }
 

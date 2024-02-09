@@ -30,7 +30,7 @@ class Color extends Model
         {
             $colors = $colors->where('name','like','%'.$data['name'].'%');
         }
-        return $colors->paginate(10);
+        return $colors->paginate(env('PAGINATE'));
     }
 }
 

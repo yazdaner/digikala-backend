@@ -46,7 +46,7 @@ class ProductPagination
         }
 
         $products = runEvent('admin-search-products',$products,true);
-        $paginator = $products->paginate(10);
+        $paginator = $products->paginate(env('PAGINATE'));
         $data = $paginator->makeVisible(['product_count','created_at','updated_at']);
         $paginator->data = $data;
         return $paginator;

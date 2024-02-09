@@ -30,7 +30,7 @@ class Brand extends Model
         {
             $brands = $brands->where('name','like','%'.$data['name'].'%');
         }
-        return $brands->paginate(10);
+        return $brands->paginate(env('PAGINATE'));
     }
 }
 

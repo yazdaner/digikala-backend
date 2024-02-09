@@ -34,7 +34,7 @@ class Category extends Model
             $categories = $categories->where('name','like','%'.$data['name'].'%')
             ->orWhere('en_name','like','%'.$data['name'].'%');
         }
-        return $categories->paginate(10);
+        return $categories->paginate(env('PAGINATE'));
     }
 
     public function parent()

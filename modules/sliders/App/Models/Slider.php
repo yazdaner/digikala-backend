@@ -25,7 +25,7 @@ class Slider extends Model
         {
             $sliders = $sliders->onlyTrashed();
         }
-        return $sliders->paginate(10);
+        return $sliders->paginate(env('PAGINATE'));
     }
 
     public static function boot()
