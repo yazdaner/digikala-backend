@@ -4,7 +4,7 @@ namespace Modules\sliders\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SliderRequest extends FormRequest
+class PageRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -16,9 +16,11 @@ class SliderRequest extends FormRequest
     {
         return [
             'title' => ['required','string','max:255'],
-            'url' => ['required','string','max:255'],
-            'image' => ['nullable','image'],
-            'mobile_image' => ['nullable','image'],
+            'en_title' => ['required','string','max:255'],
+            'slug' => ['required','string','max:255'],
+            'content' => ['required','string'],
+            'description' => ['string'],
+            'tags' => ['string'],
         ];
     }
 
@@ -26,9 +28,8 @@ class SliderRequest extends FormRequest
     {
        return [
             'title' => 'عنوان',
-            'url' => 'آدرس',
-            'image' => 'تصویر',
-            'mobile_image' => 'تصویر موبایل',
+            'en_title' => 'عنوان انگلیسی',
+            'content' => 'محتوای صفحه',
        ];
     }
 }

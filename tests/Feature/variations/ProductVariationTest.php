@@ -96,6 +96,7 @@ class ProductVariationTest extends TestCase
             'param2_type' => $variation->param2_type,
             'param2_id' => $variation->param2_id
         ]);
+        $response->assertSessionHasErrors();
         $response->assertStatus(302);
     }
 }

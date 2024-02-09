@@ -38,6 +38,7 @@ class ColorController extends CrudController
         $data = $request->all();
         $color = Color::findOrFail($id);
         $color->update($data);
+        return ['status' => 'ok'];
     }
 }
 
