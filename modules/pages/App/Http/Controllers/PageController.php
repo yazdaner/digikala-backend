@@ -4,7 +4,7 @@ namespace Modules\pages\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Modules\pages\App\Models\Page;
-use Modules\sliders\App\Http\Requests\PageRequest;
+use Modules\pages\App\Http\Requests\PageRequest;
 use Modules\core\App\Http\Controllers\CrudController;
 
 class PageController extends CrudController

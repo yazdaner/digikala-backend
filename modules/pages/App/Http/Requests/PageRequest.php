@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\sliders\App\Http\Requests;
+namespace Modules\pages\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -17,7 +17,6 @@ class PageRequest extends FormRequest
         return [
             'title' => ['required','string','max:255'],
             'en_title' => ['required','string','max:255'],
-            'slug' => ['required','string','max:255'],
             'content' => ['required','string'],
             'description' => ['string'],
             'tags' => ['string'],
