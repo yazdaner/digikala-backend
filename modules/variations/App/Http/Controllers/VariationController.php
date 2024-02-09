@@ -22,7 +22,7 @@ class VariationController extends CrudController
         return [
             'variations' => $variations,
             'trashCount' => Variation::onlyTrashed()->count()
-        ]
+        ];
     }
 
     public function store($product_id, VariationRequest $request)

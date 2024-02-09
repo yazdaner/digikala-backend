@@ -61,20 +61,20 @@ class CategoryTest extends TestCase
     public function test_index(): void
     {
         $response = $this->get('api/admin/categories');
-        $body = json_decode($response->getContent(),true);
+        $body = json_decode($response->getContent(), true);
         //
-        $this->assertArrayHasKey('categories',$body);
+        $this->assertArrayHasKey('categories', $body);
         $response->assertOk();
     }
 
     public function test_index_search(): void
     {
         $response = $this->get('api/admin/categories?trashed=true&name=app');
-        $body = json_decode($response->getContent(),true);
-        $count = Category::onlyTrashed()->where('name','like','%app%')->count();
+        $body = json_decode($response->getContent(), true);
+        $count = Category::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
-        $this->assertEquals($body['categories']['total'],$count);
-        $this->assertArrayHasKey('categories',$body);
+        $this->assertEquals($body['categories']['total'], $count);
+        $this->assertArrayHasKey('categories', $body);
         $response->assertOk();
     }
 
@@ -83,8 +83,8 @@ class CategoryTest extends TestCase
         $category = Category::factory()->create([
             'slug' => 'slugTest'
         ]);
-        $response = $this->delete('api/admin/categories/'.$category->id);
-        $this->assertDatabaseMissing('categories',[
+        $response = $this->delete('api/admin/categories/' . $category->id);
+        $this->assertDatabaseMissing('categories', [
             'id' => $category->id,
             'deleted_at' => null,
         ]);
@@ -97,8 +97,8 @@ class CategoryTest extends TestCase
             'slug' => 'slugTest',
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->post('api/admin/categories/'.$category->id.'/restore');
-        $this->assertDatabaseHas('categories',[
+        $response = $this->post('api/admin/categories/' . $category->id . '/restore');
+        $this->assertDatabaseHas('categories', [
             'id' => $category->id,
             'deleted_at' => null,
         ]);
@@ -108,9 +108,9 @@ class CategoryTest extends TestCase
     public function test_all(): void
     {
         $response = $this->get('api/categories/list');
-        $body = json_decode($response->getContent(),true);
+        $body = json_decode($response->getContent(), true);
         $categories = Category::get();
-        $this->assertEquals(sizeof($categories),sizeof($body));
+        $this->assertEquals(sizeof($categories), sizeof($body));
         $response->assertOk();
     }
 }

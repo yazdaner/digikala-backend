@@ -2,8 +2,8 @@
 
 namespace Modules\variations\App\Http\Requests;
 
-use App\Rules\UniqueReview;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\variations\App\Rules\UniqueVariation;
 
 class VariationRequest extends FormRequest
 {
@@ -17,7 +17,7 @@ class VariationRequest extends FormRequest
         $rules = [
             'price1' => ['required', 'numeric'],
             'price2' => ['required', 'numeric'],
-            'product_count' => ['required', 'numeric',new UniqueReview],
+            'product_count' => ['required', 'numeric',new UniqueVariation],
         ];
         if (!empty($this->request->get('preparation_time'))) {
             $rules['preparation_time'] = ['numeric'];

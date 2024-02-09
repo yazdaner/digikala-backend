@@ -16,18 +16,17 @@ class ProductVariationTest extends TestCase
             return $query->first();
         }, true);
 
-        $response = $this->post("api/admin/products/{$product->id}/variations/store",[
-            'price1' => rand(9999,99999),
-            'price2' => rand(9999,99999),
-            'product_count' => rand(0,100),
-            'max_product_cart' => rand(0,5),
-            'preparation_time' => rand(0,5),
+        $response = $this->post("api/admin/products/{$product->id}/variations/store", [
+            'price1' => rand(9999, 99999),
+            'price2' => rand(9999, 99999),
+            'product_count' => rand(0, 100),
+            'max_product_cart' => rand(0, 5),
+            'preparation_time' => rand(0, 5),
             'param1_type' => Color::class,
-            'param1_id' => 1,
+            'param1_id' => rand(1, 99),
             'param2_type' => Warranty::class,
-            'param2_id' => 2,
+            'param2_id' => rand(1, 99)
         ]);
-
         $response->assertOk();
     }
 
@@ -35,13 +34,13 @@ class ProductVariationTest extends TestCase
     {
         $variation = Variation::first();
 
-        $price1 = rand(99,999);
-        $price2 = rand(99,999);
-        $product_count = rand(0,10);
-        $max_product_cart = rand(0,2);
-        $preparation_time = rand(0,2);
+        $price1 = rand(99, 999);
+        $price2 = rand(99, 999);
+        $product_count = rand(0, 10);
+        $max_product_cart = rand(0, 2);
+        $preparation_time = rand(0, 2);
 
-        $response = $this->put("api/admin/products/variations/{$variation->id}/update",[
+        $response = $this->put("api/admin/products/variations/{$variation->id}/update", [
             'price1' => $price1,
             'price2' => $price2,
             'product_count' => $product_count,
@@ -49,7 +48,7 @@ class ProductVariationTest extends TestCase
             'preparation_time' => $preparation_time
         ]);
 
-        $this->assertDatabaseHas('products__variations',[
+        $this->assertDatabaseHas('products__variations', [
             'id' => $variation->id,
             'price1' => $price1,
             'price2' => $price2,
@@ -65,7 +64,7 @@ class ProductVariationTest extends TestCase
     {
         $variation = Variation::first();
         $response = $this->delete("api/admin/products/variations/{$variation->id}/destroy");
-        $this->assertDatabaseMissing('products__variations',[
+        $this->assertDatabaseMissing('products__variations', [
             'id' => $variation->id,
             'deleted_at' => null,
         ]);
@@ -74,12 +73,29 @@ class ProductVariationTest extends TestCase
 
     public function test_restore(): void
     {
-        $variation = Variation::first();
-        $response = $this->post("api/admin/products/variations/{$variation->id}/destroy");
-        $this->assertDatabaseHas('products__variations',[
+        $variation = Variation::onlyTrashed()->first();
+        $response = $this->post("api/admin/products/variations/{$variation->id}/restore");
+        $this->assertDatabaseHas('products__variations', [
             'id' => $variation->id,
             'deleted_at' => null,
         ]);
         $response->assertOk();
+    }
+
+    public function test_unique_variation_rule(): void
+    {
+        $variation = Variation::first();
+        $response = $this->post("api/admin/products/{$variation->product_id}/variations/store", [
+            'price1' => rand(9999, 99999),
+            'price2' => rand(9999, 99999),
+            'product_count' => rand(0, 100),
+            'max_product_cart' => rand(0, 5),
+            'preparation_time' => rand(0, 5),
+            'param1_type' => $variation->param1_type,
+            'param1_id' => $variation->param1_id,
+            'param2_type' => $variation->param2_type,
+            'param2_id' => $variation->param2_id
+        ]);
+        $response->assertStatus(302);
     }
 }

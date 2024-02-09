@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Rules;
+namespace Modules\variations\App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\variations\App\Models\Variation;
 
-class UniqueReview implements ValidationRule
+class UniqueVariation implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -25,10 +25,11 @@ class UniqueReview implements ValidationRule
             }
             $query = Variation::query();
             $query->where($where);
-            // $query = runEvent('variation:unique-review', $query, true);
-            if ($query->first()) {
+            $query = runEvent('variation:unique-review', $query, true);
+            $variation = $query->first();
+            if ($variation) {
                 $result = false;
-                if (array_key_exists('id', $params) && $params['id'] == $query->id) {
+                if (array_key_exists('id', $params) && $params['id'] == $variation->id) {
                     $result = true;
                 }
             }
