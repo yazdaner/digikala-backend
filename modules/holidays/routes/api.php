@@ -6,4 +6,5 @@ use Modules\holidays\App\Http\Controllers\HolidayController;
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::get('setting/holiday', [HolidayController::class, 'index']);
     Route::post('setting/holiday', [HolidayController::class, 'store']);
+    Route::delete('setting/holiday/{id}/destroy', [HolidayController::class, 'destroy']);
 });

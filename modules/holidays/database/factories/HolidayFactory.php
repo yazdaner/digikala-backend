@@ -3,6 +3,7 @@
 namespace Modules\holidays\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\core\Lib\Jdf;
 use Modules\holidays\App\Models\Holiday;
 
 class HolidayFactory extends Factory
@@ -11,11 +12,11 @@ class HolidayFactory extends Factory
 
     public function definition(): array
     {
+        $timestamp = fake()->dateTimeBetween(now()->addDays(2),now()->addDays(10))->getTimestamp();
+        $jdf = new Jdf;
         return [
-            'shop_id' => fake()->rand(1,99),
-            'date' => fake()->date(),
-            'timestamp' => fake()->time(),
-            'explain' => fake()->text(10)
+            'date' => $jdf->jdate('Y/n/d',$timestamp),
+            'explain' => fake()->sentence()
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-use Modules\core\Services\Jdf;
+use Modules\core\Lib\Jdf;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Modules\categories\App\Models\Category;
 
@@ -18,6 +19,9 @@ use Modules\categories\App\Models\Category;
 Route::get('/', function () {
     //    dd(config('app.modules'));
     //    dd(config('app.events'));
-    return timestamp(1402,12,12,8,7,6);
+    $jdf = new Jdf;
+
+    dd(Carbon::now()->timestamp,timestamp($jdf->jdate('Y'),$jdf->jdate('n'),$jdf->jdate('j')));
+
 });
 

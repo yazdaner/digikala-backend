@@ -23,6 +23,7 @@ class CrudController extends Controller
         }else{
             $row->forceDelete();
         }
+        return ['status'=>'ok'];
     }
 
     public function restore($id)

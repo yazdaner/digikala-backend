@@ -4,7 +4,7 @@ namespace Modules\core\Lib;
 
 class Jdf
 {
-    public function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'fa')
+    public function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'en')
     {
         $T_sec = 0;
 
