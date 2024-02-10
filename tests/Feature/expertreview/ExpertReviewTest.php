@@ -33,17 +33,6 @@ class ExpertReviewTest extends TestCase
         $response->assertOk();
     }
 
-    // public function test_index_search(): void
-    // {
-    //     $response = $this->get('api/admin/expertreview?trashed=true&title=app');
-    //     $body = json_decode($response->getContent(), true);
-    //     $count = ExpertReview::onlyTrashed()->where('title', 'like', '%app%')->count();
-    //     //
-    //     $this->assertEquals($body['expertreview']['total'], $count);
-    //     $this->assertArrayHasKey('expertreview', $body);
-    //     $response->assertOk();
-    // }
-
     public function test_show(): void
     {
         $review = ExpertReview::first();
@@ -54,50 +43,63 @@ class ExpertReviewTest extends TestCase
         $response->assertOk();
     }
 
-    // public function test_update(): void
-    // {
-    //     $review = ExpertReview::first();
-    //     $response = $this->put("products/expert-review/{$review->id}/update", [
-    //         'title' => $data->title,
-    //         'en_title' => $data->en_title,
-    //         'description' => $data->description,
-    //         'content' => $data->content,
-    //     ]);
-    //     //
-    //     $this->assertDatabaseHas('expertreview', [
-    //         'id' => $review->id,
-    //         'title' => $data->title,
-    //         'en_title' => $data->en_title,
-    //         'description' => $data->description,
-    //         'content' => $data->content,
-    //     ]);
-    //     $response->assertOk();
-    // }
+    public function test_update(): void
+    {
+        $data = ExpertReview::factory()->make()->toArray();
+        $review = ExpertReview::first();
+        $response = $this->put("api/admin/products/expert-review/{$review->id}/update",$data);
+        $data['id'] = $review->id;
+        //
+        $this->assertDatabaseHas('products__expert_review',$data);
+        $response->assertOk();
+    }
 
-    // public function test_destroy(): void
-    // {
-    //     $review = ExpertReview::factory()->create([
-    //         'slug' => 'testSlug'
-    //     ]);
-    //     $response = $this->delete('api/admin/expertreview/' . $review->id);
-    //     $this->assertDatabaseMissing('expertreview', [
-    //         'id' => $review->id,
-    //         'deleted_at' => null,
-    //     ]);
-    //     $response->assertOk();
-    // }
+    public function test_destroy(): void
+    {
+        $product = runEvent('product:query', function ($query) {
+            return $query->first();
+        }, true);
 
-    // public function test_restore(): void
-    // {
-    //     $review = ExpertReview::factory()->create([
-    //         'slug' => 'testSlug',
-    //         'deleted_at' => Carbon::now()
-    //     ]);
-    //     $response = $this->post('api/admin/expertreview/' . $review->id . '/restore');
-    //     $this->assertDatabaseHas('expertreview', [
-    //         'id' => $review->id,
-    //         'deleted_at' => null,
-    //     ]);
-    //     $response->assertOk();
-    // }
+        $review = ExpertReview::factory()->create([
+            'product_id' => $product->id
+        ]);
+        $response = $this->delete("api/admin/products/expert-review/{$review->id}/destroy");
+        $this->assertDatabaseMissing('products__expert_review', [
+            'id' => $review->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_restore(): void
+    {
+        $product = runEvent('product:query', function ($query) {
+            return $query->first();
+        }, true);
+
+        $review = ExpertReview::factory()->create([
+            'product_id' => $product->id,
+            'deleted_at' => Carbon::now()
+        ]);
+        $response = $this->post("api/admin/products/expert-review/{$review->id}/restore");
+        $this->assertDatabaseHas('products__expert_review', [
+            'id' => $review->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_all(): void
+    {
+        $product = runEvent('product:query', function ($query) {
+            return $query->first();
+        }, true);
+
+        $response = $this->get("api/products/{$product->id}/expert-review/all");
+        $body = json_decode($response->getContent(), true);
+        $count = ExpertReview::where('product_id', $product->id)->count();
+        //
+        $this->assertEquals(sizeof($body), $count);
+        $response->assertOk();
+    }
 }
