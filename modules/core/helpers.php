@@ -1,5 +1,6 @@
 <?php
 
+use Modules\core\Lib\Jdf;
 use Illuminate\Support\Facades\App;
 
 function modulesList()
@@ -90,4 +91,18 @@ function runEvent($name, $data, $return = false)
     if ($return) {
         return $data;
     }
+}
+
+
+function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
+{
+    $jdf = new Jdf;
+    return $jdf->jmktime(
+        $jdf->tr_num($h),
+        $jdf->tr_num($m),
+        $jdf->tr_num($s),
+        $jdf->tr_num($n),
+        $jdf->tr_num($d),
+        $jdf->tr_num($y)
+    );
 }

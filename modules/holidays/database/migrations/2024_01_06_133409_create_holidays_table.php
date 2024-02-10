@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->id();
+            $table->integer('shop_id')->default(0);
             $table->string('date');
             $table->integer('timestamp')->nullable();
             $table->string('explain');
