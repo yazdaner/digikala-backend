@@ -1,9 +1,6 @@
 <?php
 
-use Modules\core\Lib\Jdf;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
-use Modules\categories\App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +14,6 @@ use Modules\categories\App\Models\Category;
 */
 
 Route::get('/', function () {
-    //    dd(config('app.modules'));
-    //    dd(config('app.events'));
-    // dd(runEvent('get-holidays',1,true));
+
 });
 

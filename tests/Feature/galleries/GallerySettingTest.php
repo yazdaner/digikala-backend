@@ -11,10 +11,11 @@ class GallerySettingTest extends TestCase
     {
         $response = $this->post('api/admin/setting/gallery',[
             'image' => UploadedFile::fake()->image('icon.png'),
-            'watermark' => false,
+            'watermark' => 'true',
             'position' => 'bottom-right',
             'position_x' => 15,
             'position_y' => 15,
+            'opacity' => 50,
         ]);
         //
         $response->assertOk();

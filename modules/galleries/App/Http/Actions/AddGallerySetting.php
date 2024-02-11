@@ -22,9 +22,7 @@ class AddGallerySetting
                         }
                     }
                 } else {
-                    if($config != 1){
-                        $config[$key] = $value;
-                    }
+                    $config[$key] = $value;
                 }
             }
         }
