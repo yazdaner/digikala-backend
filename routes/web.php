@@ -19,9 +19,6 @@ use Modules\categories\App\Models\Category;
 Route::get('/', function () {
     //    dd(config('app.modules'));
     //    dd(config('app.events'));
-    $jdf = new Jdf;
-
-    dd(Carbon::now()->timestamp,timestamp($jdf->jdate('Y'),$jdf->jdate('n'),$jdf->jdate('j')));
-
+    // dd(runEvent('get-holidays',1,true));
 });
 
