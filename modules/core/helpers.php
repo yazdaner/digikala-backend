@@ -68,7 +68,6 @@ function addEvent($name, $object)
     config()->set('app.events', $events);
 }
 
-
 function runEvent($name, $data, $return = false)
 {
     $events = config('app.events');
@@ -92,7 +91,6 @@ function runEvent($name, $data, $return = false)
         return $data;
     }
 }
-
 
 function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
 {
