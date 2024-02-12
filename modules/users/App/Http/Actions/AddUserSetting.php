@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\galleries\App\Http\Actions;
+namespace Modules\users\App\Http\Actions;
 
 use Illuminate\Http\Request;
 
-class AddGallerySetting
+class AddUserSetting
 {
     public function __invoke(Request $request)
     {

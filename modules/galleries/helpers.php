@@ -12,7 +12,7 @@ function saveFileToGallery($data, $watermark = false)
             $manager = ImageManager::gd();
             $img = $manager->read(fileDirectory($data['path']));
             $img->place(
-                config('gallery.image'),
+                fileDirectory(config('gallery.image')),
                 config('gallery.position'),
                 intval(config('gallery.position_x')),
                 intval(config('gallery.position_y')),

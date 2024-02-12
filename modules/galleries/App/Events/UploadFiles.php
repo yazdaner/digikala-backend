@@ -16,8 +16,8 @@ class UploadFiles
                 $ex = $image->getClientOriginalExtension();
                 if (in_array($ex, $array)) {
                     $fileName = $key . time() . '.' . $ex;
-                    if ($image->move('public/gallery', $fileName)) {
-                        $paths[] = 'public/gallery/' . $fileName;
+                    if ($image->move(fileDirectory('gallery'), $fileName)) {
+                        $paths[] = 'gallery/' . $fileName;
                     }
                 }
             }

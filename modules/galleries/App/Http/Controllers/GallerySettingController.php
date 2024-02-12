@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\galleries\App\Http\Actions\AddGallerySetting;
 
-class SettingController extends Controller
+class GallerySettingController extends Controller
 {
     public function __invoke(Request $request, AddGallerySetting $addGallerySetting)
     {

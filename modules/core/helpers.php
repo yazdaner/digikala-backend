@@ -36,7 +36,7 @@ function upload_file($request, $name, $dir, $pix = '')
 {
     if ($request->hasFile($name)) {
         $fileName = $pix . time() . '.' . $request->file($name)->getClientOriginalExtension();
-        if ($request->file($name)->move('public/' . $dir, $fileName)) {
+        if ($request->file($name)->move(fileDirectory($dir), $fileName)) {
             return $fileName;
         }
     }
@@ -106,11 +106,11 @@ function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
     );
 }
 
-function create_fit_pic($path, $fileName, $with = 350, $height = 350)
+function create_fit_pic($path, $fileName, $width = 350, $height = 350)
 {
     if ($fileName != null) {
         $image = ImageManager::imagick()->read(fileDirectory($path));
-        $image->resize($with, $height);
+        $image->resize($width, $height);
         $image->save(fileDirectory('thumbnails/' . $fileName));
     }
 }
