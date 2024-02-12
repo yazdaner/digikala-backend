@@ -22,3 +22,6 @@ yarn-error.log
 /public/slider
 /public/images
 /public/gallery
+/public/thumbnails
+
+

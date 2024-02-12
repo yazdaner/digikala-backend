@@ -9,7 +9,7 @@ use Modules\products\database\factories\ProductFactory;
 
 class Product extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
     protected $table = 'products';
     protected $guarded = ['pic'];
     protected $hidden = [
@@ -28,17 +28,13 @@ class Product extends Model
 
     public static function search($data)
     {
-        $products = self::orderBy('id','DESC');
-        if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
-        {
+        $products = self::orderBy('id', 'DESC');
+        if (array_key_exists('trashed', $data) && $data['trashed'] == 'true') {
             $products = $products->onlyTrashed();
         }
-        if(array_key_exists('name',$data) && !empty($data['name']))
-        {
-            $products = $products->where('name','like','%'.$data['name'].'%');
+        if (array_key_exists('name', $data) && !empty($data['name'])) {
+            $products = $products->where('name', 'like', '%' . $data['name'] . '%');
         }
         return $products->paginate(env('PAGINATE'));
     }
 }
-
-

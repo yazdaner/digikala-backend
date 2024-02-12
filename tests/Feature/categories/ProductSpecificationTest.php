@@ -18,11 +18,11 @@ class ProductSpecificationTest extends TestCase
             $values = [];
             $specifications = Specification::where('parent_id', 0)->with('childs')->get();
             foreach ($specifications as $key => $specification) {
-                if (sizeof($specification->childs) > 0){
+                if (sizeof($specification->childs) > 0) {
                     foreach ($specification->childs as $key => $child) {
-                        $values[$specification->id.'_'.$child->id] = (($key%2)== 0);
+                        $values[$specification->id . '_' . $child->id] = (($key % 2) == 0);
                     }
-                }else{
+                } else {
                     $values[$specification->id] = Str::random(10);
                 }
             }

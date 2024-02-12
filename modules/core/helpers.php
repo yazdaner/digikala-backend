@@ -106,7 +106,7 @@ function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
     );
 }
 
-function create_fit_pic($path, $fileName, $with = 100, $height = 100)
+function create_fit_pic($path, $fileName, $with = 350, $height = 350)
 {
     if ($fileName != null) {
         $image = ImageManager::imagick()->read(fileDirectory($path));
