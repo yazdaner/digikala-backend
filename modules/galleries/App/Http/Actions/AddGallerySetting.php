@@ -18,7 +18,7 @@ class AddGallerySetting
                     if (in_array($ex, $array)) {
                         $imageUrl = upload_file($request, $key, 'images');
                         if ($imageUrl != null) {
-                            $config[$key] = 'images/' . $imageUrl;
+                            $config[$key] = 'public/images/' . $imageUrl;
                         }
                     }
                 } else {

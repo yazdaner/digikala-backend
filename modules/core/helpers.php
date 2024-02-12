@@ -2,6 +2,7 @@
 
 use Modules\core\Lib\Jdf;
 use Illuminate\Support\Facades\App;
+use Intervention\Image\ImageManager;
 
 function modulesList()
 {
@@ -103,4 +104,18 @@ function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
         $jdf->tr_num($d),
         $jdf->tr_num($y)
     );
+}
+
+function create_fit_pic($path, $fileName, $with = 100, $height = 100)
+{
+    if ($fileName != null) {
+        $image = ImageManager::imagick()->read(fileDirectory($path));
+        $image->resize($with, $height);
+        $image->save(fileDirectory('thumbnails/' . $fileName));
+    }
+}
+
+function fileDirectory($path = '')
+{
+    return base_path('public/' . $path);
 }

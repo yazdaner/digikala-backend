@@ -1,8 +1,8 @@
 <?php return array (
   'position' => 'bottom-right',
-  'position_x' => 42,
-  'position_y' => 42,
-  'opacity' => 10,
+  'position_x' => 15,
+  'position_y' => 15,
+  'opacity' => 50,
   'watermark' => 'true',
-  'image' => 'images/1707664778.png',
+  'image' => 'public/images/1707730009.png',
 );
