@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\users\App\Http\Actions;
+namespace Modules\users\App\Actions;
 
 use Illuminate\Http\Request;
 

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Modules\users\App\Models\User;
 
 use App\Http\Controllers\Controller;
-use Modules\users\App\Http\Actions\CreateNewUser;
-use Modules\users\App\Http\Actions\SendAuthVerifyCode;
+use Modules\users\App\Actions\SendAuthVerifyCode;
+use Modules\users\App\Actions\Fortify\CreateNewUser;
 
 class CheckHasAccountController extends Controller
 {
@@ -35,7 +35,7 @@ class CheckHasAccountController extends Controller
                 }
             }
         } else {
-            $user = $createNewUser();
+            $user = $createNewUser($request);
             $sendAuthVerifyCode($user);
         }
         return ['status' => $status];

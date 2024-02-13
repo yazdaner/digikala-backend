@@ -4,7 +4,7 @@ namespace Modules\users\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\users\App\Http\Actions\AddUserSetting;
+use Modules\users\App\Actions\AddUserSetting;
 
 class UserSettingController extends Controller
 {
