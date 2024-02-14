@@ -31,12 +31,12 @@ class CheckVerifyCodeController extends Controller
                 );
                 return ['status' => 'ok', 'token' => $token];
             } else {
-                return $this->checkLoginConditions($user, $code);
+                return $this->checkLoginConditions($user);
             }
         }
         return ['status' => 'error', 'message' => 'کد تایید وارد شده اشتباه می باشد'];
     }
-    protected function checkLoginConditions($user, $code)
+    protected function checkLoginConditions($user)
     {
         $one_time_password = config('users.one_time_password');
         if ($one_time_password == 'true') {

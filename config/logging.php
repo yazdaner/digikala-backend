@@ -65,6 +65,12 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'emails' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/emails/' . now()->format('Y_m_d_').now()->timestamp .'_'. uniqid() . '.html'),
+            'level' => 'debug',
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
