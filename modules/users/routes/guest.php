@@ -10,7 +10,7 @@ use Modules\users\App\Http\Controllers\Auth\ReturnRegisterSettingController;
 
 Route::middleware('guest')->group(function(){
 
-    Route::post('user/cheack-has-account',CheckHasAccountController::class);
+    Route::post('user/check-has-account',CheckHasAccountController::class);
     Route::get('setting/register',ReturnRegisterSettingController::class);
 
     Route::post('user/send/verify-code',SendVerifyCodeController::class);

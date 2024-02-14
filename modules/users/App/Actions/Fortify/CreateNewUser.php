@@ -12,7 +12,7 @@ class CreateNewUser
         return User::create([
             'username' => $request->get('username'),
             'role' => 'user',
-            'status' => -1,
+            'status' => -2,
         ]);
     }
 }
