@@ -13,6 +13,7 @@ class CreateNewUser
             'username' => $request->get('username'),
             'role' => 'user',
             'status' => -2,
+            'password' => rand(999,9999).$request->get('username').'@#$'.rand(999,9999)
         ]);
     }
 }
