@@ -25,7 +25,7 @@ class SendVerifyCodeController extends Controller
             $code,
             null,
             config('users.verify_template')
-        );
+        )->onConnection('database');
         return ['status' => 'ok'];
     }
 }

@@ -40,16 +40,15 @@ class CheckVerifyCodeController extends Controller
     {
         $one_time_password = config('users.one_time_password');
         if ($one_time_password == 'true') {
-            if ($user->status == -2) {
+            if ($user->status == -1) {
                 $user->status = 1;
                 $user->update();
             }
             Auth::login($user);
             return ['status' => 'logged'];
         } else {
-            $user->status = -1;
-            $user->update();
-            return ['status' => 'set-password'];
+            $username = encrypt('$$'.$user->username.':'.time().'%%');
+            return ['status' => 'set-password','encrypt' => $username];
         }
     }
 

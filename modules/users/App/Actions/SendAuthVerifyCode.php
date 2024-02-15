@@ -11,7 +11,7 @@ class SendAuthVerifyCode
 {
     public function __invoke($user)
     {
-        if ($user->status == -2) {
+        if ($user->status == -1) {
             $this->sendVerifyCode($user);
         } else {
             $this->sendOneTimePassword($user);
@@ -44,6 +44,6 @@ class SendAuthVerifyCode
             $code,
             null,
             config('users.verify_template'),
-        );
+        )->onConnection('database');
     }
 }

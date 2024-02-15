@@ -12,7 +12,7 @@ class CreateNewUser
         return User::create([
             'username' => $request->get('username'),
             'role' => 'user',
-            'status' => -2,
+            'status' => -1,
             'password' => rand(999,9999).$request->get('username').'@#$'.rand(999,9999)
         ]);
     }
