@@ -9,5 +9,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 
 });
 
-require_once base_path('modules/users/routes/guest.php');
+require base_path('modules/users/routes/guest.php');
 

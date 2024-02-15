@@ -19,9 +19,9 @@ class SignUpRequest extends FormRequest
         return [
             'username' => [
                 'required',
-                Rule::unique('users')->whereNot('status', 1)
+                Rule::unique('users')->where('status', 1)
             ],
-            'password' => ['required','string','max:8'],
+            'password' => ['required','string','min:8','max:200'],
         ];
     }
 

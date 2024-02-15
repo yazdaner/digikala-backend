@@ -15,14 +15,13 @@ class SetPasswordController extends Controller
         $username = $request->post('username');
         $password = $request->post('password');
         $encrypt = $request->get('encrypt');
-
         $decrypt = $this->decryptToken($encrypt);
         $decryptedUsername = $this->getEncryptUsername($decrypt);
         $decryptedTime = $this->getEncryptTime($decrypt);
 
         if ($username == $decryptedUsername && (time() - $decryptedTime) <= (30 * 60)) {
             $user = User::where([
-                'username' => $request->get($username),
+                'username' => $username,
                 'role' => 'user',
                 'status' => -1,
             ])->firstOrFail();

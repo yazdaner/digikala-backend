@@ -47,6 +47,7 @@ class CheckVerifyCodeController extends Controller
             Auth::login($user);
             return ['status' => 'logged'];
         } else {
+            // set password after verify code
             $username = encrypt('$$'.$user->username.':'.time().'%%');
             return ['status' => 'set-password','encrypt' => $username];
         }
