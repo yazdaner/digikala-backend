@@ -11,12 +11,13 @@ class ProductTest extends TestCase
 {
     public function test_create(): void
     {
+        $admin = getAdminForTest();
         $gallery = [
             ['path' => 'gallery/test1.png'],
             ['path' => 'gallery/test2.png'],
         ];
         $product = Product::factory()->make();
-        $response = $this->post('api/admin/products', [
+        $response = $this->actingAs($admin)->post('api/admin/products', [
             'title' => $product->title,
             'en_title' => $product->en_title,
             'description' => $product->description,
@@ -35,7 +36,8 @@ class ProductTest extends TestCase
 
     public function test_index(): void
     {
-        $response = $this->get('api/admin/products');
+        $admin = getAdminForTest();
+        $response = $this->actingAs($admin)->get('api/admin/products');
         $body = json_decode($response->getContent(), true);
         //
         $this->assertArrayHasKey('products', $body);
@@ -44,7 +46,8 @@ class ProductTest extends TestCase
 
     public function test_index_search(): void
     {
-        $response = $this->get('api/admin/products?title=app');
+        $admin = getAdminForTest();
+        $response = $this->actingAs($admin)->get('api/admin/products?title=app');
         $body = json_decode($response->getContent(), true);
         $count = Product::where('title', 'like', '%app%')->count();
         //
@@ -55,10 +58,11 @@ class ProductTest extends TestCase
 
     public function test_show(): void
     {
+        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->get('api/admin/products/' . $product->id);
+        $response = $this->actingAs($admin)->get('api/admin/products/' . $product->id);
         $body = json_decode($response->getContent());
         //
         $this->assertEquals($product->id, $body->id);
@@ -67,10 +71,11 @@ class ProductTest extends TestCase
 
     public function test_destroy(): void
     {
+        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->delete('api/admin/products/' . $product->id);
+        $response = $this->actingAs($admin)->delete('api/admin/products/' . $product->id);
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
             'deleted_at' => null,
@@ -80,11 +85,12 @@ class ProductTest extends TestCase
 
     public function test_restore(): void
     {
+        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test',
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->post('api/admin/products/' . $product->id . '/restore');
+        $response = $this->actingAs($admin)->post('api/admin/products/' . $product->id . '/restore');
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
             'deleted_at' => null,
@@ -94,12 +100,13 @@ class ProductTest extends TestCase
 
     public function test_update(): void
     {
+        $admin = getAdminForTest();
         $title = Str::random(10);
         $en_title = Str::random(10);
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->put('api/admin/products/' . $product->id, [
+        $response = $this->actingAs($admin)->put('api/admin/products/' . $product->id, [
             'title' => $title,
             'en_title' => $en_title,
         ]);

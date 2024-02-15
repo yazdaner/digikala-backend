@@ -12,7 +12,7 @@ class HolidayFactory extends Factory
 
     public function definition(): array
     {
-        $timestamp = fake()->dateTimeBetween(now()->addDays(2),now()->addDays(10))->getTimestamp();
+        $timestamp = fake()->dateTimeBetween(now()->addDays(3),now()->addDays(10))->getTimestamp();
         $jdf = new Jdf;
         return [
             'date' => $jdf->jdate('Y/n/d',$timestamp),

@@ -13,8 +13,9 @@ class SliderTest extends TestCase
 
     public function test_create(): void
     {
+        $admin = getAdminForTest();
         $slider = Slider::factory()->make();
-        $response = $this->post('api/admin/sliders', [
+        $response = $this->actingAs($admin)->post('api/admin/sliders', [
             'title' => $slider->title,
             'url' => $slider->url,
             'image' => UploadedFile::fake()->image('image.png'),
@@ -29,8 +30,9 @@ class SliderTest extends TestCase
 
     public function test_show(): void
     {
+        $admin = getAdminForTest();
         $slider = Slider::factory()->create();
-        $response = $this->get('api/admin/sliders/' . $slider->id);
+        $response = $this->actingAs($admin)->get('api/admin/sliders/' . $slider->id);
         $body = json_decode($response->getContent());
         //
         $this->assertEquals($slider->id, $body->id);
@@ -39,10 +41,11 @@ class SliderTest extends TestCase
 
     public function test_update(): void
     {
+        $admin = getAdminForTest();
         $title = Str::random(10);
         $url = fake()->url();
         $slider = Slider::factory()->create();
-        $response = $this->put('api/admin/sliders/' . $slider->id, [
+        $response = $this->actingAs($admin)->put('api/admin/sliders/' . $slider->id, [
             'title' => $title,
             'url' => $url,
             'image' => UploadedFile::fake()->image('image.png'),
@@ -59,7 +62,8 @@ class SliderTest extends TestCase
 
     public function test_index(): void
     {
-        $response = $this->get('api/admin/sliders');
+        $admin = getAdminForTest();
+        $response = $this->actingAs($admin)->get('api/admin/sliders');
         $body = json_decode($response->getContent(),true);
         //
         $this->assertArrayHasKey('sliders',$body);
@@ -68,8 +72,9 @@ class SliderTest extends TestCase
 
     public function test_destroy(): void
     {
+        $admin = getAdminForTest();
         $slider = Slider::factory()->create();
-        $response = $this->delete('api/admin/sliders/'.$slider->id);
+        $response = $this->actingAs($admin)->delete('api/admin/sliders/'.$slider->id);
         $this->assertDatabaseMissing('sliders',[
             'id' => $slider->id,
             'deleted_at' => null,
@@ -79,10 +84,11 @@ class SliderTest extends TestCase
 
     public function test_restore(): void
     {
+        $admin = getAdminForTest();
         $slider = Slider::factory()->create([
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->post('api/admin/sliders/'.$slider->id.'/restore');
+        $response = $this->actingAs($admin)->post('api/admin/sliders/'.$slider->id.'/restore');
         $this->assertDatabaseHas('sliders',[
             'id' => $slider->id,
             'deleted_at' => null,

@@ -9,15 +9,17 @@ class HolidayTest extends TestCase
 {
     public function test_create(): void
     {
+        $admin = getAdminForTest();
         $data = Holiday::factory()->make()->toArray();
-        $response = $this->post('api/admin/setting/holiday',$data);
+        $response = $this->actingAs($admin)->post('api/admin/setting/holiday',$data);
         //
         $response->assertOk();
     }
 
     public function test_index(): void
     {
-        $response = $this->get('api/admin/setting/holiday');
+        $admin = getAdminForTest();
+        $response = $this->actingAs($admin)->get('api/admin/setting/holiday');
         $body = json_decode($response->getContent(), true);
         $data = Holiday::get();
         //
@@ -27,8 +29,9 @@ class HolidayTest extends TestCase
 
     public function test_destroy(): void
     {
+        $admin = getAdminForTest();
         $holiday = Holiday::factory()->create();
-        $response = $this->delete("api/admin/setting/holiday/{$holiday->id}/destroy");
+        $response = $this->actingAs($admin)->delete("api/admin/setting/holiday/{$holiday->id}/destroy");
         $this->assertDatabaseMissing('holidays', [
             'id' => $holiday->id,
         ]);

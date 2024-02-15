@@ -12,10 +12,8 @@ class AddProductGallery
         $gallery = $request->get('gallery');
         if(is_array($gallery)){
             $position = 0;
-            // $user = $request->user()::class,
-            // $user_id = $request->user()->id;
-            $user_type = 'Modules\users\App\Models\User';
-            $user_id = 1;
+            $user_type = $request->user()::class;
+            $user_id = $request->user()->id;
             foreach ($gallery as $key => $value) {
                 if(function_exists('saveFileToGallery')){
                     saveFileToGallery([

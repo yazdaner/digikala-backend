@@ -11,9 +11,8 @@ class ModuleServiceProvider extends ServiceProvider
     {
         require_once base_path('modules/core/helpers.php');
         $this->loadMigrationsFrom(base_path('modules/core/database/migrations'));
-        // 'auth','isAdmin'
         if (!defined('AdminMiddleware')) {
-            define('AdminMiddleware', []);
+            define('AdminMiddleware', ['auth','isAdmin']);
         }
         $this->loadViewsFrom(base_path('modules/core/resources/view'),'core');
     }

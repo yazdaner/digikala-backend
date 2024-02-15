@@ -4,6 +4,7 @@ namespace Tests\Feature\categories;
 
 use Tests\TestCase;
 use Illuminate\Support\Str;
+use Modules\categories\App\Models\Category;
 use Modules\products\App\Models\Product;
 use Modules\categories\App\Models\Specification;
 
@@ -12,6 +13,17 @@ class ProductSpecificationTest extends TestCase
 
     public function test_add_specifications_to_product(): void
     {
+        $category = Category::factory()->create([
+            'slug' => 'test'
+        ]);
+        Specification::factory()->create([
+            'category_id' => $category->id,
+            'position' => 1
+        ]);
+        Product::factory()->create([
+            'slug' => 'test'
+        ]);
+        //////////////////////////////////////////
         $product = Product::first();
         if ($product) {
             $request = request();
