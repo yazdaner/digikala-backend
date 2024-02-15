@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\users\App\Actions\Fortify;
+namespace Modules\users\App\Actions;
 
 use Illuminate\Http\Request;
 use Modules\users\App\Models\User;

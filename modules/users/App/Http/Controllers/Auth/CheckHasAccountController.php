@@ -7,7 +7,7 @@ use Modules\users\App\Models\User;
 
 use App\Http\Controllers\Controller;
 use Modules\users\App\Actions\SendAuthVerifyCode;
-use Modules\users\App\Actions\Fortify\CreateNewUser;
+use Modules\users\App\Actions\CreateNewUser;
 
 class CheckHasAccountController extends Controller
 {

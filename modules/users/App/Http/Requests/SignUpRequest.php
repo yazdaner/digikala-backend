@@ -3,7 +3,6 @@
 namespace Modules\users\App\Http\Requests;
 
 use Illuminate\Validation\Rule;
-use Laravel\Fortify\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SignUpRequest extends FormRequest

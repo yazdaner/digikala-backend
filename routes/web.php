@@ -15,6 +15,5 @@ use Modules\products\App\Models\Product;
 */
 
 Route::get('/', function () {
-
 });
 
