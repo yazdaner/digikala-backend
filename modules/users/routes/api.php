@@ -17,4 +17,3 @@ Route::prefix('user')->middleware(['auth:sanctum'])->group(function(){
 });
 
 require base_path('modules/users/routes/guest.php');
-

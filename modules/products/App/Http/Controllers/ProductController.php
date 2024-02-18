@@ -4,11 +4,11 @@ namespace Modules\products\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Modules\products\App\Models\Product;
-use Modules\products\App\Http\Actions\CreateProduct;
+use Modules\products\App\Actions\CreateProduct;
 use Modules\core\App\Http\Controllers\CrudController;
 use Modules\products\App\Http\Requests\ProductRequest;
-use Modules\products\App\Http\Actions\ProductPagination;
-use Modules\products\App\Http\Actions\UpdateProduct;
+use Modules\products\App\Actions\ProductPagination;
+use Modules\products\App\Actions\UpdateProduct;
 use Modules\products\App\Models\ProductsDetail;
 
 class ProductController extends CrudController
