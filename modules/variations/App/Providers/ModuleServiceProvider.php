@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\variations\App\Models\Variation;
 use Modules\variations\App\Events\AddProductVariation;
+use Modules\variations\App\Events\CheckVariationForBuy;
 use Modules\variations\App\Events\VariationsPagination;
 use Modules\variations\App\Events\UpdateProductVariation;
 
@@ -18,6 +19,8 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('variation:add',AddProductVariation::class);
         addEvent('variation:update',UpdateProductVariation::class);
         addEvent('variations:pagination',VariationsPagination::class);
+        addEvent('check-variation-for-buy',CheckVariationForBuy::class);
+
     }
 
     public function boot(): void

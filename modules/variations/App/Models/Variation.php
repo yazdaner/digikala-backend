@@ -4,10 +4,12 @@ namespace Modules\variations\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\variations\database\factories\VariationFactory;
 
 class Variation extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     protected $table = 'products__variations';
     protected $guarded = [];
@@ -20,5 +22,10 @@ class Variation extends Model
     public function param2()
     {
         return $this->morphTo();
+    }
+
+    protected static function newFactory()
+    {
+        return VariationFactory::new();
     }
 }

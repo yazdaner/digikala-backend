@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\products\App\Models\Product;
+use Modules\variations\App\Models\Variation;
 
 /*
 |--------------------------------------------------------------------------
