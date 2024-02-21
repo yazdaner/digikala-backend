@@ -5,6 +5,7 @@ namespace Modules\variations\App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\variations\App\Models\Variation;
+use Modules\variations\App\Events\VariationQuery;
 use Modules\variations\App\Events\AddProductVariation;
 use Modules\variations\App\Events\CheckVariationForBuy;
 use Modules\variations\App\Events\VariationsPagination;
@@ -20,6 +21,7 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('variation:update',UpdateProductVariation::class);
         addEvent('variations:pagination',VariationsPagination::class);
         addEvent('check-variation-for-buy',CheckVariationForBuy::class);
+        addEvent('variation:query', VariationQuery::class);
 
     }
 

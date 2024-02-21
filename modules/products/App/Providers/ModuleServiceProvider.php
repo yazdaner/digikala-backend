@@ -3,6 +3,7 @@
 namespace Modules\products\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\products\App\Events\ProductInfo;
 use Modules\products\App\Events\ProductQuery;
 use Modules\products\App\Events\SavingProduct;
 use Modules\products\App\Events\AddProductGallery;
@@ -20,6 +21,7 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('product.updated', AddProductGallery::class);
 
         addEvent('product:query', ProductQuery::class);
+        addEvent('product:info', ProductInfo::class);
     }
 
     public function boot(): void
