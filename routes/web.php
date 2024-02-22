@@ -16,6 +16,6 @@ use Modules\variations\App\Models\Variation;
 */
 
 Route::get('/', function () {
-    dd(runEvent('product:info',48,true));
+    dd(runEvent('product:info',48,true)->brand);
 });
 
