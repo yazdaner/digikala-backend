@@ -70,13 +70,12 @@ class CartTest extends TestCase
         foreach ($variations as $variation) {
             $cart[$variation->id] = 1;
         }
-        $response = $this->post('api/cart',[
+        $response = $this->post('api/cart', [
             'cart' => $cart
         ]);
-        $body = json_decode($response->getContent(),true);
-        $this->assertArrayHasKey('current',$body);
-        $this->assertArrayHasKey('current',$body);
-        $this->assertEquals(sizeof($cart),sizeof($body['current']['products']));
+        $body = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('current', $body);
+        $this->assertEquals(sizeof($cart), sizeof($body['current']['products']));
         $response->assertOk();
     }
 
@@ -87,7 +86,7 @@ class CartTest extends TestCase
         $variations = runEvent('variation:query', function ($query) {
             return $query->where('status', 1)
                 ->where('product_count', '>', 0)
-                ->select(['id','price2'])
+                ->select(['id', 'price2'])
                 ->limit(3)->get();
         }, true);
         foreach ($variations as $variation) {
@@ -100,10 +99,82 @@ class CartTest extends TestCase
             ]);
         }
         $response = $this->actingAs($user)->post('api/cart');
-        $body = json_decode($response->getContent(),true);
-        $this->assertArrayHasKey('current',$body);
-        $this->assertArrayHasKey('current',$body);
-        $this->assertEquals(sizeof($variations),sizeof($body['current']['products']));
+        $body = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('current', $body);
+        $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
+        $response->assertOk();
+    }
+
+    public function test_cart_after_change_price(): void
+    {
+        $user = getUserForTest();
+        Cart::where('user_id', $user->id)->delete();
+        $variations = runEvent('variation:query', function ($query) {
+            return $query->where('status', 1)
+                ->where('product_count', '>', 0)
+                ->select(['id', 'price2'])
+                ->limit(3)->get();
+        }, true);
+        foreach ($variations as $variation) {
+            Cart::create([
+                'variation_id' => $variation->id,
+                'count' => 1,
+                'user_id' => $user->id,
+                'price' => $variation->price2,
+                'type' => 1
+            ]);
+        }
+        foreach ($variations as $variation) {
+            $variation->price2 = ($variation->price2 + 10000);
+            $variation->update();
+        }
+        $response = $this->actingAs($user)->post('api/cart?check-change=true');
+        $body = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('current', $body);
+        $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
+        $this->assertArrayHasKey('old_price', $body['current']['products'][0]);
+        $response->assertOk();
+    }
+
+    public function test_add_product_to_next_cart(): void
+    {
+        $user = getUserForTest();
+        $data = Cart::where([
+            'user_id' => $user->id,
+            'type' => 1
+        ])->first();
+        $response = $this->actingAs($user)->post('api/cart/add-next-card', [
+            'variationId' => $data->variation_id
+        ]);
+        $this->assertEquals(
+            null,
+            Cart::where([
+                'user_id' => $user->id,
+                'type' => 1,
+                'variation_id' => $data->variation_id
+            ])->first()
+        );
+        $response->assertOk();
+    }
+
+    public function test_add_product_to_current_cart(): void
+    {
+        $user = getUserForTest();
+        $data = Cart::where([
+            'user_id' => $user->id,
+            'type' => 2
+        ])->first();
+        $response = $this->actingAs($user)->post('api/cart/add-current-card', [
+            'variationId' => $data->variation_id
+        ]);
+        $this->assertEquals(
+            null,
+            Cart::where([
+                'user_id' => $user->id,
+                'type' => 2,
+                'variation_id' => $data->variation_id
+            ])->first()
+        );
         $response->assertOk();
     }
 }
