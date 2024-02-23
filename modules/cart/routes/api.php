@@ -13,7 +13,7 @@ use Modules\cart\App\Http\Controllers\Cart\RemoveProductFromCartController;
 use Modules\cart\App\Http\Controllers\Cart\AddProductToCurrentCartController;
 
 Route::post('cart/add-product', AddProductToCartController::class);
-Route::get('cart', ReturnCartInfoController::class);
+Route::post('cart', ReturnCartInfoController::class);
 
 
 Route::prefix('cart')->middleware(['auth:sanctum'])->group(function () {

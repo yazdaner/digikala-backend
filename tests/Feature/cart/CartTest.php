@@ -43,7 +43,6 @@ class CartTest extends TestCase
     public function test_remove_product_from_cart_table(): void
     {
         $user = getUserForTest();
-        // $variation = Variation::orderBy('id','DESC')->first();
         $variationId = Cart::where([
             'user_id' => $user->id
         ])->first()->variation_id;
@@ -56,6 +55,55 @@ class CartTest extends TestCase
             'variation_id' => $variationId,
             'user_id' => $user->id,
         ]);
+        $response->assertOk();
+    }
+
+    public function test_return_cart_info_for_guest(): void
+    {
+        $cart = [];
+        $variations = runEvent('variation:query', function ($query) {
+            return $query->where('status', 1)
+                ->where('product_count', '>', 0)
+                ->select('id')
+                ->limit(3)->get();
+        }, true);
+        foreach ($variations as $variation) {
+            $cart[$variation->id] = 1;
+        }
+        $response = $this->post('api/cart',[
+            'cart' => $cart
+        ]);
+        $body = json_decode($response->getContent(),true);
+        $this->assertArrayHasKey('current',$body);
+        $this->assertArrayHasKey('current',$body);
+        $this->assertEquals(sizeof($cart),sizeof($body['current']['products']));
+        $response->assertOk();
+    }
+
+    public function test_return_cart_info_for_user(): void
+    {
+        $user = getUserForTest();
+        Cart::where('user_id', $user->id)->delete();
+        $variations = runEvent('variation:query', function ($query) {
+            return $query->where('status', 1)
+                ->where('product_count', '>', 0)
+                ->select(['id','price2'])
+                ->limit(3)->get();
+        }, true);
+        foreach ($variations as $variation) {
+            Cart::create([
+                'variation_id' => $variation->id,
+                'count' => 1,
+                'user_id' => $user->id,
+                'price' => $variation->price2,
+                'type' => 1
+            ]);
+        }
+        $response = $this->actingAs($user)->post('api/cart');
+        $body = json_decode($response->getContent(),true);
+        $this->assertArrayHasKey('current',$body);
+        $this->assertArrayHasKey('current',$body);
+        $this->assertEquals(sizeof($variations),sizeof($body['current']['products']));
         $response->assertOk();
     }
 }

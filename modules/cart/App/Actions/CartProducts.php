@@ -24,13 +24,13 @@ class CartProducts extends Controller
                     $variation->total = $totalProducts;
                     $product->variation = $variation;
                     $product->count = $count;
-                    $products[] = $product;
                     if ($request->get('check-change') == 'true') {
                         $checkChange = $this->updateChangePrice($variation, $cart);
                         if ($checkChange['status']) {
                             $product->old_price = $checkChange['old_price'];
                         }
                     }
+                    $products[] = $product;
                 }
             }
         }

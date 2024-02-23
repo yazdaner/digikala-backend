@@ -9,10 +9,15 @@ use Modules\variations\database\factories\VariationFactory;
 
 class Variation extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'products__variations';
     protected $guarded = [];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'selected_by_box',
+    ];
 
     public function param1()
     {
