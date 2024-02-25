@@ -177,4 +177,25 @@ class CartTest extends TestCase
         );
         $response->assertOk();
     }
+
+    public function test_save_to_carts_table(): void
+    {
+        $user = getUserForTest();
+        $cart = [];
+        Cart::where('user_id',$user->id)->delete();
+        $variations = runEvent('variation:query', function ($query) {
+            return $query->where('status', 1)
+                ->where('product_count', '>', 0)
+                ->select('id')
+                ->limit(3)->get();
+        }, true);
+        foreach ($variations as $variation) {
+            $cart[$variation->id] = 1;
+        }
+        $response = $this->actingAs($user)->post('api/user/card/save-database', [
+            'cart' => $cart
+        ]);
+        $this->assertEquals(sizeof($cart),Cart::where('user_id',$user->id)->count());
+        $response->assertOk();
+    }
 }

@@ -23,4 +23,3 @@ class AddProductToCartTable extends Controller
         ]);
     }
 }
-// type = 1 => current cart
