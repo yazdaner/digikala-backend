@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('date');
             $table->string('time');
             $table->smallInteger('capacity')->default(0);
-            $table->smallInteger('used')->default(0);
+            $table->integer('sender')->default(0);
             $table->timestamps();
         });
     }
