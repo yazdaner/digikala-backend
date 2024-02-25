@@ -1,8 +1,8 @@
 <?php
 
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
-use Modules\products\App\Models\Product;
-use Modules\variations\App\Models\Variation;
+use Modules\normaldelivery\import\UsersImport;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +16,4 @@ use Modules\variations\App\Models\Variation;
 */
 
 Route::get('/', function () {
-    dd(runEvent('product:info',48,true)->brand);
 });
-
