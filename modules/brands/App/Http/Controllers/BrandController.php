@@ -10,7 +10,7 @@ use Modules\core\App\Http\Controllers\CrudController;
 class BrandController extends CrudController
 {
 
-    protected $model = Brand::class;
+    protected string $model = Brand::class;
 
     public function index(Request $request)
     {
