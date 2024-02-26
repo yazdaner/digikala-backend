@@ -4,7 +4,6 @@ namespace Tests\Feature\normaldelivery;
 
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
-use Modules\galleries\App\Events\UploadFiles;
 
 class NormalDeliveryTest extends TestCase
 {
@@ -44,5 +43,15 @@ class NormalDeliveryTest extends TestCase
         ]);
         //
         $response->assertOk();
+    }
+
+    public function test_export_setting(): void
+    {
+        $admin = getAdminForTest();
+        $response = $this->actingAs($admin)->post('api/admin/setting/normal-delivery/export-time',[
+            'city_id' =>1,
+        ]);
+        //
+        $response->assertDownload('shipping-time-intervals.xlsx');
     }
 }

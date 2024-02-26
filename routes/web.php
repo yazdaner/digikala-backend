@@ -1,9 +1,6 @@
 <?php
 
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
-use Modules\normaldelivery\import\UsersImport;
-use Modules\normaldelivery\import\ShippingIntervalsImport;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +14,4 @@ use Modules\normaldelivery\import\ShippingIntervalsImport;
 */
 
 Route::get('/', function () {
-    Excel::import(new ShippingIntervalsImport(1), storage_path('/app/excel/1.xlsx'));
 });
