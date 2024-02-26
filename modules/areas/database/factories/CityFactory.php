@@ -14,7 +14,7 @@ class CityFactory extends Factory
     {
         return [
             'province_id' => Province::first()->id,
-            'name' => fake()->text(10),
+            'name' => fake()->state,
         ];
     }
 }

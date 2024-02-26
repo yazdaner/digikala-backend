@@ -20,16 +20,16 @@ class ModuleServiceProvider extends ServiceProvider
         Builder::macro('city', function () {
             return $this->getModel()->belongsTo(
                 City::class,
-                'id',
-                'city_id'
+                'city_id',
+                'id'
             );
         });
 
         Builder::macro('province', function () {
             return $this->getModel()->belongsTo(
                 Province::class,
-                'id',
-                'province_id'
+                'province_id',
+                'id'
             );
         });
     }

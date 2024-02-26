@@ -12,7 +12,7 @@ class ProvinceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->text(10),
+            'name' => fake()->state,
         ];
     }
 }
