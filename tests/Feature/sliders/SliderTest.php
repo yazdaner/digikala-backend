@@ -98,7 +98,7 @@ class SliderTest extends TestCase
 
     public function test_all(): void
     {
-        $response = $this->get('api/sliders/list?group=index');
+        $response = $this->get('api/sliders/all?group=index');
         $body = json_decode($response->getContent(),true);
         $sliders = Slider::where('group','index')->get();
         $this->assertEquals(sizeof($sliders),sizeof($body));

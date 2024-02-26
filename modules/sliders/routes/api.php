@@ -12,4 +12,4 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 
 });
 
-Route::get('sliders/list',[SliderController::class,'all']);
+Route::get('sliders/all',[SliderController::class,'all']);

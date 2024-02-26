@@ -10,7 +10,6 @@ use Modules\brands\App\Models\Brand;
 
 class BrandTest extends TestCase
 {
-
     public function test_create(): void
     {
         $admin = getAdminForTest();
@@ -105,7 +104,7 @@ class BrandTest extends TestCase
 
     public function test_all(): void
     {
-        $response = $this->get('api/brands/list');
+        $response = $this->get('api/brands/all');
         $body = json_decode($response->getContent(), true);
         $brands = Brand::get();
         $this->assertEquals(sizeof($brands), sizeof($body));

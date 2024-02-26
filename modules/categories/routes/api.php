@@ -19,5 +19,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 
 });
 
-Route::get('categories/list',[CategoryController::class,'all']);
+Route::get('categories/all',[CategoryController::class,'all']);
 Route::get('categories/{id}/specifications',[SpecificationController::class,'index']);

@@ -114,7 +114,7 @@ class CategoryTest extends TestCase
 
     public function test_all(): void
     {
-        $response = $this->get('api/categories/list');
+        $response = $this->get('api/categories/all');
         $body = json_decode($response->getContent(), true);
         $categories = Category::get();
         $this->assertEquals(sizeof($categories), sizeof($body));

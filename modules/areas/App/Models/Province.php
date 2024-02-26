@@ -2,18 +2,25 @@
 
 namespace Modules\areas\App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\areas\database\factories\ProvinceFactory;
 
 class Province extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
     protected $table = 'provinces';
     protected $guarded = [];
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+
+    protected static function newFactory()
+    {
+        return ProvinceFactory::new();
+    }
 
     public static function search($data)
     {

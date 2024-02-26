@@ -4,10 +4,12 @@ namespace Modules\areas\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\areas\database\factories\CityFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class City extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
     protected $table = 'cities';
     protected $guarded = [];
     protected $hidden = [
@@ -15,9 +17,9 @@ class City extends Model
         'updated_at',
     ];
 
-    public function province()
+    protected static function newFactory()
     {
-        return $this->belongsTo(Province::class,'province_id','id');
+        return CityFactory::new();
     }
 
     public static function search($data)
