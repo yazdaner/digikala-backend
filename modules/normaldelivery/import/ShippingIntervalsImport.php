@@ -2,7 +2,9 @@
 
 namespace Modules\normaldelivery\import;
 
+use Modules\normaldelivery\import\GeneralSetting;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Modules\normaldelivery\import\ShippingIntervals;
 use Modules\normaldelivery\App\Models\IntervalsNormalPosting;
 
 class ShippingIntervalsImport implements WithMultipleSheets
@@ -18,7 +20,7 @@ class ShippingIntervalsImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            new GeneralSetting($this->city_id),
+            // new GeneralSetting($this->city_id),
             new ShippingIntervals($this->city_id),
         ];
     }

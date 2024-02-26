@@ -15,7 +15,7 @@ class ImportDeliveryTimeIntervals extends Controller
         $file = $request->file('excel');
         $city_id = $request->post('city_id');
         $fileName = Storage::disk('local')->put('excel', $file);
-        Excel::import(new ShippingIntervalsImport($city_id), storage_path('/app/excel/' . $fileName));
+        Excel::import(new ShippingIntervalsImport($city_id), storage_path('app/' . $fileName));
         return ['status' => 'ok'];
     }
 }
