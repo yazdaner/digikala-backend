@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('province_id');
             $table->foreignId('city_id');
             $table->smallInteger('plaque')->nullable();
-            $table->integer('postal_code')->nullable();
+            $table->bigInteger('postal_code')->nullable();
             $table->string('latitude');
             $table->string('longitude');
             $table->string('recipient_name');

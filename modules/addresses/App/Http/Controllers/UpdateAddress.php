@@ -2,14 +2,14 @@
 
 namespace Modules\addresses\App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\addresses\App\Jobs\CreateStaticMap;
 use Modules\addresses\App\Models\Address;
+use Modules\addresses\App\Jobs\CreateStaticMap;
+use Modules\addresses\App\Http\Requests\AddressRequest;
 
 class UpdateAddress extends Controller
 {
-    public function __invoke(Request $request, $id)
+    public function __invoke(AddressRequest $request, $id)
     {
         $user = $request->user();
         $address = Address::where([

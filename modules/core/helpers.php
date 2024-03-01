@@ -119,3 +119,14 @@ function fileDirectory($path = '')
 {
     return base_path('public/' . $path);
 }
+
+function addArrayList($name,$array)
+{
+    if (config()->has('app.'.$name)) {
+        $default = config()->get('app.'.$name);
+        $default[] = $array;
+        config()->set('app.'.$name,$default);
+    }else{
+        config()->set('app.'.$name,[$array]);
+    }
+}
