@@ -17,7 +17,7 @@ class GeneralSetting implements ToModel,WithHeadingRow
     public function model(array $row)
     {
         runEvent('setting:update-create', [
-            'min_buy_free_normal_shopping_' . $this->cityId
+            'min_buy_free_normal_shipping_' . $this->cityId
             => $row['min_buy'],
             'normal_delivery_time_' . $this->cityId
             => $row['delivery_time'],

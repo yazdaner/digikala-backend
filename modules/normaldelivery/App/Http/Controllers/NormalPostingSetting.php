@@ -9,9 +9,9 @@ class NormalPostingSetting extends Controller
     public function __invoke()
     {
         return [
-            'min_buy_free_normal_shopping' => runEvent(
+            'min_buy_free_normal_shipping' => runEvent(
                 'setting:value',
-                'min_buy_free_normal_shopping',
+                'min_buy_free_normal_shipping',
                 true
             ),
             'normal_delivery_time' => runEvent(

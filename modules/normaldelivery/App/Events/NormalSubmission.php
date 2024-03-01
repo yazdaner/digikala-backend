@@ -70,9 +70,37 @@ class NormalSubmission
             }
         }
     }
-    protected function shippingCost($city_id){
+    protected function shippingCost($city_id) : int
+    {
+        $senderKey = $this->sender == 0 ? '' : "sender_{$this->sender}_";
+        $normal_shipping_cost = runEvent(
+            'setting:value',
+            $senderKey . "normal_shipping_cost_{$city_id}",
+            true
+        );
+        $min_buy_free_normal_shipping = runEvent(
+            'setting:value',
+            $senderKey . "min_buy_free_normal_shipping_{$city_id}",
+            true
+        );
 
+        if(!$normal_shipping_cost){
+            $normal_shipping_cost = runEvent(
+                'setting:value',
+                $senderKey . "normal_shipping_cost",
+                true
+            );
+            $min_buy_free_normal_shipping = runEvent(
+                'setting:value',
+                $senderKey . "min_buy_free_normal_shipping",
+                true
+            );
+        }
+
+        if($this->totalPrice >= $min_buy_free_normal_shipping){
+            return 0;
+        }else{
+            return $normal_shipping_cost;
+        }
     }
-
-
 }
