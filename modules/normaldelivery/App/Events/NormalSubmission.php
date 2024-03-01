@@ -6,7 +6,7 @@ class NormalSubmission
 {
     protected array $intervals;
     protected array $filteredProducts = [];
-    protected int $perparation_time = 0;
+    protected int $preparation_time = 0;
     protected int $totalPrice = 0;
     protected int $finalPrice = 0;
     protected array $selectedKeys = [];
@@ -17,12 +17,12 @@ class NormalSubmission
         $products = $data['products'];
         $this->sender = $data['sender'];
         $request = request();
-        if(defined('address_id')){
-            $address = runEvent('address-detail',[
+        if (defined('address_id')) {
+            $address = runEvent('address-detail', [
                 'id' => address_id,
                 'user_id' => $request->user()->id,
-            ],true);
-            if($address){
+            ], true);
+            if ($address) {
                 $this->productsFiltering($products);
                 $intervals = $this->getTimeIntervals(
                     $address->id,
@@ -36,6 +36,7 @@ class NormalSubmission
                     'totalPrice' => $this->totalPrice,
                     'finalPrice' => $this->finalPrice,
                     'icon' => assert('upload/normal-delivery.png'),
+                    'shipping-cost' => $this->shippingCost($address->city_id),
                     'name' => 'normal-delivery',
                     'sender' => $this->sender,
                 ];
@@ -47,10 +48,31 @@ class NormalSubmission
     {
         foreach ($products as $key => $product) {
             $variation = $product->variation;
-            if($product->product_dimensions == 'small' ||
-                $product->product_dimensions == 'medium'){
-                    
+            if (
+                $product->product_dimensions == 'small' ||
+                $product->product_dimensions == 'medium'
+            ) {
+                $add = false;
+                if (($this->sender > 0 && $variation->seller_id == $this->sender) ||
+                    ($this->sender == 0 && $variation->seller_id == null)
+                ) {
+                    $add = true;
                 }
+                if ($add) {
+                    $this->filteredProducts[] = $product;
+                    $this->totalPrice += ($variation->price1 * $product->count);
+                    $this->finalPrice += ($variation->price2 * $product->count);
+                    if ($variation->preparation_time > $this->preparation_time) {
+                        $this->preparation_time = $variation->preparation_time;
+                    }
+                    $this->selectedKeys[] = $key;
+                }
+            }
         }
     }
+    protected function shippingCost($city_id){
+
+    }
+
+
 }
