@@ -2,7 +2,9 @@
 
 namespace Modules\normaldelivery\App\Events;
 
-class NormalSubmission
+use Modules\normaldelivery\App\Events\_TimeIntervals;
+
+class NormalSubmission extends _TimeIntervals
 {
     protected array $intervals;
     protected array $filteredProducts = [];
@@ -70,7 +72,8 @@ class NormalSubmission
             }
         }
     }
-    protected function shippingCost($city_id) : int
+
+    protected function shippingCost($city_id): int
     {
         $senderKey = $this->sender == 0 ? '' : "sender_{$this->sender}_";
         $normal_shipping_cost = runEvent(
@@ -84,7 +87,7 @@ class NormalSubmission
             true
         );
 
-        if(!$normal_shipping_cost){
+        if (!$normal_shipping_cost) {
             $normal_shipping_cost = runEvent(
                 'setting:value',
                 $senderKey . "normal_shipping_cost",
@@ -97,9 +100,9 @@ class NormalSubmission
             );
         }
 
-        if($this->totalPrice >= $min_buy_free_normal_shipping){
+        if ($this->totalPrice >= $min_buy_free_normal_shipping) {
             return 0;
-        }else{
+        } else {
             return $normal_shipping_cost;
         }
     }
