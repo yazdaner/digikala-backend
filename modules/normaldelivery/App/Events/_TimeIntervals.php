@@ -93,7 +93,7 @@ class _TimeIntervals
         }
         return $list;
     }
-
+    
     protected function createIntervalsFromDefindDays($days)
     {
     }

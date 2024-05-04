@@ -219,7 +219,7 @@ class Jdf
         return ($tr_num != 'en') ? self::tr_num($out, 'fa', '.') : $out;
     }
 
-    public static function jstrftime($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'fa')
+    public static function jstrftime($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'en')
     {
 
         $T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
