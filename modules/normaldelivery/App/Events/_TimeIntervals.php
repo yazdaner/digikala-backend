@@ -29,7 +29,7 @@ class _TimeIntervals
 
         $normal_delivery_time = runEvent(
             'setting:value',
-            $senderKey . "normal_shipping_time_{$cityId}",
+            $senderKey . "normal_delivery_time_{$cityId}",
             true
         );
 
@@ -49,11 +49,10 @@ class _TimeIntervals
 
     protected function recordedDay($cityId, $sender)
     {
-        $jdf = new Jdf;
         $days = [];
         for ($i = $this->delivery_period; $i < ($this->delivery_period + 7); $i++) {
             $timestamp = strtotime("+ {$i} days");
-            $days[] = $jdf->jdate('Y/n/j', $timestamp);
+            $days[] = Jdf::jdate('Y/n/j', $timestamp);
         }
         return IntervalsNormalPosting::whereIn('date', $days)
             ->where([
@@ -76,14 +75,13 @@ class _TimeIntervals
         $list = [];
         $weekOfDayArr = [];
         if ($daynamic) {
-            $jdf = new Jdf;
             $period = $this->delivery_period;
             $dateArr = [];
             for ($i = $period; $i <= ($period + 10); $i++) {
                 $timestamp = strtotime("+ {$i} days");
-                $l = $jdf->jdate('l', $timestamp);
+                $l = Jdf::jdate('l', $timestamp);
                 if ($l != 'جمعه') {
-                    $date = $jdf->jdate('Y/n/j', $timestamp);
+                    $date = Jdf::jdate('Y/n/j', $timestamp);
                     $dateArr[] = $date;
                     $weekOfDayArr[$date] = $l;
                 }

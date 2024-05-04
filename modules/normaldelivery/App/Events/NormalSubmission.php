@@ -62,12 +62,12 @@ class NormalSubmission extends _TimeIntervals
                 }
                 if ($add) {
                     $this->filteredProducts[] = $product;
+                    $this->selectedKeys[] = $key;
                     $this->totalPrice += ($variation->price1 * $product->count);
                     $this->finalPrice += ($variation->price2 * $product->count);
                     if ($variation->preparation_time > $this->preparation_time) {
                         $this->preparation_time = $variation->preparation_time;
                     }
-                    $this->selectedKeys[] = $key;
                 }
             }
         }

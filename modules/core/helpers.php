@@ -95,14 +95,13 @@ function runEvent($name, $data, $return = false)
 
 function timestamp($y, $n, $d, $h = 0, $m = 0, $s = 0)
 {
-    $jdf = new Jdf;
-    return $jdf->jmktime(
-        $jdf->tr_num($h),
-        $jdf->tr_num($m),
-        $jdf->tr_num($s),
-        $jdf->tr_num($n),
-        $jdf->tr_num($d),
-        $jdf->tr_num($y)
+    return Jdf::jmktime(
+        Jdf::tr_num($h),
+        Jdf::tr_num($m),
+        Jdf::tr_num($s),
+        Jdf::tr_num($n),
+        Jdf::tr_num($d),
+        Jdf::tr_num($y)
     );
 }
 

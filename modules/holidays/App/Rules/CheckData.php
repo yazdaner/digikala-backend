@@ -11,7 +11,7 @@ class CheckData implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $jdf = new Jdf;
+        // $jdf = new Jdf;
         // $now = timestamp($jdf->jdate('Y'), $jdf->jdate('n'), $jdf->jdate('j'));
         $now = Carbon::now()->timestamp;
         $arr = explode('/',$value);
