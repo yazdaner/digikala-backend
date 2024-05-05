@@ -26,7 +26,7 @@ class ProductVariationTest extends TestCase
             'param1_id' => rand(1, 99),
             'param2_type' => Warranty::class,
             'param2_id' => rand(1, 99),
-            'status' => 'true'
+            'status' => 1
         ]);
         $response->assertOk();
     }

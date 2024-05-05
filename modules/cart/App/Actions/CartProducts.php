@@ -15,7 +15,7 @@ class CartProducts extends Controller
             $variation = runEvent('variation:query', function ($query) use ($variationId) {
                 return $query->with(['param1', 'param2'])->find($variationId);
             }, true);
-            if (is_object($variation)) {
+            if (is_object($variation) && isset($variation->product_id)) {
                 $product = runEvent('product:info', $variation->product_id, true);
                 if (is_object($product)) {
                     $totalProducts = runEvent('variation:query', function ($query) use ($product) {

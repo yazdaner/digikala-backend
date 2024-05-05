@@ -19,7 +19,8 @@ class SubmissionTest extends TestCase
     {
         $address = runEvent('address-detail', ['user_id' => $this->user->id], true);
         $response = $this->actingAs($this->user)->get("/api/user/card/submissions?address_id=$address->id");
-        // \Log::info(var_export($response->getContent(),true));
+        $body = json_decode($response->getContent(),true);
+        $this->assertGreaterThan(0,sizeof($body['submission']));
         $response->assertStatus(200);
     }
 }

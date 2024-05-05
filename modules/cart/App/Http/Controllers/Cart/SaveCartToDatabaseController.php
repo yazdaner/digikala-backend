@@ -17,7 +17,7 @@ class SaveCartToDatabaseController extends Controller
                     'id' => $variationId,
                     'count' => $count,
                 ],true);
-                if($variation && is_object($variation)){
+                if(is_object($variation) && isset($variation->product_id)){
                     $addProductToCartTable(
                         $request->user()->id,
                         $variation,
