@@ -19,7 +19,7 @@ class SubmissionTest extends TestCase
     {
         $address = runEvent('address-detail', ['user_id' => $this->user->id], true);
         $response = $this->actingAs($this->user)->get("/api/user/card/submissions?address_id=$address->id");
-        // \Log::info(var_export($response,true));
+        // \Log::info(var_export($response->getContent(),true));
         $response->assertStatus(200);
     }
 }

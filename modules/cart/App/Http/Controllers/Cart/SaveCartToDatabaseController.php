@@ -17,12 +17,14 @@ class SaveCartToDatabaseController extends Controller
                     'id' => $variationId,
                     'count' => $count,
                 ],true);
-                if($variation){
+                if($variation && is_object($variation)){
                     $addProductToCartTable(
                         $request->user()->id,
                         $variation,
                         $count
                     );
+                } else {
+                    return ['status' => 'error'];
                 }
             }
         }

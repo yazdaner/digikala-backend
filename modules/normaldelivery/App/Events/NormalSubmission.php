@@ -50,6 +50,7 @@ class NormalSubmission extends _TimeIntervals
     {
         foreach ($products as $key => $product) {
             $variation = $product->variation;
+            // \Log::info(var_export($product,true));
             if (
                 $product->product_dimensions == 'small' ||
                 $product->product_dimensions == 'medium'

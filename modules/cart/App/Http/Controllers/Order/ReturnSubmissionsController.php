@@ -32,6 +32,7 @@ class ReturnSubmissionsController extends Controller
                     'products' => $products,
                     'sender' => $sender
                 ]);
+                // \Log::info(var_export($submission,true));
                 if (is_array($submission) && array_key_exists('selected_keys', $submission) && sizeof($submission['products']) > 0) {
                     foreach ($submission['selected_keys'] as $key) {
                         unset($products[$key]);
@@ -46,8 +47,8 @@ class ReturnSubmissionsController extends Controller
 
         $result['submission'] = $submissions;
         $result['count'] = $submissionTotalProduct;
-        \Log::info($totalProducts);
-        \Log::info($submissionTotalProduct);
+        // \Log::info($totalProducts);
+        // \Log::info($submissionTotalProduct);
 
         if ($totalProducts != $submissionTotalProduct) {
             $result['error_message'] = 'با توجه به آدرس انتخابی برخی محصولات حذف شدن';
