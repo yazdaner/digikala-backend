@@ -17,7 +17,7 @@ class CartProducts extends Controller
             }, true);
             if (is_object($variation) && isset($variation->product_id)) {
                 $product = runEvent('product:info', $variation->product_id, true);
-                if (is_object($product)) {
+                if (is_object($product) && isset($product->id)) {
                     $totalProducts = runEvent('variation:query', function ($query) use ($product) {
                         return $query->where('product_id', $product->id)->sum('product_count');
                     });
