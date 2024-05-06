@@ -2,12 +2,12 @@
 
 namespace Modules\cart\App\Actions;
 
-use App\Http\Controllers\Controller;
+use Modules\cart\App\Models\Order;
 
-class AddOrder extends Controller
+class AddOrder
 {
-    public function __invoke()
+    public function __invoke($request,$submissions,$user)
     {
-       
+       return Order::first();
     }
 }
