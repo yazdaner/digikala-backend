@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id');
-            $table->smallInteger('status')->default(0);
             $table->bigInteger('delivery_date')->nullable();
             $table->string('delivery_time')->nullable();
+            $table->smallInteger('send_status')->default(0);
             $table->string('send_type');
-            $table->integer('shopping_time')->default(0);
+            $table->integer('shipping_cost')->default(0);
+            $table->bigInteger('shopping_time');
             $table->timestamps();
         });
     }

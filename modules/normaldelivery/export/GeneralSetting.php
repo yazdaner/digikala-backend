@@ -31,7 +31,7 @@ class GeneralSetting implements FromArray, WithHeadings, WithTitle
                 ),
                 runEvent(
                     'setting:value',
-                    'normal_shopping_cost_' . $this->cityId,
+                    'normal_shipping_cost_' . $this->cityId,
                     true
                 )
             ]

@@ -13,7 +13,7 @@ class NormalDeliveryTest extends TestCase
         $response = $this->actingAs($admin)->post('api/admin/setting/normal-delivery',[
             'min_buy_free_normal_shipping' => rand(999999,9999999),
             'normal_delivery_time' => rand(1,5),
-            'normal_shopping_cost' => rand(9999,99999),
+            'normal_shipping_cost' => rand(9999,99999),
         ]);
         //
         $response->assertOk();

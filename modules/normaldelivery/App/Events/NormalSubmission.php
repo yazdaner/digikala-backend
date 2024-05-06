@@ -35,10 +35,10 @@ class NormalSubmission extends _TimeIntervals
                     'products' => $this->filteredProducts,
                     'intervals' => $intervals,
                     'component' => 'normal-submission',
-                    'totalPrice' => $this->totalPrice,
-                    'finalPrice' => $this->finalPrice,
+                    'total_price' => $this->totalPrice,
+                    'final_price' => $this->finalPrice,
                     'icon' => assert('upload/normal-delivery.png'),
-                    'shipping-cost' => $this->shippingCost($address->city_id),
+                    'shipping_cost' => $this->shippingCost($address->city_id),
                     'name' => 'normal-delivery',
                     'sender' => $this->sender,
                 ];
@@ -50,7 +50,6 @@ class NormalSubmission extends _TimeIntervals
     {
         foreach ($products as $key => $product) {
             $variation = $product->variation;
-            // \Log::info(var_export($product,true));
             if (
                 $product->product_dimensions == 'small' ||
                 $product->product_dimensions == 'medium'

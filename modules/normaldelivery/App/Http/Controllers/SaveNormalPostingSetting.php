@@ -12,7 +12,7 @@ class SaveNormalPostingSetting extends Controller
         runEvent('setting:update-create', [
             'min_buy_free_normal_shipping' => $request->get('min_buy_free_normal_shipping'),
             'normal_delivery_time' => $request->get('normal_delivery_time'),
-            'normal_shopping_cost' => $request->get('normal_shopping_cost'),
+            'normal_shipping_cost' => $request->get('normal_shipping_cost'),
         ]);
         return ['status' => 'ok'];
     }

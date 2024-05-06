@@ -19,9 +19,9 @@ class NormalPostingSetting extends Controller
                 'normal_delivery_time',
                 true
             ),
-            'normal_shopping_cost' =>  runEvent(
+            'normal_shipping_cost' =>  runEvent(
                 'setting:value',
-                'normal_shopping_cost',
+                'normal_shipping_cost',
                 true
             ),
         ];

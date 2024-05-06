@@ -21,8 +21,8 @@ class GeneralSetting implements ToModel,WithHeadingRow
             => $row['min_buy'],
             'normal_delivery_time_' . $this->cityId
             => $row['delivery_time'],
-            'normal_shopping_cost_' . $this->cityId
-            => $row['shopping_cost'],
+            'normal_shipping_cost_' . $this->cityId
+            => $row['shipping_cost'],
         ]);
     }
 }
