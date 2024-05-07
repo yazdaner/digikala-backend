@@ -27,12 +27,12 @@ class OrderTest extends TestCase
     public function  test_add_order(): void
     {
         $address = runEvent('address-detail', ['user_id' => $this->user->id], true);
-        \Log::info($address);
         $response = $this->actingAs($this->user)->post('/api/user/add-order',[
             'address_id' => $address->id,
             'payment_method' => 'online-payment'
         ]);
-        // $body = json_decode($response->getContent(),true);
+        $body = json_decode($response->getContent(),true);
+        $this->assertEquals('ok',$body['status']);
         $response->assertStatus(200);
     }
 }

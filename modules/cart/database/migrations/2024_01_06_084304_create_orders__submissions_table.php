@@ -17,10 +17,11 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->bigInteger('delivery_date')->nullable();
             $table->string('delivery_time')->nullable();
+            $table->integer('sender')->default(0);
             $table->smallInteger('send_status')->default(0);
             $table->string('send_type');
             $table->integer('shipping_cost')->default(0);
-            $table->bigInteger('shipping_time');
+            $table->bigInteger('shipping_time')->default(0);
             $table->timestamps();
         });
     }

@@ -29,16 +29,14 @@ class AddSubmission
         $shipping_time = 0;
         foreach ($products as $product) {
             $preparation_timestamp = strtotime('+'.($product->variation->preparation_time + 1).'days');
- 
             $timestamp = Jdf::jmktime(
                 intval(config('order.last_hour')),
                 0,
                 0,
                 Jdf::jdate('n',$preparation_timestamp),
                 Jdf::jdate('j',$preparation_timestamp),
-                Jdf::jdate('y',$preparation_timestamp)
+                Jdf::jdate('Y',$preparation_timestamp)
             );
-
             $data = [
                 'submission_id' => $submission->id,
                 'order_id' => $submission->order_id,

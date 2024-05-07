@@ -4,10 +4,19 @@ namespace Tests\Feature\cart;
 
 use Tests\TestCase;
 use Modules\cart\App\Models\Cart;
+use Modules\users\App\Models\User;
 use Modules\variations\App\Models\Variation;
 
 class CartTest extends TestCase
 {
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+
     public function  test_add_product_to_cart(): void
     {
         $variation = Variation::factory()->create();
@@ -23,9 +32,9 @@ class CartTest extends TestCase
 
     public function test_add_product_to_cart_table(): void
     {
-        $user = getUserForTest();
+        $this->user = getAdminForTest();
         $variation = Variation::factory()->create();
-        $response = $this->actingAs($user)->post('api/cart/add-product', [
+        $response = $this->actingAs($this->user)->post('api/cart/add-product', [
             'count' => 1,
             'variationId' => $variation->id,
         ]);
@@ -34,7 +43,7 @@ class CartTest extends TestCase
         $this->assertEquals('ok', $body['status']);
         $this->assertDatabaseHas('carts', [
             'variation_id' => $body['variation']['id'],
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'count' => 1,
         ]);
         $response->assertOk();
@@ -42,18 +51,18 @@ class CartTest extends TestCase
 
     public function test_remove_product_from_cart_table(): void
     {
-        $user = getUserForTest();
+        $this->user = getAdminForTest();
         $variationId = Cart::where([
-            'user_id' => $user->id
+            'user_id' => $this->user->id
         ])->first()->variation_id;
-        $response = $this->actingAs($user)->post('api/cart/remove-product', [
+        $response = $this->actingAs($this->user)->post('api/cart/remove-product', [
             'variationId' => $variationId,
         ]);
         $body = json_decode($response->getContent(), true);
         $this->assertEquals('ok', $body['status']);
         $this->assertDatabaseMissing('carts', [
             'variation_id' => $variationId,
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
         $response->assertOk();
     }
@@ -81,8 +90,8 @@ class CartTest extends TestCase
 
     public function test_return_cart_info_for_user(): void
     {
-        $user = getUserForTest();
-        Cart::where('user_id', $user->id)->delete();
+        $this->user = getAdminForTest();
+        Cart::where('user_id', $this->user->id)->delete();
         $variations = runEvent('variation:query', function ($query) {
             return $query->where('status', 1)
                 ->where('product_count', '>', 0)
@@ -93,12 +102,12 @@ class CartTest extends TestCase
             Cart::create([
                 'variation_id' => $variation->id,
                 'count' => 1,
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
                 'price' => $variation->price2,
                 'type' => 1
             ]);
         }
-        $response = $this->actingAs($user)->post('api/cart');
+        $response = $this->actingAs($this->user)->post('api/cart');
         $body = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('current', $body);
         $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
@@ -107,8 +116,8 @@ class CartTest extends TestCase
 
     public function test_cart_after_change_price(): void
     {
-        $user = getUserForTest();
-        Cart::where('user_id', $user->id)->delete();
+        $this->user = getAdminForTest();
+        Cart::where('user_id', $this->user->id)->delete();
         $variations = runEvent('variation:query', function ($query) {
             return $query->where('status', 1)
                 ->where('product_count', '>', 0)
@@ -119,7 +128,7 @@ class CartTest extends TestCase
             Cart::create([
                 'variation_id' => $variation->id,
                 'count' => 1,
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
                 'price' => $variation->price2,
                 'type' => 1
             ]);
@@ -128,7 +137,7 @@ class CartTest extends TestCase
             $variation->price2 = ($variation->price2 + 10000);
             $variation->update();
         }
-        $response = $this->actingAs($user)->post('api/cart?check-change=true');
+        $response = $this->actingAs($this->user)->post('api/cart?check-change=true');
         $body = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('current', $body);
         $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
@@ -138,18 +147,18 @@ class CartTest extends TestCase
 
     public function test_add_product_to_next_cart(): void
     {
-        $user = getUserForTest();
+        $this->user = getAdminForTest();
         $data = Cart::where([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'type' => 1
         ])->first();
-        $response = $this->actingAs($user)->post('api/cart/add-next-card', [
+        $response = $this->actingAs($this->user)->post('api/cart/add-next-card', [
             'variationId' => $data->variation_id
         ]);
         $this->assertEquals(
             null,
             Cart::where([
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
                 'type' => 1,
                 'variation_id' => $data->variation_id
             ])->first()
@@ -159,18 +168,18 @@ class CartTest extends TestCase
 
     public function test_add_product_to_current_cart(): void
     {
-        $user = getUserForTest();
+        $this->user = getAdminForTest();
         $data = Cart::where([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'type' => 2
         ])->first();
-        $response = $this->actingAs($user)->post('api/cart/add-current-card', [
+        $response = $this->actingAs($this->user)->post('api/cart/add-current-card', [
             'variationId' => $data->variation_id
         ]);
         $this->assertEquals(
             null,
             Cart::where([
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
                 'type' => 2,
                 'variation_id' => $data->variation_id
             ])->first()
@@ -180,9 +189,9 @@ class CartTest extends TestCase
 
     public function test_save_to_carts_table(): void
     {
-        $user = getUserForTest();
+        $this->user = getAdminForTest();
         $cart = [];
-        Cart::where('user_id',$user->id)->delete();
+        Cart::where('user_id',$this->user->id)->delete();
         $variations = runEvent('variation:query', function ($query) {
             return $query->where('status', 1)
                 ->where('product_count', '>', 0)
@@ -192,10 +201,10 @@ class CartTest extends TestCase
         foreach ($variations as $variation) {
             $cart[$variation->id] = 1;
         }
-        $response = $this->actingAs($user)->post('api/user/card/save-database', [
+        $response = $this->actingAs($this->user)->post('api/user/card/save-database', [
             'cart' => $cart
         ]);
-        $this->assertEquals(sizeof($cart),Cart::where('user_id',$user->id)->count());
+        $this->assertEquals(sizeof($cart),Cart::where('user_id',$this->user->id)->count());
         $response->assertOk();
     }
 }

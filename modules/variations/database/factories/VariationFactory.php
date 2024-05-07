@@ -3,10 +3,11 @@
 namespace Modules\variations\database\factories;
 
 use Modules\colors\App\Models\Color;
+use Modules\products\App\Models\Product;
 use Modules\warranties\App\Models\Warranty;
 use Modules\variations\App\Models\Variation;
+use Modules\products\App\Models\ProductsDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\products\App\Models\Product;
 
 class VariationFactory extends Factory
 {
@@ -14,8 +15,14 @@ class VariationFactory extends Factory
 
     public function definition(): array
     {
+        $product = Product::factory()->create(['slug' => 'test']);
+        ProductsDetail::create([
+            'product_id' => $product->id,
+            'name' => 'product_dimensions',
+            'value' => 'small',
+        ]);
         return [
-            'product_id' => Product::factory()->create(['slug' => 'test'])->id,
+            'product_id' => $product->id,
             'price1' => rand(9999, 99999),
             'price2' => rand(9999, 99999),
             'product_count' => rand(1, 100),

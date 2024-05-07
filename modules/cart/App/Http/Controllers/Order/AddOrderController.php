@@ -23,8 +23,9 @@ class AddOrderController extends Controller
         $cart = Cart::where('user_id', $user->id)
             ->where('type', 1)
             ->pluck('count', 'variation_id');
-        define('address_id', $request->address_id);
-
+        if(!defined('address_id')){
+            define('address_id', $request->address_id);
+        }
         $cartProducts = app(CartProducts::class);
         $products = $cartProducts($cart, [], $request);
         $submissions = getSubmissions($products);
@@ -47,7 +48,7 @@ class AddOrderController extends Controller
                 DB::commit();
                 return [
                     'status' => 'ok',
-                    'paymentId' => $payment->id
+                    //'paymentId' => $payment->id
                 ];
             } else {
                 return [

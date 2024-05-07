@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders__products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id');
             $table->foreignId('variation_id');
+            $table->foreignId('order_id');
             $table->foreignId('submission_id')->constrained('orders__submissions')->cascadeOnDelete();
             $table->integer('price1');
             $table->integer('price2');
-            $table->smallInteger('preparation_time')->default(0);
+            $table->bigInteger('preparation_time')->default(0);
             $table->smallInteger('count');
             $table->bigInteger('created_at');
             $table->bigInteger('updated_at');
