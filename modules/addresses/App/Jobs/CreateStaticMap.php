@@ -14,16 +14,16 @@ class CreateStaticMap implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected int $addressId;
+    protected int $address_id;
 
-    public function __construct($addressId)
+    public function __construct($address_id)
     {
-        $this->addressId = $addressId;
+        $this->address_id = $address_id;
     }
 
     public function handle(): void
     {
-        $address = Address::find($this->addressId);
+        $address = Address::find($this->address_id);
         if ($address) {
             $url = 'https://map.ir/static?width=300&height=300&zoom_level=12&markers=color:red';
             try {

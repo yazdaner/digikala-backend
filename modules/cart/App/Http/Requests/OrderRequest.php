@@ -15,7 +15,7 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'addressId' => ['required','numeric'],
+            'address_id' => ['required','numeric'],
             'payment_method' => ['required','string'],
         ];
     }
@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     public function attributes() :array
     {
        return [
-            'addressId' => 'آدرس',
+            'address_id' => 'آدرس',
             'payment_method' => 'روش پرداخت',
        ];
     }
