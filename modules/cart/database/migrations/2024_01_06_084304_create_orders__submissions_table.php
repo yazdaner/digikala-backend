@@ -20,7 +20,7 @@ return new class extends Migration
             $table->smallInteger('send_status')->default(0);
             $table->string('send_type');
             $table->integer('shipping_cost')->default(0);
-            $table->bigInteger('shopping_time');
+            $table->bigInteger('shipping_time');
             $table->timestamps();
         });
     }

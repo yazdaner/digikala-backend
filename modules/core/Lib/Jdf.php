@@ -4,6 +4,7 @@ namespace Modules\core\Lib;
 
 class Jdf
 {
+    // get custom format from timestamp
     public static function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'en')
     {
         $T_sec = 0;
@@ -498,7 +499,7 @@ class Jdf
         $l_d = ($jm == 12 and ((($jy + 12) % 33) % 4) != 1) ? 29 : (31 - (int) ($jm / 6.5));
         return ($jm > 12 or $jd > $l_d or $jm < 1 or $jd < 1 or $jy < 1) ? false : true;
     }
-
+    // convert number of fa to en or en to fa
     public static function tr_num($str, $mod = 'en', $mf = '٫')
     {
         $num_a = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.');

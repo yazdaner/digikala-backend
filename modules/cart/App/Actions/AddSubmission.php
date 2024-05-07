@@ -2,6 +2,9 @@
 
 namespace Modules\cart\App\Actions;
 
+use Illuminate\Support\Js;
+use Modules\cart\App\Models\OrderProduct;
+use Modules\core\Lib\Jdf;
 use Modules\cart\App\Models\Submission;
 
 class AddSubmission
@@ -23,8 +26,39 @@ class AddSubmission
 
     protected function addProducts($products, $submission)
     {
+        $shipping_time = 0;
         foreach ($products as $product) {
-            # code...
+            $preparation_timestamp = strtotime('+'.($product->variation->preparation_time + 1).'days');
+ 
+            $timestamp = Jdf::jmktime(
+                intval(config('order.last_hour')),
+                0,
+                0,
+                Jdf::jdate('n',$preparation_timestamp),
+                Jdf::jdate('j',$preparation_timestamp),
+                Jdf::jdate('y',$preparation_timestamp)
+            );
+
+            $data = [
+                'submission_id' => $submission->id,
+                'order_id' => $submission->order_id,
+                'variation_id' => $product->variation->id,
+                'product_id' => $product->id,
+                'price1' => $product->variation->price1,
+                'price2' => $product->variation->price2,
+                'count' => $product->count,
+                'preparation_time' => $timestamp
+            ];
+
+            $data = runEvent('submission-product:saving',$data,true);
+            OrderProduct::create($data);
+            if($timestamp > $shipping_time){
+                $shipping_time = $timestamp;
+            }
+        }
+        if($shipping_time > 0){
+            $submission->shipping_time = $shipping_time;
+            $submission->update();
         }
     }
 }
