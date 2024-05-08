@@ -4,31 +4,38 @@ namespace Tests\Feature\expertreview;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use Modules\users\App\Models\User;
 use Modules\expertreview\App\Models\ExpertReview;
 
 class ExpertReviewTest extends TestCase
 {
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+    
     public function test_create(): void
     {
-        $admin = getAdminForTest();
         $product = runEvent('product:query', function ($query) {
             return $query->first();
         }, true);
 
         $review = ExpertReview::factory()->make()->toArray();
-        $response = $this->actingAs($admin)->post("api/admin/products/{$product->id}/expert-review/store",$review);
+        $response = $this->actingAs($this->user)->post("api/admin/products/{$product->id}/expert-review/store",$review);
         //
         $response->assertOk();
     }
 
     public function test_index(): void
     {
-        $admin = getAdminForTest();
         $product = runEvent('product:query', function ($query) {
             return $query->first();
         }, true);
 
-        $response = $this->actingAs($admin)->get("api/admin/products/{$product->id}/expert-review");
+        $response = $this->actingAs($this->user)->get("api/admin/products/{$product->id}/expert-review");
         $body = json_decode($response->getContent(), true);
         //
         $this->assertArrayHasKey('reviews', $body);
@@ -37,9 +44,8 @@ class ExpertReviewTest extends TestCase
 
     public function test_show(): void
     {
-        $admin = getAdminForTest();
         $review = ExpertReview::first();
-        $response = $this->actingAs($admin)->get("api/admin/products/expert-review/{$review->id}/show");
+        $response = $this->actingAs($this->user)->get("api/admin/products/expert-review/{$review->id}/show");
         $body = json_decode($response->getContent());
         //
         $this->assertEquals($review->id, $body->id);
@@ -48,10 +54,9 @@ class ExpertReviewTest extends TestCase
 
     public function test_update(): void
     {
-        $admin = getAdminForTest();
         $data = ExpertReview::factory()->make()->toArray();
         $review = ExpertReview::first();
-        $response = $this->actingAs($admin)->put("api/admin/products/expert-review/{$review->id}/update",$data);
+        $response = $this->actingAs($this->user)->put("api/admin/products/expert-review/{$review->id}/update",$data);
         $data['id'] = $review->id;
         //
         $this->assertDatabaseHas('products__expert_review',$data);
@@ -60,7 +65,6 @@ class ExpertReviewTest extends TestCase
 
     public function test_destroy(): void
     {
-        $admin = getAdminForTest();
         $product = runEvent('product:query', function ($query) {
             return $query->first();
         }, true);
@@ -68,7 +72,7 @@ class ExpertReviewTest extends TestCase
         $review = ExpertReview::factory()->create([
             'product_id' => $product->id
         ]);
-        $response = $this->actingAs($admin)->delete("api/admin/products/expert-review/{$review->id}/destroy");
+        $response = $this->actingAs($this->user)->delete("api/admin/products/expert-review/{$review->id}/destroy");
         $this->assertDatabaseMissing('products__expert_review', [
             'id' => $review->id,
             'deleted_at' => null,
@@ -78,7 +82,6 @@ class ExpertReviewTest extends TestCase
 
     public function test_restore(): void
     {
-        $admin = getAdminForTest();
         $product = runEvent('product:query', function ($query) {
             return $query->first();
         }, true);
@@ -87,7 +90,7 @@ class ExpertReviewTest extends TestCase
             'product_id' => $product->id,
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->actingAs($admin)->post("api/admin/products/expert-review/{$review->id}/restore");
+        $response = $this->actingAs($this->user)->post("api/admin/products/expert-review/{$review->id}/restore");
         $this->assertDatabaseHas('products__expert_review', [
             'id' => $review->id,
             'deleted_at' => null,

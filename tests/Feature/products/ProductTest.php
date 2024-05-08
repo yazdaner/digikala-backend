@@ -5,19 +5,27 @@ namespace Tests\Feature\products;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
+use Modules\users\App\Models\User;
 use Modules\products\App\Models\Product;
 
 class ProductTest extends TestCase
 {
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+    
     public function test_create(): void
     {
-        $admin = getAdminForTest();
         $gallery = [
             ['path' => 'gallery/test1.png'],
             ['path' => 'gallery/test2.png'],
         ];
         $product = Product::factory()->make();
-        $response = $this->actingAs($admin)->post('api/admin/products', [
+        $response = $this->actingAs($this->user)->post('api/admin/products', [
             'title' => $product->title,
             'en_title' => $product->en_title,
             'description' => $product->description,
@@ -37,8 +45,7 @@ class ProductTest extends TestCase
 
     public function test_index(): void
     {
-        $admin = getAdminForTest();
-        $response = $this->actingAs($admin)->get('api/admin/products');
+        $response = $this->actingAs($this->user)->get('api/admin/products');
         $body = json_decode($response->getContent(), true);
         //
         $this->assertArrayHasKey('products', $body);
@@ -47,8 +54,7 @@ class ProductTest extends TestCase
 
     public function test_index_search(): void
     {
-        $admin = getAdminForTest();
-        $response = $this->actingAs($admin)->get('api/admin/products?title=app');
+        $response = $this->actingAs($this->user)->get('api/admin/products?title=app');
         $body = json_decode($response->getContent(), true);
         $count = Product::where('title', 'like', '%app%')->count();
         //
@@ -59,11 +65,10 @@ class ProductTest extends TestCase
 
     public function test_show(): void
     {
-        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->actingAs($admin)->get('api/admin/products/' . $product->id);
+        $response = $this->actingAs($this->user)->get('api/admin/products/' . $product->id);
         $body = json_decode($response->getContent());
         //
         $this->assertEquals($product->id, $body->id);
@@ -72,11 +77,10 @@ class ProductTest extends TestCase
 
     public function test_destroy(): void
     {
-        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->actingAs($admin)->delete('api/admin/products/' . $product->id);
+        $response = $this->actingAs($this->user)->delete('api/admin/products/' . $product->id);
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
             'deleted_at' => null,
@@ -86,12 +90,11 @@ class ProductTest extends TestCase
 
     public function test_restore(): void
     {
-        $admin = getAdminForTest();
         $product = Product::factory()->create([
             'slug' => 'test',
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->actingAs($admin)->post('api/admin/products/' . $product->id . '/restore');
+        $response = $this->actingAs($this->user)->post('api/admin/products/' . $product->id . '/restore');
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
             'deleted_at' => null,
@@ -101,13 +104,12 @@ class ProductTest extends TestCase
 
     public function test_update(): void
     {
-        $admin = getAdminForTest();
         $title = Str::random(10);
         $en_title = Str::random(10);
         $product = Product::factory()->create([
             'slug' => 'test'
         ]);
-        $response = $this->actingAs($admin)->put('api/admin/products/' . $product->id, [
+        $response = $this->actingAs($this->user)->put('api/admin/products/' . $product->id, [
             'title' => $title,
             'en_title' => $en_title,
         ]);

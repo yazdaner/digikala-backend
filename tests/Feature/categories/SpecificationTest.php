@@ -2,16 +2,23 @@
 
 namespace Tests\Feature\categories;
 
+use Tests\TestCase;
+use Modules\users\App\Models\User;
 use Modules\categories\App\Models\Category;
 use Modules\categories\App\Models\Specification;
-use Tests\TestCase;
 
 class SpecificationTest extends TestCase
 {
+    protected User|null $user = null;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+    
     public function test_add(): void
     {
-        $admin = getAdminForTest();
         Category::factory()->create(['slug' => 'slugTest']);
         $category = Category::firstOrFail();
         $specifications = [];
@@ -26,7 +33,7 @@ class SpecificationTest extends TestCase
             $data['childs'] = $childs;
             $specifications[] = $data;
         }
-        $response = $this->actingAs($admin)->post("api/admin/categories/{$category->id}/specifications", [
+        $response = $this->actingAs($this->user)->post("api/admin/categories/{$category->id}/specifications", [
             'technicalSpecifications' => $specifications
         ]);
         $response->assertOk();
@@ -34,7 +41,6 @@ class SpecificationTest extends TestCase
 
     public function test_update(): void
     {
-        $admin = getAdminForTest();
         $category = Category::firstOrFail();
         $specifications = Specification::where('category_id', $category->id)
             ->where('parent_id', 0)->with('childs')->get();
@@ -48,7 +54,7 @@ class SpecificationTest extends TestCase
                 'childs' => $specification->childs->toArray()
             ];
         }
-        $response = $this->actingAs($admin)->post("api/admin/categories/{$category->id}/specifications", [
+        $response = $this->actingAs($this->user)->post("api/admin/categories/{$category->id}/specifications", [
             'technicalSpecifications' => $array
         ]);
         $response->assertOk();
@@ -57,7 +63,6 @@ class SpecificationTest extends TestCase
 
     public function test_destroy(): void
     {
-        $admin = getAdminForTest();
         $category = Category::factory()->create([
             'slug' => 'slugTest'
         ]);
@@ -66,7 +71,7 @@ class SpecificationTest extends TestCase
             'position' => 0,
             'parent_id' => 0,
         ]);
-        $response = $this->actingAs($admin)->delete('api/admin/categories/specifications/'.$specification->id);
+        $response = $this->actingAs($this->user)->delete('api/admin/categories/specifications/'.$specification->id);
         $this->assertDatabaseMissing('specifications',[
             'id' => $specification->id,
         ]);

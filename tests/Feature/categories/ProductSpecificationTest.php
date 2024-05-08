@@ -23,7 +23,7 @@ class ProductSpecificationTest extends TestCase
         Product::factory()->create([
             'slug' => 'test'
         ]);
-        //////////////////////////////////////////
+
         $product = Product::first();
         if ($product) {
             $request = request();

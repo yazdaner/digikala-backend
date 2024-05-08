@@ -5,14 +5,22 @@ namespace Tests\Feature\page;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Modules\pages\App\Models\Page;
+use Modules\users\App\Models\User;
 
 class PageTest extends TestCase
 {
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+    
     public function test_create(): void
     {
-        $admin = getAdminForTest();
         $page = Page::factory()->make();
-        $response = $this->actingAs($admin)->post('api/admin/pages', [
+        $response = $this->actingAs($this->user)->post('api/admin/pages', [
             'title' => $page->title,
             'en_title' => $page->en_title,
             'description' => $page->description,
@@ -25,8 +33,7 @@ class PageTest extends TestCase
 
     public function test_index(): void
     {
-        $admin = getAdminForTest();
-        $response = $this->actingAs($admin)->get('api/admin/pages');
+        $response = $this->actingAs($this->user)->get('api/admin/pages');
         $body = json_decode($response->getContent(), true);
         //
         $this->assertArrayHasKey('pages', $body);
@@ -35,8 +42,7 @@ class PageTest extends TestCase
 
     public function test_index_search(): void
     {
-        $admin = getAdminForTest();
-        $response = $this->actingAs($admin)->get('api/admin/pages?trashed=true&title=app');
+        $response = $this->actingAs($this->user)->get('api/admin/pages?trashed=true&title=app');
         $body = json_decode($response->getContent(), true);
         $count = Page::onlyTrashed()->where('title', 'like', '%app%')->count();
         //
@@ -47,11 +53,10 @@ class PageTest extends TestCase
 
     public function test_show(): void
     {
-        $admin = getAdminForTest();
         $page = Page::factory()->create([
             'slug' => 'testSlug'
         ]);
-        $response = $this->actingAs($admin)->get('api/admin/pages/' . $page->id);
+        $response = $this->actingAs($this->user)->get('api/admin/pages/' . $page->id);
         $body = json_decode($response->getContent());
         //
         $this->assertEquals($page->id, $body->id);
@@ -60,12 +65,11 @@ class PageTest extends TestCase
 
     public function test_update(): void
     {
-        $admin = getAdminForTest();
         $data = Page::factory()->make();
         $page = Page::factory()->create([
             'slug' => 'testSlug'
         ]);
-        $response = $this->actingAs($admin)->put('api/admin/pages/' . $page->id, [
+        $response = $this->actingAs($this->user)->put('api/admin/pages/' . $page->id, [
             'title' => $data->title,
             'en_title' => $data->en_title,
             'description' => $data->description,
@@ -84,11 +88,10 @@ class PageTest extends TestCase
 
     public function test_destroy(): void
     {
-        $admin = getAdminForTest();
         $page = Page::factory()->create([
             'slug' => 'testSlug'
         ]);
-        $response = $this->actingAs($admin)->delete('api/admin/pages/' . $page->id);
+        $response = $this->actingAs($this->user)->delete('api/admin/pages/' . $page->id);
         $this->assertDatabaseMissing('pages', [
             'id' => $page->id,
             'deleted_at' => null,
@@ -98,12 +101,11 @@ class PageTest extends TestCase
 
     public function test_restore(): void
     {
-        $admin = getAdminForTest();
         $page = Page::factory()->create([
             'slug' => 'testSlug',
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->actingAs($admin)->post('api/admin/pages/' . $page->id . '/restore');
+        $response = $this->actingAs($this->user)->post('api/admin/pages/' . $page->id . '/restore');
         $this->assertDatabaseHas('pages', [
             'id' => $page->id,
             'deleted_at' => null,

@@ -3,18 +3,25 @@
 namespace Tests\Feature\users;
 
 use Tests\TestCase;
+use Modules\users\App\Models\User;
 
 class ProfileTest extends TestCase
 {
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getUserForTest();
+    }
 
     public function test_update_password(): void
     {
-        $user = getUserForTest();
         $current_password = fake()->password(8);
         $new_password = fake()->password(10);
-        $user->password = $current_password;
-        $user->update();
-        $response = $this->actingAs($user)->post('api/user/profile/update-password', [
+        $this->user->password = $current_password;
+        $this->user->update();
+        $response = $this->actingAs($this->user)->post('api/user/profile/update-password', [
             'current_password' => $current_password,
             'password' => $new_password,
             'password_confirmation' => $new_password,
@@ -25,31 +32,29 @@ class ProfileTest extends TestCase
     // web login mode
     public function test_login(): void
     {
-        $user = getUserForTest();
         $current_password = fake()->password(8);
-        $user->password = $current_password;
-        $user->update();
+        $this->user->password = $current_password;
+        $this->user->update();
 
         $response = $this->post('login', [
-            'username' => $user->username,
+            'username' => $this->user->username,
             'password' => $current_password,
         ]);
         $response->assertRedirect('/home');
-        $this->assertAuthenticatedAs($user);
+        $this->assertAuthenticatedAs($this->user);
     }
 
     // application login mode
     public function test_login_2(): void
     {
-        $user = getUserForTest();
         $current_password = fake()->password(8);
-        $user->password = $current_password;
-        $user->update();
+        $this->user->password = $current_password;
+        $this->user->update();
 
         $response = $this->withHeaders([
             'Accept' => 'application/json'
         ])->post('login', [
-            'username' => $user->username,
+            'username' => $this->user->username,
             'password' => $current_password,
         ]);
 
