@@ -63,7 +63,7 @@ class AddressTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/user/addresses');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Address::where('user_id', $this->user->id)->count();
         $this->assertEquals($count, sizeof($body));
         $response->assertOk();

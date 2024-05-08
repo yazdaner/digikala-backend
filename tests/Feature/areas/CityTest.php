@@ -35,7 +35,7 @@ class CityTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->admin)->get('api/admin/cities');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('cities', $body);
         $response->assertOk();
@@ -44,7 +44,7 @@ class CityTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->admin)->get('api/admin/cities?trashed=true&name=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = City::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
         $this->assertEquals($body['cities']['total'], $count);
@@ -105,7 +105,7 @@ class CityTest extends TestCase
     public function test_all(): void
     {
         $response = $this->get('api/cities/all');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $cities = City::get();
         $this->assertEquals(sizeof($cities), sizeof($body));
         $response->assertOk();
@@ -115,7 +115,7 @@ class CityTest extends TestCase
     {
         $province_id = Province::first()->id;
         $response = $this->get("api/provinces/{$province_id}/cities");
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $cities = City::where('province_id',$province_id)->get();
         $this->assertEquals(sizeof($cities), sizeof($body));
         $response->assertOk();

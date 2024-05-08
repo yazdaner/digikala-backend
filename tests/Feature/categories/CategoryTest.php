@@ -69,7 +69,7 @@ class CategoryTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/categories');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('categories', $body);
         $response->assertOk();
@@ -78,7 +78,7 @@ class CategoryTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/categories?trashed=true&name=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Category::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
         $this->assertEquals($body['categories']['total'], $count);
@@ -116,7 +116,7 @@ class CategoryTest extends TestCase
     public function test_all(): void
     {
         $response = $this->get('api/categories/all');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $categories = Category::get();
         $this->assertEquals(sizeof($categories), sizeof($body));
         $response->assertOk();

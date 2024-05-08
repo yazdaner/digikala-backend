@@ -27,7 +27,7 @@ class HolidayTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/setting/holiday');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $data = Holiday::get();
         //
         $this->assertEquals(sizeof($data), sizeof($body));

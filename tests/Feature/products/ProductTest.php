@@ -46,7 +46,7 @@ class ProductTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/products');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('products', $body);
         $response->assertOk();
@@ -55,7 +55,7 @@ class ProductTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/products?title=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Product::where('title', 'like', '%app%')->count();
         //
         $this->assertEquals($body['products']['total'], $count);

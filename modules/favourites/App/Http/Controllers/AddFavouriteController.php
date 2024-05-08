@@ -2,9 +2,9 @@
 
 namespace Modules\favourites\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\cart\App\Models\Favourite;
+use App\Http\Controllers\Controller;
+use Modules\favourites\App\Models\Favourite;
 
 class AddFavouriteController extends Controller
 {

@@ -24,7 +24,7 @@ class CartTest extends TestCase
             'count' => 1,
             'variationId' => $variation->id,
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals($variation->id, $body['variation']['id']);
         $this->assertEquals('ok', $body['status']);
         $response->assertOk();
@@ -38,7 +38,7 @@ class CartTest extends TestCase
             'count' => 1,
             'variationId' => $variation->id,
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals($variation->id, $body['variation']['id']);
         $this->assertEquals('ok', $body['status']);
         $this->assertDatabaseHas('carts', [
@@ -58,7 +58,7 @@ class CartTest extends TestCase
         $response = $this->actingAs($this->user)->post('api/cart/remove-product', [
             'variationId' => $variationId,
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals('ok', $body['status']);
         $this->assertDatabaseMissing('carts', [
             'variation_id' => $variationId,
@@ -82,7 +82,7 @@ class CartTest extends TestCase
         $response = $this->post('api/cart', [
             'cart' => $cart
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertArrayHasKey('current', $body);
         $this->assertEquals(sizeof($cart), sizeof($body['current']['products']));
         $response->assertOk();
@@ -108,7 +108,7 @@ class CartTest extends TestCase
             ]);
         }
         $response = $this->actingAs($this->user)->post('api/cart');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertArrayHasKey('current', $body);
         $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
         $response->assertOk();
@@ -138,7 +138,7 @@ class CartTest extends TestCase
             $variation->update();
         }
         $response = $this->actingAs($this->user)->post('api/cart?check-change=true');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertArrayHasKey('current', $body);
         $this->assertEquals(sizeof($variations), sizeof($body['current']['products']));
         $this->assertArrayHasKey('old_price', $body['current']['products'][0]);

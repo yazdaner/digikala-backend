@@ -22,7 +22,7 @@ class UserTest extends TestCase
         $response = $this->post('api/user/check-has-account', [
             'username' => fake()->email()
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals('verify-username', $body['status']);
         $response->assertOk();
     }
@@ -34,7 +34,7 @@ class UserTest extends TestCase
         $response = $this->post('api/user/check-has-account', [
             'username' => $user->username
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals('verify-username', $body['status']);
         $response->assertOk();
     }
@@ -52,7 +52,7 @@ class UserTest extends TestCase
             'username' => $user->username,
             'code' => $verification->code,
         ]);
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertArrayHasKey('encrypt', $body);
         $this->assertEquals('set-password', $body['status']);
         $response->assertOk();
@@ -91,7 +91,7 @@ class UserTest extends TestCase
             'code' => $verification->code,
         ]);
 
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $this->assertEquals('logged', $body['status']);
         $response->assertOk();
     }

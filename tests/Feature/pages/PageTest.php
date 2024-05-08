@@ -34,7 +34,7 @@ class PageTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/pages');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('pages', $body);
         $response->assertOk();
@@ -43,7 +43,7 @@ class PageTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/pages?trashed=true&title=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Page::onlyTrashed()->where('title', 'like', '%app%')->count();
         //
         $this->assertEquals($body['pages']['total'], $count);

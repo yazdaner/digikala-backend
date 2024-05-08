@@ -36,7 +36,7 @@ class BrandTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/brands');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('brands', $body);
         $response->assertOk();
@@ -45,7 +45,7 @@ class BrandTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/brands?trashed=true&name=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Brand::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
         $this->assertEquals($body['brands']['total'], $count);
@@ -107,7 +107,7 @@ class BrandTest extends TestCase
     public function test_all(): void
     {
         $response = $this->get('api/brands/all');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $brands = Brand::get();
         $this->assertEquals(sizeof($brands), sizeof($body));
         $response->assertOk();

@@ -4,7 +4,7 @@ namespace Modules\favourites\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\cart\App\Models\Favourite;
+use Modules\favourites\App\Models\Favourite;
 
 class RemoveFavouriteController extends Controller
 {

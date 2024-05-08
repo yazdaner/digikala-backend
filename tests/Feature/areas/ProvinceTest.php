@@ -33,7 +33,7 @@ class ProvinceTest extends TestCase
     public function test_index(): void
     {
         $response = $this->actingAs($this->admin)->get('api/admin/provinces');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('provinces', $body);
         $response->assertOk();
@@ -42,7 +42,7 @@ class ProvinceTest extends TestCase
     public function test_index_search(): void
     {
         $response = $this->actingAs($this->admin)->get('api/admin/provinces?trashed=true&name=app');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = Province::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
         $this->assertEquals($body['provinces']['total'], $count);
@@ -102,7 +102,7 @@ class ProvinceTest extends TestCase
     public function test_all(): void
     {
         $response = $this->get('api/provinces/all');
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $provinces = Province::get();
         $this->assertEquals(sizeof($provinces), sizeof($body));
         $response->assertOk();

@@ -36,7 +36,7 @@ class ExpertReviewTest extends TestCase
         }, true);
 
         $response = $this->actingAs($this->user)->get("api/admin/products/{$product->id}/expert-review");
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         //
         $this->assertArrayHasKey('reviews', $body);
         $response->assertOk();
@@ -105,7 +105,7 @@ class ExpertReviewTest extends TestCase
         }, true);
 
         $response = $this->get("api/products/{$product->id}/expert-review/all");
-        $body = json_decode($response->getContent(), true);
+        $body = $response->json();
         $count = ExpertReview::where('product_id', $product->id)->count();
         //
         $this->assertEquals(sizeof($body), $count);
