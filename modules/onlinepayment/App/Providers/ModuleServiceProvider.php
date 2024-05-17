@@ -2,8 +2,8 @@
 namespace Modules\onlinepayment\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Modules\onlinepayment\Events\FindPayment;
-use Modules\onlinepayment\Events\RequestPayment;
+use Modules\onlinepayment\App\Events\FindPayment;
+use Modules\onlinepayment\App\Events\RequestPayment;
 
 class ModuleServiceProvider extends ServiceProvider
 {

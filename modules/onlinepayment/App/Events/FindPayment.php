@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\onlinepayment\Events;
+namespace Modules\onlinepayment\App\Events;
 
 use Modules\onlinepayment\App\Models\Payment;
 
