@@ -48,7 +48,7 @@ class AddOrderController extends Controller
                 DB::commit();
                 return [
                     'status' => 'ok',
-                    //'paymentId' => $payment->id
+                    'paymentId' => $payment->id
                 ];
             } else {
                 return [
