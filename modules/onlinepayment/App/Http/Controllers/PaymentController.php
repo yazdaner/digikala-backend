@@ -20,12 +20,13 @@ class PaymentController extends CrudController
     {
         $data = $request->all();
         $this->query = Payment::query();
-        $this->query->orderBy('id','DESC');
+        $this->query->orderBy('id', 'DESC');
         foreach ($this->searchMethods as $method) {
-            $this->$method($data);
+            if(array_key_exists($method,$data) && $data[$method] != null){
+                $this->$method($data);
+            }
         }
-        if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
-        {
+        if (array_key_exists('trashed', $data) && $data['trashed'] == 'true') {
             $this->query->onlyTrashed();
         }
         $trashCount = Payment::onlyTrashed()->count();
@@ -33,5 +34,28 @@ class PaymentController extends CrudController
             'payments' => $this->query->paginate(env('PAGINATE')),
             'trashCount' => $trashCount
         ];
+    }
+
+    protected function table_id($data)
+    {
+       $this->query->where('table_id',$data['table_id']);
+    }
+
+    protected function start_date($data)
+    {
+       $dataArray = explode('/',$data['start_date']);
+       if(sizeof($dataArray) == 3){
+            $timestamp = timestamp($dataArray[0],$dataArray[1],$dataArray[2]);
+            $this->query->where('created_at','>=',$timestamp);
+       }
+    }
+
+    protected function end_date($data)
+    {
+        $dataArray = explode('/',$data['end_date']);
+        if(sizeof($dataArray) == 3){
+             $timestamp = timestamp($dataArray[0],$dataArray[1],$dataArray[2],23,59,59);
+             $this->query->where('created_at','<=',$timestamp);
+        }
     }
 }
