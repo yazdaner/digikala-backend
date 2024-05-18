@@ -10,5 +10,5 @@ class Payment extends Model
     use SoftDeletes;
     protected $table = 'online_payments';
     protected $guarded = [];
-    protected $dataFormat = 'U';
+    protected $dateFormat = 'U';
 }
