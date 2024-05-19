@@ -9,11 +9,17 @@ class QuestionController extends CrudController
 {
     protected string $model = Question::class;
 
-    public function index()
+    public function __invoke()
     {
-    }
-
-    public function delete()
-    {
+        $questions = Question::query();
+        $questions->orderBy('id','DESC');
+        $questions->with('parent');
+        $questions->with('user',function($query){
+            return $query->select(['name','id']);
+        });
+        $questions->with('product',function($query){
+            return $query->select(['title','id','slug']);
+        });
+        return $questions->paginate(env('PAGINATE'));
     }
 }
