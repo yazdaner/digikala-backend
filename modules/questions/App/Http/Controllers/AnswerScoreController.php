@@ -33,6 +33,7 @@ class AnswerScoreController extends Controller
             LikeHistory::create([
                 'question_id' => $asnwer_id,
                 'user_id' => $user->id,
+                'user_type' => $user::class,
                 'like' => $value
             ]);
         }
