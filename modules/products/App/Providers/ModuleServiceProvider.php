@@ -3,6 +3,8 @@
 namespace Modules\products\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\products\App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\products\App\Events\ProductInfo;
 use Modules\products\App\Events\ProductQuery;
 use Modules\products\App\Events\SavingProduct;
@@ -26,5 +28,12 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Builder::macro('product', function () {
+            return $this->getModel()->belongsTo(
+                Product::class,
+                'product_id',
+                'id'
+            );
+        });
     }
 }

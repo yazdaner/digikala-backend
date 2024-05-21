@@ -13,7 +13,7 @@ class AddressTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = getUserForTest();
+        $this->user = getAdminForTest();
     }
 
     public function test_create(): void
