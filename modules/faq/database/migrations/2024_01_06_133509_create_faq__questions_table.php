@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('faq__categories');
             $table->string('title');
-            $table->text('answer')->nullable();
+            $table->text('answer');
             $table->text('short_answer');
             $table->boolean('popular')->default(0);
             $table->integer('like')->default(0);
