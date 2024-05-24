@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\faq;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Modules\users\App\Models\User;
-use Modules\brands\App\Models\Brand;
 use Modules\faq\App\Models\FaqCategories;
 
 class FaqCategoriesTest extends TestCase
@@ -72,7 +70,7 @@ class FaqCategoriesTest extends TestCase
     {
         $response = $this->actingAs($this->user)->get('api/admin/faq/categories?trashed=true&name=app');
         $body = $response->json();
-        $count = Brand::onlyTrashed()->where('name', 'like', '%app%')->count();
+        $count = FaqCategories::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
         $this->assertEquals($body['faqCategories']['total'], $count);
         $this->assertArrayHasKey('faqCategories', $body);
@@ -105,8 +103,8 @@ class FaqCategoriesTest extends TestCase
     {
         $response = $this->get('api/faq/category/all');
         $body = $response->json();
-        $brands = FaqCategories::get();
-        $this->assertEquals(sizeof($brands), sizeof($body));
+        $faqCategories = FaqCategories::get();
+        $this->assertEquals(sizeof($faqCategories), sizeof($body));
         $response->assertOk();
     }
 }

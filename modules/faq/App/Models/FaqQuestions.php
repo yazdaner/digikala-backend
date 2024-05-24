@@ -2,19 +2,26 @@
 
 namespace Modules\faq\App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\faq\App\Models\FaqCategories;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\faq\database\factories\FaqQuestionsFactory;
 
 class FaqQuestions extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     protected $table = 'faq__questions';
     protected $guarded = [];
 
+    protected static function newFactory()
+    {
+        return FaqQuestionsFactory::new();
+    }
+
     public function category() {
-        return $this->belongsTo(FaqCategories::class,'id','category_id');
+        return $this->belongsTo(FaqCategories::class,'category_id','id');
     }
 
     public static function search($data)

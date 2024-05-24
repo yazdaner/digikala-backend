@@ -10,14 +10,14 @@ class FaqQuestionRequest extends FormRequest
     {
         return true;
     }
-    
+
     public function rules(): array
     {
         return [
+            'category_id' => ['required', 'exists:faq__categories,id'],
             'title' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'string', 'exists:faq__categories,id'],
-            'answer' => ['required', 'image'],
-            'short_answer' => ['required', 'image'],
+            'answer' => ['required', 'string'],
+            'short_answer' => ['required', 'string'],
         ];
     }
 
