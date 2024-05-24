@@ -7,7 +7,7 @@ use Modules\faq\App\Http\Controllers\FaqQuestionInfoController;
 use Modules\faq\App\Http\Controllers\ReturnFaqQuestionController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
-    Route::resource('faq/categories', FaqCategoryController::class)->except(['create', 'edit','show']);
+    Route::resource('faq/categories', FaqCategoryController::class)->except(['create', 'edit']);
     Route::post('faq/categories/{id}/restore', [FaqCategoryController::class, 'restore']);
 
     Route::resource('faq/questions', FaqQuestionController::class)->except(['create', 'edit']);

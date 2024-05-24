@@ -27,89 +27,86 @@ class FaqCategoriesTest extends TestCase
             'icon' => UploadedFile::fake()->image('icon.png'),
         ]);
         $faqCategory = FaqCategories::latest()->first();
+        // 
         $this->assertNotNull($faqCategory->icon);
         $response->assertOk();
     }
 
-    // public function test_show(): void
-    // {
-    //     $faqCategory = FaqCategories::first();
-    //     $response = $this->actingAs($this->user)->get("api/faq/category/$faqCategory->id");
-    //     $body = $response->json();
-    //     //
-    //     $this->assertEquals($brand->id, $body->id);
-    //     $response->assertOk();
-    // }
+    public function test_show(): void
+    {
+        $faqCategory = FaqCategories::first();
+        $response = $this->actingAs($this->user)->get("api/admin/faq/categories/$faqCategory->id");
+        $body = $response->json();
+        //
+        $this->assertEquals($faqCategory->id, $body['id']);
+        $response->assertOk();
+    }
 
-    // public function test_index(): void
-    // {
-    //     $response = $this->actingAs($this->user)->get('api/admin/brands');
-    //     $body = $response->json();
-    //     //
-    //     $this->assertArrayHasKey('brands', $body);
-    //     $response->assertOk();
-    // }
+    public function test_update(): void
+    {
+        $name = Str::random(5);
+        $faqCategory = FaqCategories::first();
+        $response = $this->actingAs($this->user)->put("api/admin/faq/categories/$faqCategory->id", [
+            'name' => $name,
+            'icon' => null,
+        ]);
+        //
+        $this->assertDatabaseHas('faq__categories', [
+            'id' => $faqCategory->id,
+            'name' => $name,
+        ]);
+        $response->assertOk();
+    }
 
-    // public function test_index_search(): void
-    // {
-    //     $response = $this->actingAs($this->user)->get('api/admin/brands?trashed=true&name=app');
-    //     $body = $response->json();
-    //     $count = Brand::onlyTrashed()->where('name', 'like', '%app%')->count();
-    //     //
-    //     $this->assertEquals($body['brands']['total'], $count);
-    //     $this->assertArrayHasKey('brands', $body);
-    //     $response->assertOk();
-    // }
+    public function test_index(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/faq/categories');
+        $body = $response->json();
+        //
+        $this->assertArrayHasKey('faqCategories', $body);
+        $this->assertGreaterThan(0, $body['faqCategories']['total']);
+        $response->assertOk();
+    }
 
+    public function test_index_search(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/faq/categories?trashed=true&name=app');
+        $body = $response->json();
+        $count = Brand::onlyTrashed()->where('name', 'like', '%app%')->count();
+        //
+        $this->assertEquals($body['faqCategories']['total'], $count);
+        $this->assertArrayHasKey('faqCategories', $body);
+        $response->assertOk();
+    }
 
-    // public function test_update(): void
-    // {
-    //     $name = Str::random(10);
-    //     $en_name = Str::random(10);
-    //     $brand = Brand::factory()->create();
-    //     $response = $this->actingAs($this->user)->put('api/admin/brands/' . $brand->id, [
-    //         'name' => $name,
-    //         'en_name' => $en_name,
-    //     ]);
-    //     //
-    //     $this->assertDatabaseHas('products__brands', [
-    //         'id' => $brand->id,
-    //         'name' => $name,
-    //         'en_name' => $en_name,
-    //     ]);
-    //     $response->assertOk();
-    // }
+    public function test_destroy(): void
+    {
+        $faqCategory = FaqCategories::first();
+        $response = $this->actingAs($this->user)->delete("api/admin/faq/categories/$faqCategory->id");
+        $this->assertDatabaseMissing('faq__categories', [
+            'id' => $faqCategory->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
 
-    // public function test_destroy(): void
-    // {
-    //     $brand = Brand::factory()->create();
-    //     $response = $this->actingAs($this->user)->delete('api/admin/brands/' . $brand->id);
-    //     $this->assertDatabaseMissing('products__brands', [
-    //         'id' => $brand->id,
-    //         'deleted_at' => null,
-    //     ]);
-    //     $response->assertOk();
-    // }
+    public function test_restore(): void
+    {
+        $faqCategory = FaqCategories::onlyTrashed()->first();
+        $response = $this->actingAs($this->user)->post("api/admin/faq/categories/{$faqCategory->id}/restore");
+        $this->assertDatabaseHas('faq__categories', [
+            'id' => $faqCategory->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
 
-    // public function test_restore(): void
-    // {
-    //     $brand = Brand::factory()->create([
-    //         'deleted_at' => Carbon::now()
-    //     ]);
-    //     $response = $this->actingAs($this->user)->post('api/admin/brands/' . $brand->id . '/restore');
-    //     $this->assertDatabaseHas('products__brands', [
-    //         'id' => $brand->id,
-    //         'deleted_at' => null,
-    //     ]);
-    //     $response->assertOk();
-    // }
-
-    // public function test_all(): void
-    // {
-    //     $response = $this->get('api/brands/all');
-    //     $body = $response->json();
-    //     $brands = Brand::get();
-    //     $this->assertEquals(sizeof($brands), sizeof($body));
-    //     $response->assertOk();
-    // }
+    public function test_all(): void
+    {
+        $response = $this->get('api/faq/category/all');
+        $body = $response->json();
+        $brands = FaqCategories::get();
+        $this->assertEquals(sizeof($brands), sizeof($body));
+        $response->assertOk();
+    }
 }
