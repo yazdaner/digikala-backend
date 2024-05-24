@@ -10,7 +10,6 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function register() :void
     {
-        require_once base_path('modules/zarinpal/helpers.php');
         addEvent('connect-zarinpal-gateway',ConnectZarinpalGateway::class);
         addEvent('verify-payment',VerifyPayment::class);
     }
