@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\faq\App\Http\Controllers\FaqScoreController;
 use Modules\faq\App\Http\Controllers\FaqCategoryController;
 use Modules\faq\App\Http\Controllers\FaqQuestionController;
 use Modules\faq\App\Http\Controllers\FaqQuestionInfoController;
@@ -14,9 +15,12 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::post('faq/questions/{id}/restore', [FaqQuestionController::class, 'restore']);
 });
 
+Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('faq/{faq_id}/score', FaqScoreController::class);
+});
+
 Route::get('faq/category/all', [FaqCategoryController::class,'all']);
 Route::get('faq/category/{id}', [FaqCategoryController::class,'show']);
-
 Route::get('faq/questions', ReturnFaqQuestionController::class);
 Route::get('faq/question/{id}/info', FaqQuestionInfoController::class);
 

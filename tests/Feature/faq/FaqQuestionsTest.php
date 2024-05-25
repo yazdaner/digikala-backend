@@ -119,4 +119,22 @@ class FaqQuestionsTest extends TestCase
         $this->assertEquals($faqQuestion->id, $body['id']);
         $response->assertOk();
     }
+
+    function test_add_like(): void
+    {
+        $faqQuestion = FaqQuestions::first();
+        $response = $this->actingAs($this->user)->post("api/user/faq/{$faqQuestion->id}/score", [
+            'type' => 'like',
+        ]);
+        $response->assertOk();
+    }
+
+    function test_add_dislike(): void
+    {
+        $faqQuestion = FaqQuestions::first();
+        $response = $this->actingAs($this->user)->post("api/user/faq/{$faqQuestion->id}/score", [
+            'type' => 'dislike',
+        ]);
+        $response->assertOk();
+    }
 }
