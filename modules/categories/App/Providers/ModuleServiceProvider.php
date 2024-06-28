@@ -4,10 +4,11 @@ namespace Modules\categories\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\categories\App\Models\Category;
 use Modules\categories\App\Events\CategoryQuery;
 use Modules\categories\App\Events\SavingProduct;
+use Modules\categories\App\Events\ProductSpecifications;
 use Modules\categories\App\Events\AddProductSpecification;
-use Modules\categories\App\Models\Category;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('product.updated', SavingProduct::class);
 
         addEvent('category:query', CategoryQuery::class);
+        
+        addEvent('product:specifications',ProductSpecifications::class);
     }
 
     public function boot(): void
