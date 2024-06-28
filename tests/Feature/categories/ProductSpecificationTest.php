@@ -24,7 +24,8 @@ class ProductSpecificationTest extends TestCase
             'slug' => 'test'
         ]);
 
-        $product = Product::first();
+        $product = Product::inRandomOrder()->first();
+
         if ($product) {
             $request = request();
             $values = [];
