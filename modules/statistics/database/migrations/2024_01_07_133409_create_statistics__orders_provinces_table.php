@@ -13,11 +13,8 @@ return new class extends Migration
     {
         Schema::create('statistics__orders_provinces', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('city_id');
-            $table->string('date');
-            $table->string('time');
-            $table->smallInteger('capacity')->default(0);
-            $table->integer('sender')->default(0);
+            $table->integer('province_id');
+            $table->integer('order_count');
             $table->timestamps();
         });
     }
