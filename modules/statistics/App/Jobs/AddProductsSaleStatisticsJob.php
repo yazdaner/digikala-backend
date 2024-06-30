@@ -24,16 +24,16 @@ class AddProductsSaleStatisticsJob implements ShouldQueue
 
     public function handle(): void
     {
-        $products = runEvent('order:products', $this->order->id, true);
+        $items = runEvent('order:products', $this->order->id, true);
 
-        if ($products != null && sizeof($products) > 0) {
-            foreach ($products as $product) {
-                $this->addStatistics($product);
+        if ($items != null && sizeof($items) > 0) {
+            foreach ($items as $item) {
+                $this->addStatistics($item);
             }
         }
     }
 
-    protected function addStatistics($data): void
+    private function addStatistics($data): void
     {
         $jdf = new Jdf();
         $year = $jdf->jdate('Y');

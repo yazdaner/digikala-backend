@@ -29,14 +29,14 @@ class AddGeneralSaleStatisticsJob implements ShouldQueue
         $month = $jdf->jdate('n');
         $day = $jdf->jdate('j');
 
-        $general = GeneralSaleStatistic::where([
+        $row = GeneralSaleStatistic::where([
             'year' => $year,
             'month' => $month,
             'day' => $day,
         ])->first();
-        if ($general) {
-            $general->increment('order_count');
-            $general->increment('total_sales', $this->order->final_price);
+        if ($row) {
+            $row->increment('order_count');
+            $row->increment('total_sales', $this->order->final_price);
         } else {
             GeneralSaleStatistic::create([
                 'year' => $year,
