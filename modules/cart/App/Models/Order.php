@@ -12,4 +12,9 @@ class Order extends Model
     protected $table = 'orders';
     protected $guarded = [];
     protected $dateFormat = 'U';
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class,'order_id','id');
+    }
 }

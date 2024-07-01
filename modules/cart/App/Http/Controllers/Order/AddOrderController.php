@@ -44,7 +44,6 @@ class AddOrderController extends Controller
                     'table_id' => $order->id,
                     'table_type' => Order::class,
                 ], true);
-                \Log::info(var_export($payment,true));
                 runEvent('order:added', $order->id);
                 DB::commit();
                 return [
@@ -59,9 +58,6 @@ class AddOrderController extends Controller
             }
         } catch (\Exception $ex) {
             DB::rollBack();
-            \Log::info(var_export($ex->getMessage(),true));
-            \Log::info(var_export($ex->getFile(),true));
-            \Log::info(var_export($ex->getLine(),true));
             return ['status' => 'error'];
         }
     }
