@@ -9,6 +9,7 @@ class RequestPayment
     public function handle($data)
     {
         $gateway = runEvent('setting:value', 'gateway', true);
+        \Log::info(var_export($gateway,true));
         if ($gateway) {
             $data['gateway'] = $gateway;
             $data['status'] = 'suspended';

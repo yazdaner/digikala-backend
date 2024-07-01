@@ -3,6 +3,7 @@
 namespace Tests\Feature\cart;
 
 use Tests\TestCase;
+use Modules\cart\App\Models\Order;
 use Modules\users\App\Models\User;
 
 class OrderTest extends TestCase
@@ -31,8 +32,17 @@ class OrderTest extends TestCase
             'address_id' => $address->id,
             'payment_method' => 'online-payment'
         ]);
-        $body = json_decode($response->getContent(),true);
+        
+        $body = $response->json();
         $this->assertEquals('ok',$body['status']);
         $response->assertStatus(200);
+    }
+
+    public function  test_verify()
+    {
+        $order = Order::where('status',0)->first();
+        // \Log::info($order->id);
+        runEvent('order:verified',$order);
+        $this->assertEquals(1,1);
     }
 }

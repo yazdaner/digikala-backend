@@ -15,7 +15,9 @@ class ReturnSubmissionsController extends Controller
         $user = $request->user();
         $cart = Cart::where(['user_id' => $user->id, 'type' => 1])
             ->pluck('count', 'variation_id');
-        define('address_id', $request->address_id);
+        if(!defined('address_id')){
+            define('address_id', $request->address_id);
+        }
         $cartProducts = app(CartProducts::class);
         $products = $cartProducts($cart, [], $request);
         $submissions = getSubmissions($products);

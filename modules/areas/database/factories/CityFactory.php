@@ -12,8 +12,9 @@ class CityFactory extends Factory
 
     public function definition(): array
     {
+        Province::factory()->create();
         return [
-            'province_id' => Province::first()->id,
+            'province_id' => Province::inRandomOrder()->first()->id,
             'name' => fake()->state,
         ];
     }
