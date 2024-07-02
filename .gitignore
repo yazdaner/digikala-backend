@@ -23,5 +23,3 @@ yarn-error.log
 /public/images
 /public/gallery
 /public/thumbnails
-
-/config/gallery.php

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->smallInteger('status')->default(-1);
             $table->smallInteger('role_id')->default(0);
             $table->rememberToken();
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->smallInteger('status')->default(0);
             $table->string('payment_method');
             $table->bigInteger('order_code');
-            $table->softDeletes();
+            $table->bigInteger('deleted_at')->nullable();
             $table->bigInteger('created_at');
             $table->bigInteger('updated_at');
         });
