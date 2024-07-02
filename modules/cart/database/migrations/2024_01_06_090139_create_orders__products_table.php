@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id');
             $table->foreignId('variation_id');
             $table->foreignId('order_id');
+            $table->foreignId('seller_id')->default(0);
             $table->foreignId('submission_id')->constrained('orders__submissions')->cascadeOnDelete();
             $table->integer('price1');
             $table->integer('price2');

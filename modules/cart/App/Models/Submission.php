@@ -8,4 +8,10 @@ class Submission extends Model
 {
     protected $table = 'orders__submissions';
     protected $guarded = [];
+
+    public function items()
+    {
+        return $this->hasMany(OrderProduct::class,'submission_id','id');
+    }
+
 }

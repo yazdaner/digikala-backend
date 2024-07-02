@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\cart;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use Modules\cart\App\Models\Order;
 use Modules\users\App\Models\User;
