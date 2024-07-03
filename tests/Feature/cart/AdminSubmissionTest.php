@@ -26,4 +26,15 @@ class AdminSubmissionTest extends TestCase
         $this->assertEquals($updated->send_status, 5);
         $response->assertOk();
     }
+
+    public function test_submission_info(): void
+    {
+        $submission = Submission::inRandomOrder()->first();
+        $response = $this->actingAs($this->user)->get("/api/admin/submission/{$submission->id}/info");
+        $this->assertGreaterThan(0,sizeof($response->json()['items']));
+        $this->assertNotNull($response->json()['items'][0]['product']);
+        // $this->assertNotNull($response->json()['items'][0]['variation']);
+        $this->assertNotNull($response->json()['order']['address']);
+        $response->assertOk();
+    }
 }
