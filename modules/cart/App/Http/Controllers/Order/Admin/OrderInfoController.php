@@ -25,6 +25,7 @@ class OrderInfoController extends Controller
         if($user->role == 'user' && $user->role_id == 0){
             $order = $order->where('user_id',$user->id);
         }
+        $order = $order->findOrFail($id);
         $order->user_info = runEvent('user:info',$order->user_id,true);
         return runEvent('completing_order_info',$order,true);
         
