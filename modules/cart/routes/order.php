@@ -28,3 +28,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
 Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/order/check-payment', CheckOrderPaymentController::class);
 });
+
+Route::get('/order/setting/company',CompanyInfoController::class);
