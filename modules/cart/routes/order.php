@@ -6,6 +6,7 @@ use Modules\cart\App\Http\Controllers\Order\Admin\OrderListController;
 use Modules\cart\App\Http\Controllers\Order\Admin\CompanyInfoController;
 use Modules\cart\App\Http\Controllers\Order\CheckOrderPaymentController;
 use Modules\cart\App\Http\Controllers\Order\Admin\SubmissionInfoController;
+use Modules\cart\App\Http\Controllers\Order\Admin\SubmissionListController;
 use Modules\cart\App\Http\Controllers\Order\Admin\SubmissionsStatisticsController;
 use Modules\cart\App\Http\Controllers\Order\Admin\ChangeSubmissionStatusController;
 
@@ -16,7 +17,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::post('/orders/{id}/restore',[OrderListController::class,'restore']);
     Route::get('/order/{id}/info',OrderInfoController::class);
    
-   
+    Route::get('/submissions',SubmissionListController::class);
     Route::get('/submissions/statistics',SubmissionsStatisticsController::class);
     Route::post('/submission/{submission}/change-status',ChangeSubmissionStatusController::class);
     Route::get('/submission/{id}/info',SubmissionInfoController::class);
