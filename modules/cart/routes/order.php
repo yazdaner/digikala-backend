@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\cart\App\Http\Controllers\Order\Admin\OrderInfoController;
 use Modules\cart\App\Http\Controllers\Order\Admin\OrderListController;
+use Modules\cart\App\Http\Controllers\Order\Admin\CompanyInfoController;
 use Modules\cart\App\Http\Controllers\Order\CheckOrderPaymentController;
 use Modules\cart\App\Http\Controllers\Order\Admin\SubmissionInfoController;
 use Modules\cart\App\Http\Controllers\Order\Admin\SubmissionsStatisticsController;
@@ -19,6 +20,8 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::get('/submissions/statistics',SubmissionsStatisticsController::class);
     Route::post('/submission/{submission}/change-status',ChangeSubmissionStatusController::class);
     Route::get('/submission/{id}/info',SubmissionInfoController::class);
+    
+    Route::post('/order/setting/company',CompanyInfoController::class);
 });
 
 
