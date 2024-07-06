@@ -41,5 +41,10 @@ class ModuleServiceProvider extends ServiceProvider
             'title' => 'تحویل مرسوله به مشتری',
             'value' => 25,
         ]);
+
+        addArrayList('order:progress_statuses', 5);
+        addArrayList('order:progress_statuses', 10);
+        addArrayList('order:progress_statuses', 15);
+        addArrayList('order:progress_statuses', 20);
     }
 }

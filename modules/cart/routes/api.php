@@ -2,19 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\cart\App\Http\Controllers\Cart\EmptyCartController;
-use Modules\cart\App\Http\Controllers\Order\AddOrderController;
 use Modules\cart\App\Http\Controllers\Cart\MoveProductsController;
 use Modules\cart\App\Http\Controllers\Cart\ReturnCartInfoController;
+use Modules\cart\App\Http\Controllers\Order\User\AddOrderController;
 use Modules\cart\App\Http\Controllers\Cart\AddProductToCartController;
 use Modules\cart\App\Http\Controllers\Cart\SaveCartToDatabaseController;
-use Modules\cart\App\Http\Controllers\Order\ReturnSubmissionsController;
 use Modules\cart\App\Http\Controllers\Cart\AddProductToNextCartController;
 use Modules\cart\App\Http\Controllers\Cart\RemoveProductFromCartController;
 use Modules\cart\App\Http\Controllers\Cart\AddProductToCurrentCartController;
+use Modules\cart\App\Http\Controllers\Order\User\ReturnSubmissionsController;
 
 Route::post('cart/add-product', AddProductToCartController::class);
 Route::post('cart', ReturnCartInfoController::class);
-
 
 Route::prefix('cart')->middleware(['auth:sanctum'])->group(function () {
     Route::post('remove-product', RemoveProductFromCartController::class);
