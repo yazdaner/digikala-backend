@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\cart\App\Http\Controllers\Order;
+namespace Modules\cart\App\Http\Controllers\Order\User;
 
 use Illuminate\Http\Request;
 use Modules\cart\App\Models\Cart;

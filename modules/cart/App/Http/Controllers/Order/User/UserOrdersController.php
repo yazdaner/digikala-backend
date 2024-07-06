@@ -5,6 +5,7 @@ namespace Modules\cart\App\Http\Controllers\Order\User;
 use Illuminate\Http\Request;
 use Modules\cart\App\Models\Order;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserOrdersController extends Controller
 {
@@ -14,19 +15,21 @@ class UserOrdersController extends Controller
         $orders = Order::query();
         $orders->where('user_id', $user_id);
         $status = $request->get('status');
-        $progress_status = config('app.order:progress_statuses');
+        $progress_statuses = config('app.order:progress_statuses');
         switch ($status) {
             case 'delivered':
                 $orders->with('items.product')
-                    ->whereIn('status', 25);
+                    ->where('status', 25);
                 break;
             case 'canceled':
                 $orders->with('items.product')
-                    ->whereIn('status', $progress_status);
+                    ->where('status', -1);
                 break;
             default:
                 $orders->with('submissions.items.product')
-                    ->whereIn('status', $progress_status);
+                    ->whereHas('submissions', function (Builder $builder) use ($progress_statuses) {
+                        $builder->whereIn('status', $progress_statuses);
+                    });
         }
         return $orders->paginate(env('PAGINATE'));
     }
