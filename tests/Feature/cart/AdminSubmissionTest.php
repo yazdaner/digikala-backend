@@ -33,8 +33,15 @@ class AdminSubmissionTest extends TestCase
         $response = $this->actingAs($this->user)->get("/api/admin/submission/{$submission->id}/info");
         $this->assertGreaterThan(0,sizeof($response->json()['items']));
         $this->assertNotNull($response->json()['items'][0]['product']);
-        // $this->assertNotNull($response->json()['items'][0]['variation']);
         $this->assertNotNull($response->json()['order']['address']);
+        $response->assertOk();
+    }
+
+    public function  test_submission_list(): void
+    {
+        $response = $this->actingAs($this->user)->get("/api/admin/submissions");
+        $body = $response->json();
+        $this->assertGreaterThan(0,sizeof($body['data']));
         $response->assertOk();
     }
 }

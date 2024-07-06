@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\cart\App\Http\Controllers\Order\Admin\FactorsController;
+use Modules\cart\App\Http\Controllers\Order\Admin\LabelInfoController;
 use Modules\cart\App\Http\Controllers\Order\Admin\OrderInfoController;
 use Modules\cart\App\Http\Controllers\Order\Admin\OrderListController;
 use Modules\cart\App\Http\Controllers\Order\Admin\CompanyInfoController;
@@ -23,6 +25,8 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::get('/submission/{id}/info',SubmissionInfoController::class);
     
     Route::post('/order/setting/company',CompanyInfoController::class);
+    Route::get('/orders/label-info',LabelInfoController::class);
+    Route::get('/orders/factors',FactorsController::class);
 });
 
 
