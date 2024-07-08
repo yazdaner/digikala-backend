@@ -22,7 +22,7 @@ return new class extends Migration
             $table->morphs('param1');
             $table->morphs('param2');
             $table->string('sender')->default('self');
-            $table->boolean('selected_by_box')->default(0);
+            $table->boolean('selected_buy_box')->default(0);
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
