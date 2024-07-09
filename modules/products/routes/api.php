@@ -12,5 +12,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::post('products/{id}/restore',[ProductController::class,'restore']);
 });
 
-Route::get('product/{id}/{slug}',[ShopController::class,'product']);
+Route::get('product/yzd-{id}/{slug}',[ShopController::class,'product']);
 Route::get('product/{id}/categories',[ShopController::class,'productCategories']);
