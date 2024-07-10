@@ -14,10 +14,11 @@ return new class extends Migration
             $table->string('en_name');
             $table->string('slug');
             $table->string('icon')->nullable();
-            $table->foreignId('parent_id');
+            $table->foreignId('parent_id')->default(0);
             $table->text('description')->nullable();
             $table->text('tags')->nullable();
             $table->boolean('selected')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
