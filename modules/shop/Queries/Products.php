@@ -35,7 +35,7 @@ class Products
         }
     }
 
-    protected function result()
+    public function result()
     {
         if (array_key_exists('limit', $this->data)) {
             return $this->query->offset(0)
@@ -78,10 +78,10 @@ class Products
     {
         if (array_key_exists('text', $this->data) && !empty($this->data['text'])) {
             $text = $this->data['text'];
-            $searchValues = preg_split('/\s+/',$text);
-            $this->query->where(function ($query) use ($searchValues){
+            $searchValues = preg_split('/\s+/', $text);
+            $this->query->where(function ($query) use ($searchValues) {
                 foreach ($searchValues as $value) {
-                    $query->where('title','like','%'.$value.'%');
+                    $query->where('title', 'like', '%' . $value . '%');
                 }
             });
         }

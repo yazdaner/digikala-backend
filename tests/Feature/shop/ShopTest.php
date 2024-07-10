@@ -1,31 +1,18 @@
 <?php
 
-namespace Tests\Feature\sliders;
+namespace Tests\Feature\shop;
 
-use Modules\products\App\Models\ProductCategory;
 use Tests\TestCase;
 
 class ShopTest extends TestCase
 {
-    public function test_product_info(): void
+    public function test_products(): void
     {
-        $product = runEvent('product:query',function ($query){
-            return $query->whereHas('variation')->first();
-        },true);
-        $response = $this->get("/api/product/yzd-$product->id/$product->slug");
-        $body = $response->json();
-        $this->assertEquals($body['id'],$product->id);
-        $this->assertGreaterThan(0,sizeof($body['variations']));
-        $response->assertOk();
-    }
-
-    public function test_product_categories(): void
-    {
-        $product = ProductCategory::select('product_id')->first();
-        $response = $this->get("/api/product/$product->product_id/categories");
+        $response = $this->get('/api/shop/products?variation=true&limit=15');
+        \Log::info($response->json());
         $body = $response->json();
         $this->assertGreaterThan(0,sizeof($body));
+        $this->assertNotNull($body[0]['variation']);
         $response->assertOk();
     }
-
 }
