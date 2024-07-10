@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('tableable_type');
             $table->foreignId('tableable_id')->nullable();
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->bigInteger('created_at');
+            $table->bigInteger('updated_at');
         });
     }
 
