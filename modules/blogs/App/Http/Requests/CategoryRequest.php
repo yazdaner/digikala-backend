@@ -31,5 +31,4 @@ class CategoryRequest extends FormRequest
             'icon' => 'ایکون',
         ];
     }
-
 }
