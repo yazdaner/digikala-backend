@@ -37,4 +37,9 @@ class Product extends Model
         }
         return $products->paginate(env('PAGINATE'));
     }
+
+    public function categories()
+    {
+        return $this->hasMany(ProductCategory::class, 'product_id', 'id');
+    }
 }

@@ -6,6 +6,7 @@ use Modules\statistics\App\Events\AddGeneralSaleStatistics;
 use Modules\statistics\App\Events\AddProductsSaleStatistics;
 use Modules\statistics\App\Events\AddCategoryBrandStatistics;
 use Modules\statistics\App\Events\AddProvincesSaleStatistics;
+use Modules\statistics\App\Events\ProductSaleStatisticsQuery;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -17,8 +18,9 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('order:verified',AddGeneralSaleStatistics::class);
         addEvent('order:verified',AddProductsSaleStatistics::class);
         addEvent('order:verified',AddCategoryBrandStatistics::class);
+        addEvent('query:product-sales-statistics',ProductSaleStatisticsQuery::class);
     }
-
+    
     public function boot() :void
     {
     }

@@ -8,7 +8,7 @@ class ProductQuery
 {
     public function handle($function)
     {
-        $product = Product::query();
-        return $function($product);
+        $query = Product::query();
+        return $function($query);
     }
 }
