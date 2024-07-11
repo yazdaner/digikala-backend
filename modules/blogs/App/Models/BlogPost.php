@@ -3,14 +3,16 @@
 namespace Modules\blogs\App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\blogs\App\Models\BlogCategory;
 use Modules\blogs\App\Models\BlogPostTags;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\blogs\database\factories\BlogPostFactory;
 
 class BlogPost extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'blog__posts';
     protected $guarded = [];
@@ -18,7 +20,12 @@ class BlogPost extends Model
     protected $hidden = [
         'updated_at'
     ];
-    
+
+    protected static function newFactory()
+    {
+        return BlogPostFactory::new();
+    }
+
     public static function search($data)
     {
         $posts = self::query();
@@ -40,7 +47,8 @@ class BlogPost extends Model
 
     public function tags()
     {
-        return $this->hasManyThrough(BlogTag::class, BlogPostTags::class, 'post_id', 'id');
+        return $this->hasManyThrough(BlogTag::class, BlogPostTags::class, 'post_id', 'id', 'id', 'tag_id');
+        // return $this->belongsToMany(BlogTag::class,'blog__post_tags','post_id','tag_id');
     }
 
     public function getCreatedAtAttribute($value)

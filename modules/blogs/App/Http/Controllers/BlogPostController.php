@@ -23,7 +23,10 @@ class BlogPostController extends CrudController
 
     public function store(PostRequest $request, AddPostTags $addPostTags)
     {
-        $post = new BlogPost($request->all());
+        $tags = $request->get('tags');
+        $data = $request->all();
+        unset($data['tags']);
+        $post = new BlogPost($data);
         $user = $request->user();
         $image = upload_file($request, 'image', 'upload', 'post_');
         if ($image) {
@@ -35,7 +38,7 @@ class BlogPostController extends CrudController
         $post->saveOrFail();
         $addPostTags(
             $post->id,
-            $request->get('tags')
+            $tags
         );
         return ['status' => 'ok'];
     }
@@ -47,9 +50,9 @@ class BlogPostController extends CrudController
 
     public function update($id, PostRequest $request, AddPostTags $addPostTags)
     {
-        $post = BlogPost::firstOrFail($id);
+        $post = BlogPost::findOrFail($id);
         $data = $request->all();
-        $image = upload_file($request, 'image', 'upload', 'post_');
+        $image = upload_file($request, 'image', 'upload', 'post_'.$post->id);
         if ($image) {
             $post->image = $image;
             create_fit_pic('upload/' . $image, $image, 200, 200);

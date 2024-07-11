@@ -2,12 +2,14 @@
 
 namespace Modules\blogs\App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\blogs\database\factories\BlogTagFactory;
 
 class BlogTag extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     protected $table = 'blog__tags';
     protected $guarded = [];
@@ -16,6 +18,11 @@ class BlogTag extends Model
         'updated_at',
         'description'
     ];
+
+    protected static function newFactory()
+    {
+        return BlogTagFactory::new();
+    }
 
     public static function search($data)
     {

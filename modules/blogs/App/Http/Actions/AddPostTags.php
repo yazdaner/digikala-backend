@@ -8,7 +8,7 @@ class AddPostTags
 {
     public function __invoke($postId,$tags)
     {
-        BlogPostTags::where('id',$postId)->delete();
+        BlogPostTags::where('post_id',$postId)->delete();
         $tags = explode(',',$tags);
         foreach ($tags as $tag) {
             if(!empty($tag)){

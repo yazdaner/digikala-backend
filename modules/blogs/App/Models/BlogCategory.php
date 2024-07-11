@@ -4,10 +4,12 @@ namespace Modules\blogs\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\blogs\database\factories\BlogCategoryFactory;
 
 class BlogCategory extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     protected $table = 'blog__categories';
     protected $guarded = [];
@@ -15,6 +17,11 @@ class BlogCategory extends Model
         'created_at',
         'updated_at'
     ];
+
+    protected static function newFactory()
+    {
+        return BlogCategoryFactory::new();
+    }
 
     public static function search($data)
     {
