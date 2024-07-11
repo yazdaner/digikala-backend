@@ -13,4 +13,12 @@ class ShopTest extends TestCase
         $this->assertGreaterThan(0,sizeof($body));
         $response->assertOk();
     }
+
+    public function test_best_selling(): void
+    {
+        $response = $this->get('/api/shop/best-selling');
+        $body = $response->json();
+        $this->assertGreaterThan(0,sizeof($body));
+        $response->assertOk();
+    }
 }

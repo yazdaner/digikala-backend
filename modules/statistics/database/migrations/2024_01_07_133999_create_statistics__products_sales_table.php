@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('statistics__products_sales', function (Blueprint $table) {
@@ -19,13 +16,11 @@ return new class extends Migration
             $table->integer('order_count');
             $table->integer('total_sales');
             $table->foreignId('product_id');
-            $table->timestamps();
+            $table->bigInteger('created_at');
+            $table->bigInteger('updated_at');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('statistics__products_sales');

@@ -20,8 +20,6 @@ class BestSellingController extends Controller
         $productsId = runEvent('query:product-sales-statistics', function ($query) use ($timestamp) {
             return $query->select(
                 'product_id',
-                'order_count',
-                'created_at',
                 DB::raw('SUM(order_count) as count')
             )
                 ->where('created_at', '>=', $timestamp)
@@ -32,11 +30,13 @@ class BestSellingController extends Controller
         }, true);
         if (is_array($productsId)) {
             return runEvent('product:query', function ($query) use ($productsId,$category_id) {
+                $idsString = implode(',',$productsId);
                 $query
                     ->whereIn('id', $productsId)
                     ->where('status', 1)
                     ->whereHas('variation')
-                    ->with('variation');
+                    ->with('variation')
+                    ->orderByRaw("FIELD(id,$idsString)");
                 if ($category_id != 0) {
                     $query->whereHas('categories', function (Builder $builder) use ($category_id) {
                         return $builder->where('category_id', $category_id);

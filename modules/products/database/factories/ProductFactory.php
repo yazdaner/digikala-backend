@@ -15,7 +15,8 @@ class ProductFactory extends Factory
             'title' => fake()->text(10),
             'en_title' => fake()->text(12),
             'description' => fake()->paragraph(),
-            'content' => fake()->paragraph()
+            'content' => fake()->paragraph(),
+            'status' => 1
         ];
     }
 }

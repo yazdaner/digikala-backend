@@ -8,4 +8,5 @@ class ProductsSaleStatistic extends Model
 {
     protected $guarded = [];
     protected $table = 'statistics__products_sales';
+    protected $dateFormat = 'U';
 }
