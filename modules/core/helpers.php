@@ -129,3 +129,18 @@ function addArrayList($name,$array)
         config()->set('app.'.$name,[$array]);
     }
 }
+
+function replaceFaNumber($number) 
+{
+    $number = str_replace('٠','0',$number);
+    $number = str_replace('١','1',$number);
+    $number = str_replace('٢','2',$number);
+    $number = str_replace('٣','3',$number);
+    $number = str_replace('٤','4',$number);
+    $number = str_replace('٥','5',$number);
+    $number = str_replace('٦','6',$number);
+    $number = str_replace('٧','7',$number);
+    $number = str_replace('٨','8',$number);
+    $number = str_replace('٩','9',$number);
+    return $number;
+}

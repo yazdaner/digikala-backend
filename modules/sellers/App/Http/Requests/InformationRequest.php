@@ -20,11 +20,11 @@ class InformationRequest extends FormRequest
             'nationalCode' => [
                 'required',
                 new CheckNationalCode(),
-                Rule::unique('nationalCode')
+                Rule::unique('sellers__information', 'value')->where('value', 'nationalCode')
             ],
-            'brandName' => ['required']
+            'brandName' => ['required', 'string']
         ];
-        if($this->get('cartNumber') !== ''){
+        if ($this->get('cartNumber') !== '') {
             $rules['cartNumber'] = [new CheckBankCartNumber()];
         }
         return $rules;

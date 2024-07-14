@@ -9,6 +9,9 @@ class CheckBankCartNumber implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //
+        $value = replaceFaNumber($value);
+        if( !is_numeric($value) || strlen($value) != 16){
+            $fail('شماره کارت وارد شده نامعتبر می باشد');
+        }
     }
 }
