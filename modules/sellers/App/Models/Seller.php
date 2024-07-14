@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\users\App\Models;
+namespace Modules\sellers\App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;

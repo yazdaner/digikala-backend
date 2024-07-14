@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('brandName')->nullable();
             $table->boolean('authentication')->default(0);
             $table->string('logo')->nullable();
+            $table->tinyInteger('status')->default(-3);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

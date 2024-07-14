@@ -4,7 +4,7 @@ namespace Modules\sellers\App\Actions;
 
 use Illuminate\Http\Request;
 use Modules\core\App\Jobs\SendVerificationCode;
-use Modules\users\App\Models\Seller;
+use Modules\sellers\App\Models\Seller;
 use Modules\core\App\Models\VerificationCode;
 
 class RegisterSeller

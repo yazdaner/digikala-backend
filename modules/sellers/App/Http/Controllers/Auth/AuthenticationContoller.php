@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\sellers\App\Models\Seller;
 use Illuminate\Validation\ValidationException;
-use Modules\users\App\Models\Seller;
 use Modules\sellers\App\Actions\RegisterSeller;
 use Modules\sellers\App\Http\Requests\LoginRequest;
 

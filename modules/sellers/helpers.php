@@ -1,6 +1,6 @@
 <?php
 
-use Modules\users\App\Models\Seller;
+use Modules\sellers\App\Models\Seller;
 
 function updateAuthConfigs()
 {
