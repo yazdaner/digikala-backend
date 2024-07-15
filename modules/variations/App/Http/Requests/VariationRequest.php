@@ -38,30 +38,13 @@ class VariationRequest extends FormRequest
 
     protected function getValidatorInstance()
     {
-        if ($this->request->has('price1')) {
-            $this->merge([
-                'price1' => str_replace(',', '', $this->request->get('price1'))
-            ]);
-        }
-        if ($this->request->has('price2')) {
-            $this->merge([
-                'price2' => str_replace(',', '', $this->request->get('price2'))
-            ]);
-        }
-        if ($this->request->has('product_count')) {
-            $this->merge([
-                'product_count' => str_replace(',', '', $this->request->get('product_count'))
-            ]);
-        }
-        if ($this->request->has('max_product_cart')) {
-            $this->merge([
-                'max_product_cart' => str_replace(',', '', $this->request->get('max_product_cart'))
-            ]);
-        }
-        if ($this->request->has('preparation_time')) {
-            $this->merge([
-                'preparation_time' => str_replace(',', '', $this->request->get('preparation_time'))
-            ]);
+        $array = ['price1','price2','product_count','max_product_cart','preparation_time'];
+        foreach ($array as $value) {
+            if ($this->request->has($value)) {
+                $this->merge([
+                    $value => str_replace(',', '', $this->request->get($value))
+                ]);
+            }
         }
         return parent::getValidatorInstance();
     }

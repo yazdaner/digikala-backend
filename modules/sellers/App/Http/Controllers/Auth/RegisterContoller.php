@@ -3,10 +3,12 @@
 namespace Modules\sellers\App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Modules\sellers\App\Actions\AddAddress;
 use Modules\sellers\App\Models\Seller;
 use Modules\sellers\App\Actions\AddBankCartNumber;
 use Modules\sellers\App\Actions\UpdateInformation;
 use Modules\sellers\App\Models\SellerBankCardNumber;
+use Modules\sellers\App\Http\Requests\AddressRequest;
 use Modules\sellers\App\Http\Requests\InformationRequest;
 
 class RegisterContoller extends Controller
@@ -33,7 +35,7 @@ class RegisterContoller extends Controller
                 'nationalCode' => $nationalCode
             ], $sellerId);
             SellerBankCardNumber::where('seller_id', $sellerId)->delete();
-            $addBankCartNumber($cartNumber,$sellerId);
+            $addBankCartNumber($cartNumber, $sellerId);
             return ['status' => 'ok'];
         } else {
             return [
@@ -43,7 +45,8 @@ class RegisterContoller extends Controller
         }
     }
 
-    public function finalStep()
+    public function finalStep(AddressRequest $request,AddAddress $addAddress)
     {
+
     }
 }
