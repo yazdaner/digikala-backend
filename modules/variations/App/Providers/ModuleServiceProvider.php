@@ -36,7 +36,8 @@ class ModuleServiceProvider extends ServiceProvider
                 $variationRelationForignKey,
                 $variationRelationLocalKey
             )
-                ->orderBy('price2', 'ASC');
+                ->orderBy('price2', 'ASC')
+                ->with(['param1', 'param2']);
         });
 
         Builder::macro('variations', function () {
@@ -47,7 +48,8 @@ class ModuleServiceProvider extends ServiceProvider
                 $variationRelationForignKey,
                 $variationRelationLocalKey
             )
-                ->orderBy('price2', 'ASC');
+                ->orderBy('price2', 'ASC')
+                ->with(['param1', 'param2']);
         });
     }
 }
