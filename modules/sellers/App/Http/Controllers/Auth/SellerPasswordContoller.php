@@ -19,13 +19,9 @@ class SellerPasswordContoller extends Controller
         $seller = Seller::where([
             'username' => $username,
             'status' => -2,
-        ])->first();
-        if ($seller) {
-            $seller->password = Hash::make($password);
-            $seller->update();
-            return ['status' => 'ok'];
-        } else {
-            return ['status' => 'error'];
-        }
+        ])->firstOrFail();
+        $seller->password = Hash::make($password);
+        $seller->update();
+        return ['status' => 'ok'];
     }
 }

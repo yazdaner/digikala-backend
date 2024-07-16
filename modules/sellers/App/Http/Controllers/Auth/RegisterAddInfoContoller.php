@@ -2,18 +2,17 @@
 
 namespace Modules\sellers\App\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Modules\sellers\App\Actions\AddAddress;
 use Modules\sellers\App\Models\Seller;
 use Modules\sellers\App\Actions\AddBankCartNumber;
 use Modules\sellers\App\Actions\UpdateInformation;
 use Modules\sellers\App\Models\SellerBankCardNumber;
-use Modules\sellers\App\Http\Requests\AddressRequest;
 use Modules\sellers\App\Http\Requests\InformationRequest;
 
-class RegisterContoller extends Controller
+class RegisterAddInfoContoller extends Controller
 {
-    public function addInfo(
+    public function __invoke(
         InformationRequest $request,
         UpdateInformation $updateInformation,
         AddBankCartNumber $addBankCartNumber
@@ -26,27 +25,23 @@ class RegisterContoller extends Controller
         $seller = Seller::where([
             'username' => $username,
             'status' => -2,
-        ])->whereNotNull('password')->first();
-        if ($seller) {
+        ])->whereNotNull('password')->firstOrFail();
+        DB::beginTransaction();
+        try {
             $sellerId = $seller->id;
             $seller->brandName = $brandName;
+            $seller->status = -1;
             $seller->update();
             $updateInformation([
                 'nationalCode' => $nationalCode
             ], $sellerId);
             SellerBankCardNumber::where('seller_id', $sellerId)->delete();
             $addBankCartNumber($cartNumber, $sellerId);
+            DB::commit();
             return ['status' => 'ok'];
-        } else {
-            return [
-                'status' => 'error',
-                'message' => 'فروشنده یافت نشد',
-            ];
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return ['status' => 'error'];
         }
-    }
-
-    public function finalStep(AddressRequest $request,AddAddress $addAddress)
-    {
-
     }
 }

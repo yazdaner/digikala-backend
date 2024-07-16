@@ -17,6 +17,10 @@ class City extends Model
         'updated_at',
     ];
 
+    public function province(){
+        return $this->belongsTo(Province::class,'province_id');
+    }
+
     protected static function newFactory()
     {
         return CityFactory::new();

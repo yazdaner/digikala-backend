@@ -5,6 +5,7 @@ namespace Tests\Feature\sellers;
 use Tests\TestCase;
 use Modules\sellers\App\Models\Seller;
 use Modules\core\App\Models\VerificationCode;
+use Modules\sellers\App\Models\SellerAddress;
 use Modules\sellers\App\Models\SellerInformation;
 
 class SellerAuthTest extends TestCase
@@ -40,7 +41,7 @@ class SellerAuthTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_set_password(): void
+    public function test_register_set_password(): void
     {
         $seller = Seller::where([
             'status' => -2
@@ -53,7 +54,7 @@ class SellerAuthTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_add_info(): void
+    public function test_register_add_info(): void
     {
         SellerInformation::where([
             'name' => 'nationalCode'
@@ -72,4 +73,30 @@ class SellerAuthTest extends TestCase
         $this->assertEquals('ok',$response->json()['status']);
         $response->assertOk();
     }
+    
+    public function test_register_final_step(): void
+    {
+        $address = SellerAddress::factory()->make()->toArray();
+        $seller = Seller::where([
+            'status' => -1
+        ])->orderBy('id','DESC')->first();
+        $response = $this->post('api/seller/account/final-step',[
+            'username' => $seller->username,
+            'addressInfo' => $address,
+        ]);
+        $this->assertEquals('ok',$response->json()['status']);
+        $response->assertOk();
+    }
+
+
+    public function test_register_verification_code(): void
+    {
+        $seller = Seller::where('status', '>=', -1)->orderBy('id','DESC')->first();
+        $response = $this->post('api/seller/send/verify-code',[
+            'username' => $seller->username,
+        ]);
+        $this->assertEquals('ok',$response->json()['status']);
+        $response->assertOk();
+    }
+
 }

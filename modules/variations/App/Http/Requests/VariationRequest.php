@@ -17,7 +17,7 @@ class VariationRequest extends FormRequest
         $rules = [
             'price1' => ['required', 'numeric'],
             'price2' => ['required', 'numeric'],
-            'product_count' => ['required', 'numeric',new UniqueVariation],
+            'product_count' => ['required', 'numeric', new UniqueVariation],
         ];
         if (!empty($this->request->get('preparation_time'))) {
             $rules['preparation_time'] = ['numeric'];
@@ -38,7 +38,7 @@ class VariationRequest extends FormRequest
 
     protected function getValidatorInstance()
     {
-        $array = ['price1','price2','product_count','max_product_cart','preparation_time'];
+        $array = ['price1', 'price2', 'product_count', 'max_product_cart', 'preparation_time'];
         foreach ($array as $value) {
             if ($this->request->has($value)) {
                 $this->merge([

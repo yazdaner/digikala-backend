@@ -4,7 +4,7 @@ namespace Modules\sellers\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddressRequest extends FormRequest
+class RegisterFinalStepRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -13,8 +13,10 @@ class AddressRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [];
-        if ($this->has('address')) {
+        $rules = [
+            'username' => ['required', 'string']
+        ];
+        if ($this->has('addressInfo')) {
             $rules['address'] = ['required', 'string'];
             $rules['province_id'] = ['required', 'numeric'];
             $rules['city_id'] = ['required', 'numeric'];
@@ -37,5 +39,19 @@ class AddressRequest extends FormRequest
             'latitude' => 'طول جغرافیایی',
             'longitude' => 'عرض جغرافیایی',
         ];
+    }
+
+    protected function getValidatorInstance()
+    {
+        $array = ['address', 'province_id', 'city_id', 'plaque', 'postal_code', 'latitude', 'longitude'];
+        $addressInfo = $this->get('addressInfo');
+        if ($addressInfo) {
+            foreach ($array as $value) {
+                $this->merge([
+                    $value => $addressInfo[$value]
+                ]);
+            }
+        }
+        return parent::getValidatorInstance();
     }
 }
