@@ -8,6 +8,6 @@ class SelectFileFromTable
 {
     public function handle($data)
     {
-        return Gallery::where($data)->first();
+        return Gallery::where($data)->firstOrFail();
     }
 }

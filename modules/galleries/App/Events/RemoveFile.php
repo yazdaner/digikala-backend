@@ -6,8 +6,8 @@ class RemoveFile
 {
     public function handle($path)
     {
-        if(file_exists($path)){
-            unlink($path);
+        if(file_exists(fileDirectory($path))){
+            unlink(fileDirectory($path));
         }
     }
 }
