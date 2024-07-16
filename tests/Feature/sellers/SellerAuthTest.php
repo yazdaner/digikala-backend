@@ -10,6 +10,9 @@ use Modules\sellers\App\Models\SellerInformation;
 
 class SellerAuthTest extends TestCase
 {
+
+    private $test_password = '12345678';
+
     public function test_sign_in(): void
     {
         $username = fake()->email;
@@ -48,7 +51,7 @@ class SellerAuthTest extends TestCase
         ])->orderBy('id','DESC')->first();
         $response = $this->post('/api/seller/account/set-password',[
             'username' => $seller->username,
-            'password' => fake()->password(8)
+            'password' => $this->test_password
         ]);
         $this->assertEquals('ok',$response->json()['status']);
         $response->assertOk();
@@ -99,4 +102,14 @@ class SellerAuthTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_login(): void
+    {
+     $seller = Seller::orderBy('id','DESC')->first();
+
+        $response = $this->post('api/seller/login', [
+            'username' => $seller->username,
+            'password' => $this->test_password,
+        ]);
+        $this->assertAuthenticatedAs($seller,'seller');
+    }
 }
