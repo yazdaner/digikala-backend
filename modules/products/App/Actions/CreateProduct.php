@@ -21,7 +21,7 @@ class CreateProduct
         $product->fake = $request->fake ?? 0;
         $product->slug = replaceSpace($request->en_title);
         $product->saveOrFail();
-        runEvent('product.created',$product);
+        runEvent('product:created',$product);
         return ['status' => 'ok'];
 
     }

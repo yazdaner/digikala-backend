@@ -3,7 +3,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
-use Modules\sellers\App\Http\Controllers\Auth\RegisterContoller;
 use Modules\sellers\App\Http\Controllers\Auth\AuthenticationContoller;
 use Modules\sellers\App\Http\Controllers\Auth\SellerPasswordContoller;
 use Modules\sellers\App\Http\Controllers\Auth\RegisterAddInfoContoller;

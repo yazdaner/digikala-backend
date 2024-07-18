@@ -17,10 +17,10 @@ class ModuleServiceProvider extends ServiceProvider
     {
         require_once base_path('modules/categories/helpers.php');
         $this->loadMigrationsFrom(base_path('modules/categories/database/migrations'));
-        addEvent('product.created', AddProductSpecification::class);
+        addEvent('product:created', AddProductSpecification::class);
         addEvent('product.updated', AddProductSpecification::class);
 
-        addEvent('product.created', SavingProduct::class);
+        addEvent('product:created', SavingProduct::class);
         addEvent('product.updated', SavingProduct::class);
 
         addEvent('category:query', CategoryQuery::class);

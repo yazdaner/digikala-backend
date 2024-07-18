@@ -3,6 +3,7 @@ namespace Modules\sellers\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\sellers\App\Events\SellerAccess;
+use Modules\sellers\App\Events\UpdateSellerProducts;
 use Modules\sellers\App\Http\Middleware\SellerAuthenticate;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -14,6 +15,8 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(base_path('modules/sellers/database/migrations'));
         $this->app['router']->aliasMiddleware('auth.seller',SellerAuthenticate::class);
         addEvent('access:admin-check',SellerAccess::class);
+        addEvent('product:created', UpdateSellerProducts::class);
+
     }
 
     public function boot() :void
