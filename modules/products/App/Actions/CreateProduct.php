@@ -21,6 +21,10 @@ class CreateProduct
         $product->fake = $request->fake ?? 0;
         $product->slug = replaceSpace($request->en_title);
         $product->saveOrFail();
+
+        $addKeywords = app(AddKeywords::class);
+        $addKeywords($product,$request);
+
         runEvent('product:created',$product);
         return ['status' => 'ok'];
 

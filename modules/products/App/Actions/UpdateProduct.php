@@ -21,6 +21,10 @@ class UpdateProduct
         $product = Product::findOrFail($id);
         $product->slug = replaceSpace($request->en_title);
         $product->update($data);
+
+        $addKeywords = app(AddKeywords::class);
+        $addKeywords($product,$request);
+
         runEvent('product.updated',$product);
         return ['status' => 'ok'];
 
