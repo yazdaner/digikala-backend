@@ -11,7 +11,11 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role === 'admin'){
+        $check = runEvent('access:admin-check',[
+            'uri' => $request->route()->uri
+        ],true);
+
+        if(Auth::user()->role === 'admin' || $check){
             return $next($request);
         }else{
             return abort(401);

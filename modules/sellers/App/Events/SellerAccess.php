@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Auth;
 
 class SellerAccess
 {
-    public function handle()
+    public function handle($data)
     {
         $access = false;
         if(Auth::guard('seller')->check()){
-            $uri = request()->route()->uri;
             foreach ($this->accessRoute as $route) {
-                if($uri == $route){
+                if($data['uri'] == $route){
                     $access = true;
                 }
             }

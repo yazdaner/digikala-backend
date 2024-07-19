@@ -4,6 +4,10 @@ use Modules\sellers\App\Models\Seller;
 
 function updateAuthConfigs()
 {
+    $sanctumGuards = config('sanctum.guards');
+    $sanctumGuards[] = 'seller';
+    config()->set('sanctum.guards', $sanctumGuards);
+
     $guards = config('auth.guards');
     $guards['seller'] = [
         'driver' => 'session',
