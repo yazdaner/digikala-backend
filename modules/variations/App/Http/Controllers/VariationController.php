@@ -27,7 +27,11 @@ class VariationController extends CrudController
 
     public function store($product_id, VariationRequest $request)
     {
-        runEvent('variation:add', $product_id, true);
+        $data = [
+            'product_id' => $product_id,
+            'request' => $request
+        ];
+        runEvent('variation:add', $data, true);
         return ['status' => 'ok'];
     }
 
@@ -36,9 +40,13 @@ class VariationController extends CrudController
         return Variation::findtOrFial($id);
     }
 
-    public function update($id, VariationRequest $request)
+    public function update($variation_id, VariationRequest $request)
     {
-        runEvent('variation:update', $id, true);
+        $data = [
+            'variation_id' => $variation_id,
+            'request' => $request
+        ];
+        runEvent('variation:update', $data, true);
         return ['status' => 'ok'];
     }
 }

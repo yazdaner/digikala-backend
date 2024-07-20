@@ -6,9 +6,10 @@ use Modules\variations\App\Models\Variation;
 
 class AddProductVariation
 {
-    public function handle($product_id)
+    public function handle($data)
     {
-        $request = request();
+        $request = $data['request'];
+        $product_id = $data['product_id'];
         $variation = new Variation($request->all());
         $variation->product_id = $product_id;
         $variation->status = $request->get('status') == 'true' ? 1 : 0;

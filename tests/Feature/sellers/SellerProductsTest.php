@@ -3,8 +3,10 @@
 namespace Tests\Feature\sellers;
 
 use Tests\TestCase;
+use Modules\colors\App\Models\Color;
 use Modules\sellers\App\Models\Seller;
 use Modules\products\App\Models\Product;
+use Modules\warranties\App\Models\Warranty;
 
 class SellerProductsTest extends TestCase
 {
@@ -13,10 +15,10 @@ class SellerProductsTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seller = Seller::first();
+        $this->seller = Seller::inRandomOrder()->first();
     }
 
-    public function test_create(): void
+    public function test_create_product(): void
     {
         $gallery = [
             ['path' => 'gallery/test1.png'],
@@ -39,6 +41,26 @@ class SellerProductsTest extends TestCase
         $latest = Product::latest('id')->first();
         //
         $this->assertNotNull($latest->title);
+        $response->assertOk();
+    }
+
+    public function test_create_variation(): void
+    {
+        $product = runEvent('product:query', function ($query) {
+            return $query->inRandomOrder()->first();
+        }, true);
+        $response = $this->actingAs($this->seller,'seller')->post("api/admin/products/{$product->id}/variations/store", [
+            'price1' => rand(9999, 99999),
+            'price2' => rand(9999, 99999),
+            'product_count' => rand(0, 100),
+            'max_product_cart' => rand(0, 5),
+            'preparation_time' => rand(0, 5),
+            'param1_type' => Color::class,
+            'param1_id' => rand(1, 99),
+            'param2_type' => Warranty::class,
+            'param2_id' => rand(1, 99),
+            'status' => 1
+        ]);
         $response->assertOk();
     }
 }

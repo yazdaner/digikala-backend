@@ -4,5 +4,5 @@
   'position_y' => 15,
   'opacity' => 50,
   'watermark' => 'true',
-  'image' => 'images/1721502446.png',
+  'image' => 'images/1721505436.png',
 );

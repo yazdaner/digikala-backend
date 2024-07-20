@@ -6,10 +6,12 @@ use Modules\variations\App\Models\Variation;
 
 class UpdateProductVariation
 {
-    public function handle($id)
+    public function handle($data)
     {
-        $request = request();
-        $variation = Variation::findOrFail($id);
+        $request = $data['request'];
+        $variation_id = $data['variation_id'];
+
+        $variation = Variation::findOrFail($variation_id);
         $data = $request->all();
         $arr = [
             'param1_type',
