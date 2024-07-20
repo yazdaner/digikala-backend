@@ -40,9 +40,8 @@ class ProductTest extends TestCase
         ]);
         $latest = Product::latest('id')->first();
         //
-        \Log::info($response->json());
         $this->assertNotNull($latest->title);
-        // $response->assertOk();
+        $response->assertOk();
     }
 
     public function test_index(): void

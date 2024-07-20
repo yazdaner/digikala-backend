@@ -4,9 +4,9 @@ use Modules\sellers\App\Models\Seller;
 
 function updateAuthConfigs()
 {
-    $sanctumGuards = config('sanctum.guards');
+    $sanctumGuards = config('sanctum.guard');
     $sanctumGuards[] = 'seller';
-    config()->set('sanctum.guards', $sanctumGuards);
+    config()->set('sanctum.guard', $sanctumGuards);
 
     $guards = config('auth.guards');
     $guards['seller'] = [

@@ -26,7 +26,6 @@ class ModuleServiceProvider extends ServiceProvider
 
         addEvent('product:query', ProductQuery::class);
         addEvent('product:info', ProductInfo::class);
-        addEvent('product:info', ProductInfo::class);
         addEvent('product:id-based-tag', ProductsIdBasedTag::class);
     }
 
