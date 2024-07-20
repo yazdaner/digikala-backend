@@ -31,7 +31,7 @@ class ProductTest extends TestCase
             'description' => $product->description,
             'content' => $product->content,
             'status' => 1,
-            'category_id' => 1,
+            'category_id' => $product->category_id,
             'weight' => fake()->numberBetween(100, 999),
             'barcode' => fake()->ean13(),
             'gallery' => $gallery,

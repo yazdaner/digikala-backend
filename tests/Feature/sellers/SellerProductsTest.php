@@ -25,13 +25,13 @@ class SellerProductsTest extends TestCase
             ['path' => 'gallery/test2.png'],
         ];
         $product = Product::factory()->make();
-        $response = $this->actingAs($this->seller,'seller')->post('api/admin/products', [
+        $response = $this->actingAs($this->seller, 'seller')->post('api/admin/products', [
             'title' => $product->title,
             'en_title' => $product->en_title,
             'description' => $product->description,
             'content' => $product->content,
             'status' => 1,
-            'category_id' => 1,
+            'category_id' => $product->category_id,
             'weight' => fake()->numberBetween(100, 999),
             'barcode' => fake()->ean13(),
             'gallery' => $gallery,
@@ -49,7 +49,7 @@ class SellerProductsTest extends TestCase
         $product = runEvent('product:query', function ($query) {
             return $query->inRandomOrder()->first();
         }, true);
-        $response = $this->actingAs($this->seller,'seller')->post("api/admin/products/{$product->id}/variations/store", [
+        $response = $this->actingAs($this->seller, 'seller')->post("api/admin/products/{$product->id}/variations/store", [
             'price1' => rand(9999, 99999),
             'price2' => rand(9999, 99999),
             'product_count' => rand(0, 100),
@@ -61,6 +61,30 @@ class SellerProductsTest extends TestCase
             'param2_id' => rand(1, 99),
             'status' => 1
         ]);
+        $response->assertOk();
+    }
+
+    public function test_return_shop_all_products(): void
+    {
+        $product = runEvent('product:query', function ($query) {
+            return $query->inRandomOrder()->first();
+        }, true);
+        $response = $this->actingAs($this->seller, 'seller')->get("api/seller/products/all?category_id=$product->category_id");
+        $this->assertGreaterThan(0, sizeof($response->json()['data']));
+        $response->assertOk();
+    }
+
+    public function test_seller_products(): void
+    {
+        $response = $this->actingAs($this->seller, 'seller')->get("api/seller/products");
+        $this->assertGreaterThan(0, sizeof($response->json()['data']));
+        $response->assertOk();
+    }
+
+    public function test_products_general_info(): void
+    {
+        $response = $this->actingAs($this->seller, 'seller')->get("api/seller/products/general-info");
+        $this->assertGreaterThan(0,$response->json()['totalProducts']);
         $response->assertOk();
     }
 }
