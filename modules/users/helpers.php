@@ -21,7 +21,6 @@ function getAdminForTest()
     }
 }
 
-
 function getUserForTest()
 {
     $user = User::where([
