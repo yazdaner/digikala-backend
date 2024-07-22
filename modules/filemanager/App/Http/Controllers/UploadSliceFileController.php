@@ -15,12 +15,12 @@ class UploadSliceFileController extends Controller
         $file = $request->file('file');
         $part = $request->post('part');
         $append = true;
-        $fileName = time() . '-' . $file->getClientOriginalName().'.'.$file->getClientOriginalExtension();
+        $fileName = time() . '-' . $file->getClientOriginalName();
         $lasted = $request->get('lasted'); 
         $path = Storage::disk('public')
             ->path('chunks/'.$file->getClientOriginalName());
-        if($part > 0){
-            $oldFileSize = filesize($path);
+        if($part > 1){
+            $oldFileSize = filesize($path); 
             if($oldFileSize > ($part * 500000)){
                 $append = false;
             }

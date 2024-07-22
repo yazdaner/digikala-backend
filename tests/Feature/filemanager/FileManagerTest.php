@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\brands;
 
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use Modules\users\App\Models\User;
+use Illuminate\Support\Facades\File;
 
 class FileManagerTest extends TestCase
 {
@@ -41,5 +42,34 @@ class FileManagerTest extends TestCase
         $filename = $response->json()['filename'];
         $this->assertFileExists(fileDirectory($path . '/' . $filename));
         $response->assertOk();
+    }
+
+    public function test_slice_upload_file()
+    {
+        $content = str_repeat('video', 1024 * 1024);
+        $filePath = storage_path('app/public/test_video.mp4');
+        File::put($filePath, $content);
+        $partSize = 0.5  * 1024 * 1024;
+        $partCount = ceil(strlen($content) / $partSize);
+        for ($part = 1; $part <= $partCount; $part++) {
+            $start = ($part - 1) * $partSize;
+            $sliceContent = substr($content, $start, $partSize);
+            $tempFilePath = storage_path('app/public/temp-slice-' . $part . '.mp4');
+            File::put($tempFilePath, $sliceContent);
+            $response = $this->actingAs($this->user)->post('/api/admin/filemanager/upload-slice', [
+                'fileDirectory' => '/',
+                'part' => $part,
+                'file' =>  new UploadedFile(
+                    $tempFilePath,
+                    'test.mp4',
+                    'video/mp4',
+                    null,
+                    true
+                ),
+                'lasted' => $part == $partCount ? 'true' : 'false'
+            ]);
+            $response->assertOk()->assertJson(['status' => 'ok']);
+            File::delete($tempFilePath);
+        }
     }
 }
