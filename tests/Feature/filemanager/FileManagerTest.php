@@ -42,7 +42,23 @@ class FileManagerTest extends TestCase
         $filename = $response->json()['filename'];
         $this->assertFileExists(fileDirectory($path . '/' . $filename));
         $response->assertOk();
+        return ($path . '/' . $filename);
     }
+
+    /**
+     *  @depends test_upload
+     */
+
+    public function test_remove_file($file)
+    {
+        $response = $this->actingAs($this->user)->post('api/admin/filemanager/remove', [
+            'file' => $file
+        ]);
+        //
+        $this->assertFileDoesNotExist(fileDirectory($file));
+        $response->assertOk()->assertJson(['status' => 'ok']);
+    }
+
 
     public function test_slice_upload_file()
     {
@@ -71,5 +87,13 @@ class FileManagerTest extends TestCase
             $response->assertOk()->assertJson(['status' => 'ok']);
             File::delete($tempFilePath);
         }
+    }
+
+    public function test_filemanager()
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/filemanager?path="/"');
+        //
+        $this->assertGreaterThan(0, sizeof($response->json()));
+        $response->assertOk();
     }
 }
