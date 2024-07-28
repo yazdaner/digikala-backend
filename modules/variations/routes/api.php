@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\variations\App\Http\Controllers\VariationController;
 use Modules\variations\App\Http\Controllers\ExportVariationsController;
+use Modules\variations\App\Http\Controllers\UpdateVariationsController;
 use Modules\variations\App\Http\Controllers\CategoryVariationController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
@@ -47,4 +48,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     );
 
     Route::post('/variations/export',ExportVariationsController::class);
+    Route::post('/variations/update',UpdateVariationsController::class);
 });

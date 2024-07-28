@@ -28,7 +28,7 @@ class ExportVariationsController extends Controller
                 $builder->where('category_id', $category_id);
             });
         }
-        $result = $variations->paginate(500);
+        $result = $variations->paginate(250);
         if ($result->count() > 0) {
             return Excel::download(new VariationExport($result), 'variations.xlsx');
         } else {
