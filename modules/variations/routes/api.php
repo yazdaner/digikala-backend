@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\variations\App\Http\Controllers\VariationController;
+use Modules\variations\App\Http\Controllers\ExportVariationsController;
 use Modules\variations\App\Http\Controllers\CategoryVariationController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
@@ -9,6 +10,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
         'category/{id}/variation',
         [CategoryVariationController::class, 'index']
     );
+
     Route::post(
         'category/{id}/variation',
         [CategoryVariationController::class, 'store']
@@ -43,4 +45,6 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
         'products/variations/{id}/restore',
         [VariationController::class, 'restore']
     );
+
+    Route::post('/variations/export',ExportVariationsController::class);
 });
