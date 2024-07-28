@@ -11,6 +11,7 @@ use Modules\products\App\Events\SavingProduct;
 use Modules\products\App\Events\AddProductGallery;
 use Modules\products\App\Events\ProductsIdBasedTag;
 use Modules\products\App\Events\ProductsIdBasedCategory;
+use Modules\products\App\Models\ProductCategory;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -36,6 +37,15 @@ class ModuleServiceProvider extends ServiceProvider
                 Product::class,
                 'product_id',
                 'id'
+            );
+        });
+
+        Builder::macro('productCategories', function () {
+           $localKey = defined('productCategories_local_key') ? productCategories_local_key : 'id';
+            return $this->getModel()->hasMany(
+                ProductCategory::class,
+                'product_id',
+                $localKey
             );
         });
     }
