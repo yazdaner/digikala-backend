@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\promotions\App\Http\Controllers\PromotionController;
 use Modules\promotions\App\Http\Controllers\ProductsListController;
+use Modules\promotions\App\Http\Controllers\BestProductsOfferController;
 use Modules\promotions\App\Http\Controllers\AddProductsPromotionController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
@@ -14,3 +15,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
 
     Route::post('promotion/{id}/add-products', AddProductsPromotionController::class);
 });
+
+Route::get('promotion/best-products', BestProductsOfferController::class);
