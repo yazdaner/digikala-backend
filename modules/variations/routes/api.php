@@ -5,6 +5,7 @@ use Modules\variations\App\Http\Controllers\VariationController;
 use Modules\variations\App\Http\Controllers\ExportVariationsController;
 use Modules\variations\App\Http\Controllers\UpdateVariationsController;
 use Modules\variations\App\Http\Controllers\CategoryVariationController;
+use Modules\variations\App\Http\Controllers\GeneralUpdateVariationsController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::get(
@@ -49,4 +50,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
 
     Route::post('/variations/export',ExportVariationsController::class);
     Route::post('/variations/update',UpdateVariationsController::class);
+    Route::post('/variations/general-update',GeneralUpdateVariationsController::class);
 });
