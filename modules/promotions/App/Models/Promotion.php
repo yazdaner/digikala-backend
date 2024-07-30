@@ -13,7 +13,7 @@ class Promotion extends Model
 
     protected $table = 'promotions';
     protected $guarded = [];
-    
+
     protected static function newFactory()
     {
         return PromotionFactory::new();
@@ -21,6 +21,6 @@ class Promotion extends Model
 
     public function products()
     {
-        return $this->hasMany(PromotionProduct::class,'promotion_id','id');
+        return $this->hasMany(PromotionProduct::class, 'promotion_id', 'id');
     }
 }

@@ -16,6 +16,25 @@ class PromotionTest extends TestCase
         parent::setUp();
         $this->user = getAdminForTest();
     }
+    public function test_index(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/promotions');
+        $body = $response->json();
+        //
+        $this->assertArrayHasKey('promotions', $body);
+        $response->assertOk();
+    }
+
+    public function test_index_search(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/promotions?name=app');
+        $body = $response->json();
+        $count = Promotion::where('name', 'like', '%app%')->count();
+        //
+        $this->assertEquals($body['promotions']['total'], $count);
+        $this->assertArrayHasKey('promotions', $body);
+        $response->assertOk();
+    }
 
     public function test_create()
     {
@@ -24,6 +43,27 @@ class PromotionTest extends TestCase
         $timestamp1 = strtotime('today');
         $timestamp2 = strtotime('+4day');
         $response = $this->actingAs($this->user)->post('api/admin/promotions', [
+            'name' => $data->name,
+            'type' => $data->type,
+            'min_discount' => $data->min_discount,
+            'min_products' => $data->min_products,
+            'category_id' => $data->category_id,
+            'status' => $data->status,
+            'start_time' => $jdf->jdate('Y/n/d', $timestamp1),
+            'end_time' => $jdf->jdate('Y/n/d', $timestamp2),
+        ]);
+        //
+        $response->assertOk()
+            ->assertJson(['status' => 'ok']);
+    }
+
+    public function test_update()
+    {
+        $promotion = Promotion::inRandomOrder()->first();
+        $data = Promotion::factory()->make();
+        $timestamp1 = strtotime('today');
+        $timestamp2 = strtotime('+4day');
+        $response = $this->actingAs($this->user)->put('api/admin/promotions', [
             'name' => $data->name,
             'type' => $data->type,
             'min_discount' => $data->min_discount,
