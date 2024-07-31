@@ -14,14 +14,16 @@ class AddProductsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','integer'],
+            'promotion_id' => ['required', 'exists:promotions,id'],
+            'products' => ['required', 'array'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'category_id' => 'دسته بندی',
+            'promotion_id' => 'پروموشن',
+            'products' => 'محصولات',
         ];
     }
 }

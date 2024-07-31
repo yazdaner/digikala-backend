@@ -14,7 +14,7 @@ class AddProductsPromotionController extends Controller
     {
         DB::beginTransaction();
         try {
-            $promotion = Promotion::firstOrFail(
+            $promotion = Promotion::findOrFail(
                 $request->get('promotion_id')
             );
             $products = $request->get('products', []);
@@ -36,6 +36,9 @@ class AddProductsPromotionController extends Controller
             return ['status' => 'ok'];
         } catch (\Exception $ex) {
             DB::rollBack();
+            \Log::info($ex->getMessage());
+            \Log::info($ex->getLine());
+            \Log::info($ex->getLine());
             return ['status' => 'error'];
         }
     }

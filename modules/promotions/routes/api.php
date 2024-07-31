@@ -13,7 +13,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::post('promotions/{id}/restore', [PromotionController::class, 'restore']);
     Route::get('promotions/{id}/info', [PromotionController::class, 'info']);
 
-    Route::post('promotion/{id}/add-products', AddProductsPromotionController::class);
+    Route::post('promotion/add-products', AddProductsPromotionController::class);
 });
 
 Route::get('promotion/best-products', BestProductsOfferController::class);
