@@ -16,6 +16,7 @@ class PromotionTest extends TestCase
         parent::setUp();
         $this->user = getAdminForTest();
     }
+    
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/promotions');
@@ -59,22 +60,42 @@ class PromotionTest extends TestCase
 
     public function test_update()
     {
+        $jdf = new Jdf();
         $promotion = Promotion::inRandomOrder()->first();
-        $data = Promotion::factory()->make();
+        $data = Promotion::factory()->make()->toArray();
         $timestamp1 = strtotime('today');
         $timestamp2 = strtotime('+4day');
-        $response = $this->actingAs($this->user)->put('api/admin/promotions', [
-            'name' => $data->name,
-            'type' => $data->type,
-            'min_discount' => $data->min_discount,
-            'min_products' => $data->min_products,
-            'category_id' => $data->category_id,
-            'status' => $data->status,
-            'start_time' => $jdf->jdate('Y/n/d', $timestamp1),
-            'end_time' => $jdf->jdate('Y/n/d', $timestamp2),
-        ]);
+        $data['start_time'] = $jdf->jdate('Y/n/d', $timestamp1);
+        $data['end_time'] = $jdf->jdate('Y/n/d', $timestamp2);
+        $response = $this->actingAs($this->user)->put('api/admin/promotions/' . $promotion->id, $data);
         //
+        $this->assertDatabaseHas('promotions', [
+            'id' => $promotion->id,
+            'name' => $data['name'],
+        ]);
         $response->assertOk()
             ->assertJson(['status' => 'ok']);
+    }
+
+    public function test_destroy(): void
+    {
+        $promotion = Promotion::inRandomOrder()->first();
+        $response = $this->actingAs($this->user)->delete('api/admin/promotions/' . $promotion->id);
+        $this->assertDatabaseMissing('promotions', [
+            'id' => $promotion->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_restore(): void
+    {
+        $promotion = Promotion::onlyTrashed()->inRandomOrder()->first();
+        $response = $this->actingAs($this->user)->post('api/admin/promotions/' . $promotion->id . '/restore');
+        $this->assertDatabaseHas('promotions', [
+            'id' => $promotion->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
     }
 }
