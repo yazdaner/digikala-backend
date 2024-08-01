@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('price2');
             $table->bigInteger('preparation_time')->default(0);
             $table->smallInteger('count');
+            $table->smallInteger('status')->default(0);
             $table->bigInteger('created_at');
             $table->bigInteger('updated_at');
         });

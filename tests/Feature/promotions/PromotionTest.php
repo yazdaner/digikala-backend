@@ -16,7 +16,7 @@ class PromotionTest extends TestCase
         parent::setUp();
         $this->user = getAdminForTest();
     }
-    
+
     public function test_index(): void
     {
         $response = $this->actingAs($this->user)->get('api/admin/promotions');
@@ -96,6 +96,22 @@ class PromotionTest extends TestCase
             'id' => $promotion->id,
             'deleted_at' => null,
         ]);
+        $response->assertOk();
+    }
+
+    public function test_info(): void
+    {
+        $promotion = Promotion::first();
+        $response = $this->actingAs($this->user)->get('api/admin/promotions/' . $promotion->id . '/info');
+        // \Log::info($response->json());
+        $this->assertGreaterThan(0, $response->json()['variations']);
+        $response->assertOk();
+    }
+
+    public function test_best_products(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/promotion/best-products?type=amazing');
+        $this->assertGreaterThan(0, $response->json()['variations']);
         $response->assertOk();
     }
 }

@@ -55,6 +55,17 @@ class PromotionController extends CrudController
     public function info($id)
     {
         $promotion = Promotion::with(['category','products'])->findOrFail($id);
+        if(sizeof($promotion->products) > 0){
+            $variationsId = [];
+            foreach ($promotion->products as $product) {
+                $variationsId[]= $product->variation_id;
+            }
+            $promotion->variations = runEvent('variation:query',function ($query) use ($variationsId){
+                return $query->whereIn('id',$variationsId)
+                    ->with(['product','param1','param2'])
+                    ->get();
+            },true); 
+        }
         return $promotion;
     }
 }
