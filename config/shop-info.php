@@ -3,5 +3,5 @@
   'multi-seller' => 'true',
   'tags' => 'فروشگاه لوازم جانبی',
   'description' => 'test',
-  'icon' => '1722188928.png',
+  'icon' => '1722542373.png',
 );

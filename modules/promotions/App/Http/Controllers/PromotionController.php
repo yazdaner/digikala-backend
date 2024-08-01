@@ -51,4 +51,10 @@ class PromotionController extends CrudController
         $promotion->update($data);
         return ['status' => 'ok'];
     }
+
+    public function info($id)
+    {
+        $promotion = Promotion::with(['category','products'])->findOrFail($id);
+        return $promotion;
+    }
 }

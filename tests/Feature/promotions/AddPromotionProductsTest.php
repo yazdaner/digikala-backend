@@ -18,7 +18,7 @@ class AddPromotionProductsTest extends TestCase
 
     public function test_add_products(): void
     {
-        $promotion = Promotion::inRandomOrder()->first();
+        $promotion = Promotion::first();
         $variations = runEvent('variation:query', function ($query) {
             return $query->where('product_count', '>', 0)
                 ->limit(10)
@@ -34,16 +34,12 @@ class AddPromotionProductsTest extends TestCase
                 'percent' => $promotion->min_discount,
             ];
         }
-
         // 
-
         $response = $this->actingAs($this->user)->post('api/admin/promotion/add-products', [
             'promotion_id' => $promotion->id,
             'products' => $products,
         ]);
-
         // 
-
         $response->assertOk()
             ->assertJson(['status' => 'ok']);
     }

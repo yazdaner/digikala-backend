@@ -36,9 +36,9 @@ class AddProductsPromotionController extends Controller
             return ['status' => 'ok'];
         } catch (\Exception $ex) {
             DB::rollBack();
-            \Log::info($ex->getMessage());
-            \Log::info($ex->getLine());
-            \Log::info($ex->getLine());
+            // \Log::info($ex->getMessage());
+            // \Log::info($ex->getLine());
+            // \Log::info($ex->getLine());
             return ['status' => 'error'];
         }
     }
