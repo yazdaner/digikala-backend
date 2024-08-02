@@ -21,7 +21,7 @@ class ProductsListController extends Controller
             if($category_id > 0){
                 define('productCategories_local_key','product_id');
                 $query->whereHas('productCategories',function (Builder $builder) use ($category_id){
-                    $builder->where('category_id',$category_id);
+                    return $builder->where('category_id',$category_id);
                 });
             }
             return $query->paginate(env('PAGINATE'));

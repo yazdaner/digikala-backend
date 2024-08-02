@@ -26,7 +26,7 @@ class GeneralUpdateVariationsController extends Controller
         if (intval($category_id) > 0) {
             define('productCategories_local_key', 'product_id');
             $variations->whereHas('productCategories', function (Builder $builder) use ($category_id) {
-                $builder->where('category_id', $category_id);
+                return $builder->where('category_id', $category_id);
             });
         }
 

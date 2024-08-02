@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\variations\App\Http\Controllers\SalesLockController;
 use Modules\variations\App\Http\Controllers\VariationController;
 use Modules\variations\App\Http\Controllers\ExportVariationsController;
 use Modules\variations\App\Http\Controllers\UpdateVariationsController;
 use Modules\variations\App\Http\Controllers\CategoryVariationController;
+use Modules\variations\App\Http\Controllers\ReturnLockDescriptionController;
 use Modules\variations\App\Http\Controllers\GeneralUpdateVariationsController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
@@ -51,4 +53,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::post('/variations/export',ExportVariationsController::class);
     Route::post('/variations/update',UpdateVariationsController::class);
     Route::post('/variations/general-update',GeneralUpdateVariationsController::class);
+
+    Route::resource('products/locked',SalesLockController::class)->except(['create','edit']);
 });
+Route::get('product/{product_id}/lock-description',ReturnLockDescriptionController::class);
