@@ -114,4 +114,11 @@ class PromotionTest extends TestCase
         $this->assertGreaterThan(0, $response->json()['variations']);
         $response->assertOk();
     }
+
+    public function test_products_list(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/promotions/products-list');
+        $this->assertNotNull($response->json()['data'][0]['product']['title']);
+        $response->assertOk();
+    }
 }
