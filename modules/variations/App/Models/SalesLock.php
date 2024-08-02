@@ -2,6 +2,7 @@
 namespace Modules\variations\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\variations\App\Actions\VariationUnlock;
 
 class SalesLock extends Model
 {

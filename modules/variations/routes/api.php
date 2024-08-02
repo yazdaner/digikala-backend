@@ -54,6 +54,6 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::post('/variations/update',UpdateVariationsController::class);
     Route::post('/variations/general-update',GeneralUpdateVariationsController::class);
 
-    Route::resource('products/locked',SalesLockController::class)->except(['create','edit']);
+    Route::resource('products-locked',SalesLockController::class)->except(['create','edit']);
 });
 Route::get('product/{product_id}/lock-description',ReturnLockDescriptionController::class);

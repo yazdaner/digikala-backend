@@ -23,6 +23,6 @@ class VariationsLock
                 return $builder->where('brand_id', $brand_id);
             });
         }
-        $variations->update(['status' => 2]);
+        $variations->where(['status' => 1])->update(['status' => 2]);
     }
 }
