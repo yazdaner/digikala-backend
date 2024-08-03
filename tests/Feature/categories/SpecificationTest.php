@@ -3,6 +3,7 @@
 namespace Tests\Feature\categories;
 
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
 use Modules\users\App\Models\User;
 use Modules\categories\App\Models\Category;
 use Modules\categories\App\Models\Specification;
@@ -75,6 +76,14 @@ class SpecificationTest extends TestCase
         $this->assertDatabaseMissing('specifications',[
             'id' => $specification->id,
         ]);
+        $response->assertOk();
+    }
+
+    public function test_product_specification(): void
+    {
+        $row = DB::table('products__specifications')->first();
+        $response = $this->actingAs($this->user)->get("api/product/$row->product_id/specifications");
+        $this->assertGreaterThan(0,sizeof($response->json()));
         $response->assertOk();
     }
 }

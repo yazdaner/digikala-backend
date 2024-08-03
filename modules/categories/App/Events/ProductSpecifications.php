@@ -42,6 +42,7 @@ class ProductSpecifications
                 ];
             }
         }
+        return $result;
     }
 
     protected function specificationsValues($specification)
