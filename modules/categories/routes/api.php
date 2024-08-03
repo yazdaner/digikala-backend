@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Modules\categories\App\Http\Controllers\CategoryController;
 use Modules\categories\App\Http\Controllers\SpecificationController;
+use Modules\categories\App\Http\Controllers\ProductSpecificationController;
+use Modules\categories\App\Http\Controllers\AddProductSpecificationController;
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 
@@ -16,8 +18,10 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::post('categories/{id}/specifications',[SpecificationController::class,'store']);
     Route::delete('categories/specifications/{id}',[SpecificationController::class,'destroy']);
 
+    Route::post('product/{id}/specifications',AddProductSpecificationController::class);
 
 });
 
 Route::get('categories/all',[CategoryController::class,'all']);
 Route::get('categories/{id}/specifications',[SpecificationController::class,'index']);
+Route::get('product/{id}/specifications',ProductSpecificationController::class);
