@@ -35,7 +35,7 @@ class CreateStaticMap implements ShouldQueue
                 file_put_contents(fileDirectory($path), $response->body());
                 $address->staticmap = $path;
                 $address->update();
-            } catch (\Throwable $th) {
+            } catch (\Exception $ex) {
             }
         }
     }

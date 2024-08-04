@@ -13,7 +13,8 @@ class AddAddress
         SellerAddress::where('seller_id', $seller->id)->delete();
         if (is_array($addressInfo)) {
             $addressInfo['seller_id'] = $seller->id;
-            SellerAddress::create($addressInfo);
+            $address = SellerAddress::create($addressInfo);
+            runEvent('CreateStaticMap', $address->id);
         }
     }
 }

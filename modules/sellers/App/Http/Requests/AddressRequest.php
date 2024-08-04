@@ -13,7 +13,7 @@ class AddressRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'address' => ['required', 'string:255'],
             'province_id' => ['required', 'numeric'],
             'city_id' => ['required', 'numeric'],
@@ -22,6 +22,10 @@ class AddressRequest extends FormRequest
             'latitude' => ['required', 'numeric'],
             'longitude' => ['required', 'numeric']
         ];
+        if(strval($this->warehouse) == 'true'){
+            $rules['warehouse_name'] = ['required','string:255'];
+        }
+        return $rules;
     }
 
     public function attributes(): array
@@ -34,6 +38,7 @@ class AddressRequest extends FormRequest
             'postal_code' => 'کد پستی',
             'latitude' => 'طول جغرافیایی',
             'longitude' => 'عرض جغرافیایی',
+            'warehouse_name' => 'نام انبار',
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('latitude');
             $table->string('longitude');
             $table->string('type')->default('shop');
-            $table->string('warehous_name')->nullable();
+            $table->string('warehouse_name')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

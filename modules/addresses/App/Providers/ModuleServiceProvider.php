@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\addresses\App\Models\Address;
 use Modules\addresses\App\Events\AddressDetail;
+use Modules\addresses\App\Events\CreateStaticMap;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,7 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(base_path('modules/addresses/database/migrations'));
         addEvent('address-detail', AddressDetail::class);
+        addEvent('CreateStaticMap', CreateStaticMap::class);
     }
 
     public function boot(): void
