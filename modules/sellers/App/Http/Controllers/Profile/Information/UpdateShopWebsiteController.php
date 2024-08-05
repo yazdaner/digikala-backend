@@ -5,21 +5,21 @@ namespace Modules\sellers\App\Http\Controllers\Profile\Information;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class UpdateShopAboutController extends Controller
+class UpdateShopWebsiteController extends Controller
 {
     public function __invoke(Request $request)
     {
         $this->validate(
             $request,
             [
-                'shop_about' => ['required', 'string', 'max:255'],
+                'wrb-url' => ['required', 'string', 'url'],
             ],
             [],
             [
-                'shop_about' => 'درباره فروشگاه',
+                'wrb-url' => 'آدرس وب سایت',
             ]
         );
-        runEvent('seller:update-information', 'shop_about');
+        runEvent('seller:update-information', 'wrb-url');
         return ['status' => 'ok'];
     }
 }

@@ -17,6 +17,6 @@ class SellerAuthenticate extends Middleware
 
     protected function redirectTo(Request $request): ?string
     {
-        abort(401,'Unauthorized');
+        abort(401, 'Unauthorized');
     }
 }
