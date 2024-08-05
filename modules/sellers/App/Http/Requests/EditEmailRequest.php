@@ -4,7 +4,7 @@ namespace Modules\sellers\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateEmailRequest extends FormRequest
+class EditEmailRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,16 +14,14 @@ class UpdateEmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'encrypted' => ['required', 'string'],
-            'code' => ['required', 'integer'],
+            'email' => ['required', 'email', 'unique:sellers,email'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'encrypted' => 'توکن',
-            'code' => 'کد تایید',
+            'email' => 'ایمیل',
         ];
     }
 }

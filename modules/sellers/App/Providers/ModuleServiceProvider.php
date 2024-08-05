@@ -9,6 +9,7 @@ use Modules\sellers\App\Events\SellerAccess;
 use Modules\sellers\App\Models\SellerProduct;
 use Modules\sellers\App\Events\UpdateSellerProducts;
 use Modules\sellers\App\Events\AddSellerIdToVariation;
+use Modules\sellers\App\Events\UpdateSellerInformation;
 use Modules\sellers\App\Http\Middleware\SellerAuthenticate;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -22,6 +23,7 @@ class ModuleServiceProvider extends ServiceProvider
         addEvent('access:admin-check', SellerAccess::class);
         addEvent('product:created', UpdateSellerProducts::class);
         addEvent('variation:creating', AddSellerIdToVariation::class);
+        addEvent('seller:update-information', UpdateSellerInformation::class);
     }
 
     public function boot(): void
