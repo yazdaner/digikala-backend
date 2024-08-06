@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\sellers;
 
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Modules\sellers\App\Models\Seller;
 use Modules\core\App\Models\VerificationCode;
@@ -30,18 +31,18 @@ class SellerInformationTest extends TestCase
             ->assertJson(['status' => 'ok']);
     }
 
-    // public function test_update_national_code(): void
-    // {
-    //     $response = $this->actingAs($this->seller, 'seller')
-    //         ->post(
-    //             'api/seller/profile/update-information/national-code',
-    //             [
-    //                 'nationalCode' => 2586227948,
-    //             ]
-    //         );
-    //     $response->assertOk()
-    //         ->assertJson(['status' => 'ok']);
-    // }
+    public function test_update_national_code(): void
+    {
+        $response = $this->actingAs($this->seller, 'seller')
+            ->post(
+                'api/seller/profile/update-information/national-code',
+                [
+                    'nationalCode' => 2586227948,
+                ]
+            );
+        $response->assertOk()
+            ->assertJson(['status' => 'ok']);
+    }
 
     public function test_request_update_email()
     {
@@ -78,7 +79,7 @@ class SellerInformationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_notification_mobile(): void
+    public function test_update_notification_mobile(): void
     {
         $response = $this->actingAs($this->seller, 'seller')
             ->post(
@@ -91,7 +92,7 @@ class SellerInformationTest extends TestCase
             ->assertJson(['status' => 'ok']);
     }
 
-    public function test_shop_about(): void
+    public function test_update_shop_about(): void
     {
         $response = $this->actingAs($this->seller, 'seller')
             ->post(
@@ -104,13 +105,39 @@ class SellerInformationTest extends TestCase
             ->assertJson(['status' => 'ok']);
     }
 
-    public function test_shop_website(): void
+    public function test_update_shop_website(): void
     {
         $response = $this->actingAs($this->seller, 'seller')
             ->post(
                 'api/seller/profile/update-information/shop-website',
                 [
                     'shop_website' => fake()->url()
+                ]
+            );
+        $response->assertOk()
+            ->assertJson(['status' => 'ok']);
+    }
+
+    public function test_update_phone_number(): void
+    {
+        $response = $this->actingAs($this->seller, 'seller')
+            ->post(
+                'api/seller/profile/update-information/phone-number',
+                [
+                    'phone-number' => '09123456789'
+                ]
+            );
+        $response->assertOk()
+            ->assertJson(['status' => 'ok']);
+    }
+
+    public function test_update_logo(): void
+    {
+        $response = $this->actingAs($this->seller, 'seller')
+            ->post(
+                'api/seller/profile/update-information/shop-logo',
+                [
+                    'logo' => UploadedFile::fake()->image('icon.png')
                 ]
             );
         $response->assertOk()
