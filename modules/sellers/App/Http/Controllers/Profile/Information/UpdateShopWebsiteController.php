@@ -12,14 +12,14 @@ class UpdateShopWebsiteController extends Controller
         $this->validate(
             $request,
             [
-                'wrb-url' => ['required', 'string', 'url'],
+                'shop_website' => ['required', 'string', 'url'],
             ],
             [],
             [
-                'wrb-url' => 'آدرس وب سایت',
+                'shop_website' => 'آدرس وب سایت',
             ]
         );
-        runEvent('seller:update-information', 'wrb-url');
+        runEvent('seller:update-information', 'shop_website');
         return ['status' => 'ok'];
     }
 }
