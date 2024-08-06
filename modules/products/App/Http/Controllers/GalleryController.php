@@ -25,7 +25,12 @@ class GalleryController extends Controller
             runEvent('gallery:delete', $gallery->id);
             runEvent('gallery:remove-file', $path);
             return ['status' => 'ok'];
-        } else {
+        }
+        elseif(file_exists(fileDirectory($path))){
+            runEvent('gallery:remove-file', $path);
+            return ['status' => 'ok'];
+        }
+        else {
             return ['status' => 'error'];
         }
     }

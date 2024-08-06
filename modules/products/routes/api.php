@@ -11,7 +11,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     ->except(['create','edit']);
 
     Route::post('products/{id}/restore',[ProductController::class,'restore']);
-    
+
     Route::post('products/gallery',[GalleryController::class,'upload']);
     Route::delete('product/gallery',[GalleryController::class,'destroy']);
 });

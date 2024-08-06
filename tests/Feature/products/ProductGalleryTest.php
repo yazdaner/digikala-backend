@@ -31,14 +31,15 @@ class ProductGalleryTest extends TestCase
 
     /**
      * @depends test_upload
-    */
+     */
 
-    // public function test_destroy($paths)
-    // {
-    //     $response = $this->actingAs($this->user)->delete('api/admin/product/gallery', [
-    //         'path' => $paths[0]
-    //     ]);
-    //     //
-    //     $response->assertOk();
-    // }
+    public function test_destroy($paths)
+    {
+        $response = $this->actingAs($this->user)->delete('api/admin/product/gallery', [
+            'path' => $paths[0]
+        ]);
+        //
+        $response->assertOk()
+            ->assertJson(['status' => 'ok']);
+    }
 }
