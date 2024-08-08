@@ -25,10 +25,20 @@ class GeneralSaleStatisticsController extends Controller
             $saleData = array_fill(0, $t, 0);
             $countData = array_fill(0, $t, 0);
             foreach ($saleStatistics as $value) {
-                $saleData[($value->day-1)] = $saleData[($value->day-1)] + $value->total_sales;
-                $countData[($value->day-1)] = $countData[($value->day-1)] + $value->order_count;
+                $saleData[($value->day - 1)] = $saleData[($value->day - 1)] + $value->total_sales;
+                $countData[($value->day - 1)] = $countData[($value->day - 1)] + $value->order_count;
             }
         } else {
+            $saleStatistics = GeneralSaleStatistic::where([
+                'year' => $year,
+            ])->orderBy('month', 'ASC')
+                ->get();
+            $saleData = array_fill(0, 12, 0);
+            $countData = array_fill(0, 12, 0);
+            foreach ($saleStatistics as $value) {
+                $saleData[($value->month - 1)] = $saleData[($value->month - 1)] + $value->total_sales;
+                $countData[($value->month - 1)] = $countData[($value->month - 1)] + $value->order_count;
+            }
         }
         return [
             'saleData' => $saleData,

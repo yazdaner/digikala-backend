@@ -10,7 +10,6 @@ function saveFileToGallery($data, $watermark = false)
         Gallery::create($data);
         if ($watermark && config('gallery.watermark') == 'true') {
             $manager = ImageManager::gd();
-            \Log::info(fileDirectory($data['path']));
             $img = $manager->read(fileDirectory($data['path']));
             $img->place(
                 fileDirectory(config('gallery.image')),

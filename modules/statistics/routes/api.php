@@ -9,7 +9,7 @@ use Modules\statistics\App\Http\Controllers\StatisticsSellByCategoryBrandControl
 
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::get('statistics/sale-province',ProvinceStatisticsController::class);
-    Route::get('statistics/general-province',GeneralSaleStatisticsController::class);
+    Route::get('statistics/general-sale',GeneralSaleStatisticsController::class);
     Route::get('statistics/product-sale',ProductSaleController::class);
     Route::get('statistics/sell/by-category-brand',StatisticsSellByCategoryBrandController::class);
 });
