@@ -15,4 +15,14 @@ class ShopController extends Controller
         $products = new Products($data);
         return $products->result();
     }
+
+    public function categoriesData(Request $request)
+    {
+        $ids = $request->get('ids');
+        $array = explode(',', $ids);
+        return runEvent('category:query', function ($query) use ($array) {
+            return $query->whereIn('id', $array)
+                ->get();
+        });
+    }
 }

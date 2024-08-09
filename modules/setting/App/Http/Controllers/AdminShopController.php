@@ -20,13 +20,15 @@ class AdminShopController extends Controller
         }
         $data = $request->all();
         foreach ($data as $key => $value) {
-            if ($request->hasFile($key)) {
-                $imageName = upload_file($request, $key, 'images');
-                if ($imageName) {
-                    $config[$key] = $imageName;
+            if (!empty($value)) {
+                if ($request->hasFile($key)) {
+                    $imageName = upload_file($request, $key, 'images');
+                    if ($imageName) {
+                        $config[$key] = 'images/' . $imageName;
+                    }
+                } else {
+                    $config[$key] = $value;
                 }
-            } else {
-                $config[$key] = $value;
             }
         }
         $text = '<?php return ' . var_export($config, true) . ';';

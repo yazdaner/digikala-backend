@@ -3,7 +3,6 @@
 namespace Tests\Feature\cart;
 
 use Tests\TestCase;
-use Modules\cart\App\Models\Order;
 use Modules\users\App\Models\User;
 
 class CompanySettingTest extends TestCase

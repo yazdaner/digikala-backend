@@ -21,12 +21,12 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
     Route::delete('/orders/{id}',[OrderListController::class,'destroy']);
     Route::post('/orders/{id}/restore',[OrderListController::class,'restore']);
     Route::get('/order/{id}/info',OrderInfoController::class);
-   
+
     Route::get('/submissions',SubmissionListController::class);
     Route::get('/submissions/statistics',SubmissionsStatisticsController::class);
     Route::post('/submission/{submission}/change-status',ChangeSubmissionStatusController::class);
     Route::get('/submission/{id}/info',SubmissionInfoController::class);
-    
+
     Route::post('/order/setting/company',CompanyInfoController::class);
     Route::get('/orders/label-info',LabelInfoController::class);
     Route::get('/orders/factors',FactorsController::class);
@@ -34,7 +34,7 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
 
 Route::prefix('user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('order/check-payment', CheckOrderPaymentController::class);
-    
+
     Route::get('orders/statistics', UserOrderStatisticsController::class);
     Route::get('orders', UserOrdersController::class);
     Route::get('order/{id}/info', UserOrderInfoController::class);
