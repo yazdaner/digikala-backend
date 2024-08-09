@@ -9,7 +9,7 @@ use Modules\warranties\database\factories\WarrantyFactory;
 
 class Warranty extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
     protected $table = 'warranties';
     protected $guarded = [];
     protected $hidden = [
@@ -24,17 +24,30 @@ class Warranty extends Model
 
     public static function search($data)
     {
-        $warranties = self::orderBy('id','DESC');
-        if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
-        {
+        $warranties = self::orderBy('id', 'DESC');
+        if (array_key_exists('trashed', $data) && $data['trashed'] == 'true') {
             $warranties = $warranties->onlyTrashed();
         }
-        if(array_key_exists('name',$data) && !empty($data['name']))
-        {
-            $warranties = $warranties->where('name','like','%'.$data['name'].'%');
+        if (array_key_exists('name', $data) && !empty($data['name'])) {
+            $warranties = $warranties->where('name', 'like', '%' . $data['name'] . '%');
         }
         return $warranties->paginate(env('PAGINATE'));
     }
+
+    public static function itemsDetail()
+    {
+        $warranties = self::all();
+        $list = [];
+        foreach ($warranties as $warranty) {
+            $list[] = [
+                'title' => $warranty->name,
+                'value' => $warranty->id
+            ];
+        }
+        return [
+            'title' => 'گارانتی',
+            'list' => $list,
+            'model' => self::class,
+        ];
+    }
 }
-
-

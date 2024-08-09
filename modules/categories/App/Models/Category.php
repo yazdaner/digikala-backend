@@ -22,9 +22,14 @@ class Category extends Model
         return CategoryFactory::new();
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(self::class,'parent_id','id');
+    }
+
     public static function search($data)
     {
-        $categories = self::orderBy('id','DESC');
+        $categories = self::orderBy('id','DESC')->with('parent');
         if(array_key_exists('trashed',$data) && $data['trashed'] == 'true')
         {
             $categories = $categories->onlyTrashed();
@@ -35,10 +40,5 @@ class Category extends Model
             ->orWhere('en_name','like','%'.$data['name'].'%');
         }
         return $categories->paginate(env('PAGINATE'));
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo(self::class,'parent_id','id');
     }
 }

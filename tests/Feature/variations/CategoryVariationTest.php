@@ -5,6 +5,7 @@ namespace Tests\Feature\variations;
 use Tests\TestCase;
 use Modules\users\App\Models\User;
 use Modules\colors\App\Models\Color;
+use Modules\variations\App\Models\CategoryVariation;
 use Modules\warranties\App\Models\Warranty;
 
 class CategoryVariationTest extends TestCase
@@ -16,7 +17,7 @@ class CategoryVariationTest extends TestCase
         parent::setUp();
         $this->user = getAdminForTest();
     }
-    
+
     public function test_create(): void
     {
         $category = runEvent('category:query', function ($query) {
@@ -37,6 +38,14 @@ class CategoryVariationTest extends TestCase
         $response = $this->actingAs($this->user)->get("api/admin/category/{$category->id}/variation");
         $body = json_decode($response->getContent());
         $this->assertObjectHasProperty('category_id', $body);
+        $response->assertOk();
+    }
+
+    public function test_variation_items(): void
+    {
+        $categoryItems = CategoryVariation::first();
+        $response = $this->actingAs($this->user)
+            ->post("api/admin/category/{$categoryItems->category_id}/variation/items");
         $response->assertOk();
     }
 }

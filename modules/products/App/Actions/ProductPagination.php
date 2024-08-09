@@ -11,7 +11,7 @@ class ProductPagination
     {
         $data = $request->all();
         $products = Product::query();
-        $products->with('variation');
+        $products->with(['category','variation']);
         if(array_key_exists('sortBy',$data) && $data['sortBy'] != '')
         {
             $ar = explode('-',$data['sortBy']);

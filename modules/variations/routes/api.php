@@ -20,6 +20,11 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function () {
         [CategoryVariationController::class, 'store']
     );
 
+    Route::post(
+        'category/{id}/variation/items',
+        [CategoryVariationController::class, 'items']
+    );
+
     Route::get(
         'products/{product_id}/variations',
         [VariationController::class, 'index']

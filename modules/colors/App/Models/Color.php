@@ -32,6 +32,22 @@ class Color extends Model
         }
         return $colors->paginate(env('PAGINATE'));
     }
+
+    public static function itemsDetail(){
+        $colors = self::all();
+        $list = [];
+        foreach ($colors as $color) {
+            $list[]=[
+                'title' => $color->name,
+                'value' => $color->id
+            ];
+        }
+        return [
+            'title' => 'رنگ',
+            'list' => $list,
+            'model' => self::class,
+        ];
+    }
 }
 
 
