@@ -72,7 +72,7 @@ class SalesLockTest extends TestCase
     {
         $lock = SalesLock::select(['id'])->inRandomOrder()->first();
         $response = $this->actingAs($this->user)->delete('api/admin/products-locked/' . $lock->id);
-        $this->assertDatabaseMissing('blog__posts', [
+        $this->assertDatabaseMissing('products__sales_lock', [
             'id' => $lock->id,
         ]);
         $response->assertOk();

@@ -70,7 +70,7 @@ class Products
     protected function variation()
     {
         if (array_key_exists('variation', $this->data) && $this->data['variation'] == 'true') {
-            $this->query->with('variation')->whereHas('variation');
+            $this->query->whereHas('variation')->with('variation');
         }
     }
 

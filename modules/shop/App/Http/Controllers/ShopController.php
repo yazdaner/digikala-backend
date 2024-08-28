@@ -23,6 +23,6 @@ class ShopController extends Controller
         return runEvent('category:query', function ($query) use ($array) {
             return $query->whereIn('id', $array)
                 ->get();
-        });
+        },true);
     }
 }

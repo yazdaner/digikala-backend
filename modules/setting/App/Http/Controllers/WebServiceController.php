@@ -17,5 +17,4 @@ class WebServiceController extends Controller
        runEvent('setting:update-create',$request->all());
        return ['status' => 'ok'];
     }
-    
 }

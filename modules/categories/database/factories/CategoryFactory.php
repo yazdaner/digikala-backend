@@ -11,10 +11,12 @@ class CategoryFactory extends Factory
 
     public function definition(): array
     {
+        $category = Category::select('id')->inRandomOrder()->first();
         return [
             'name' => fake()->text(10),
             'en_name' => fake()->name(),
-            'icon' => "['fas', 'music']",
+            'icon' => "music",
+            'parent_id' => $category->id ?? 0,
         ];
     }
 }

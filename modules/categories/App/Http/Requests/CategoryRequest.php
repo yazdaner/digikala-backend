@@ -17,6 +17,7 @@ class CategoryRequest extends FormRequest
     {
         $rules = [
             'name' => ['required','string','max:255'],
+            'parent_id' => ['nullable','integer'],
         ];
         if($this->hasFile('image')){
             $rules['image'] = ['image','max:512'];

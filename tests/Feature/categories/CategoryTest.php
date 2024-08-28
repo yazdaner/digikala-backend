@@ -19,13 +19,29 @@ class CategoryTest extends TestCase
         $this->user = getAdminForTest();
     }
 
-    public function test_create(): void
+    public function test_create_parent_category(): void
     {
         $category = Category::factory()->make();
         $response = $this->actingAs($this->user)->post('api/admin/categories', [
             'name' => $category->name,
             'en_name' => $category->en_name,
             'icon' => $category->icon,
+            'image' => UploadedFile::fake()->image('pic.png')
+        ]);
+        $latest = Category::latest('id')->first();
+        //
+        $this->assertNotNull($latest->icon);
+        $response->assertOk();
+    }
+
+    public function test_create_child_category(): void
+    {
+        $category = Category::factory()->make();
+        $response = $this->actingAs($this->user)->post('api/admin/categories', [
+            'name' => $category->name,
+            'en_name' => $category->en_name,
+            'icon' => $category->icon,
+            'parent_id' => $category->parent_id,
             'image' => UploadedFile::fake()->image('pic.png')
         ]);
         $latest = Category::latest('id')->first();
