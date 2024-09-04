@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Modules\shop\Queries\Products;
 use App\Http\Controllers\Controller;
 
+use function Laravel\Prompts\select;
+
 class ShopController extends Controller
 {
     public function products(Request $request)
@@ -22,7 +24,7 @@ class ShopController extends Controller
         $array = explode(',', $ids);
         return runEvent('category:query', function ($query) use ($array) {
             return $query->whereIn('id', $array)
-                ->get();
+                ->select(['name','slug','image','parent_id'])->get();
         },true);
     }
 }

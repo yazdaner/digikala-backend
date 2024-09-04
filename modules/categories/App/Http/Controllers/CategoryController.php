@@ -25,7 +25,7 @@ class CategoryController extends CrudController
     {
         $category = new Category($request->all());
         $category->slug = replaceSpace($request->get('en_name'));
-        $image = upload_file($request,'image','upload');
+        $image = upload_file($request,'image','category');
         if($image){
             $category->image = $image;
         }
@@ -45,7 +45,7 @@ class CategoryController extends CrudController
         $data = $request->all();
         $category = Category::findOrFail($id);
         $category->slug = replaceSpace($request->get('en_name'));
-        $image = upload_file($request,'image','upload');
+        $image = upload_file($request,'image','category');
         if($image){
             $category->image = $image;
         }
