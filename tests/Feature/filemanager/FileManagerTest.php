@@ -73,7 +73,7 @@ class FileManagerTest extends TestCase
             $tempFilePath = storage_path('app/public/temp-slice-' . $part . '.mp4');
             File::put($tempFilePath, $sliceContent);
             $response = $this->actingAs($this->user)->post('/api/admin/filemanager/upload-slice', [
-                'fileDirectory' => '/',
+                'fileDirectory' => '/video',
                 'part' => $part,
                 'file' =>  new UploadedFile(
                     $tempFilePath,

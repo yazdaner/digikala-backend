@@ -36,7 +36,7 @@ class ProfileTest extends TestCase
         $this->user->password = $current_password;
         $this->user->update();
 
-        $response = $this->post('login', [
+        $response = $this->post('api/login', [
             'username' => $this->user->username,
             'password' => $current_password,
         ]);
@@ -53,7 +53,7 @@ class ProfileTest extends TestCase
 
         $response = $this->withHeaders([
             'Accept' => 'application/json'
-        ])->post('login', [
+        ])->post('api/login', [
             'username' => $this->user->username,
             'password' => $current_password,
         ]);

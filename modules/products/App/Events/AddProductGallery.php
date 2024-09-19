@@ -10,12 +10,12 @@ class AddProductGallery
     {
         $request = request();
         $gallery = $request->get('gallery');
-        if(is_array($gallery)){
+        if (is_array($gallery)) {
             $position = 0;
             $user_type = $request->user()::class;
             $user_id = $request->user()->id;
             foreach ($gallery as $key => $value) {
-                if(function_exists('saveFileToGallery')){
+                if (function_exists('saveFileToGallery')) {
                     saveFileToGallery([
                         'tableable_type' => Product::class,
                         'tableable_id' => $product->id,
@@ -23,21 +23,21 @@ class AddProductGallery
                         'path' => $value['path'],
                         'user_type' => $user_type,
                         'user_id' => $user_id
-                    ],true);
+                    ], true);
                 }
-                if($key == 0){
-                    $this->addMainPicture($product,$value['path']);
+                if ($key == 0) {
+                    $this->addMainPicture($product, $value['path']);
                 }
                 $position++;
             }
         }
     }
 
-    protected function addMainPicture($product,$path)
+    protected function addMainPicture($product, $path)
     {
-        $pic_name = str_replace('gallery/','',$path);
+        $pic_name = str_replace('gallery/', '', $path);
         $product->image = $pic_name;
         $product->update();
-        create_fit_pic($path,$pic_name);
+        create_fit_pic($path, $pic_name);
     }
 }

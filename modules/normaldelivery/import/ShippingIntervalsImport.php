@@ -20,7 +20,6 @@ class ShippingIntervalsImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            // new GeneralSetting($this->city_id),
             new ShippingIntervals($this->city_id),
         ];
     }

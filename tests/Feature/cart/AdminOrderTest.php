@@ -24,7 +24,6 @@ class AdminOrderTest extends TestCase
         $response->assertOk();
     }
 
-
     public function test_destroy(): void
     {
         $order = Order::inRandomOrder()->first();

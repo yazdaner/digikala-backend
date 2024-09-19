@@ -17,7 +17,7 @@ class ProductTest extends TestCase
         parent::setUp();
         $this->user = getAdminForTest();
     }
-    
+
     public function test_create(): void
     {
         $gallery = [

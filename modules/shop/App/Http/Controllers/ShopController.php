@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Modules\shop\Queries\Products;
 use App\Http\Controllers\Controller;
 
-use function Laravel\Prompts\select;
-
 class ShopController extends Controller
 {
     public function products(Request $request)
