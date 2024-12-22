@@ -6,5 +6,6 @@ use Modules\{{pluralName}}\App\Http\Controllers\{{ModuleName}}Controller;
 Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
     Route::resource('{{pluralName}}',{{ModuleName}}Controller::class)
     ->except(['create','edit']);
+    Route::post('{{pluralName}}/{id}/restore',[{{ModuleName}}Controller::class,'restore']);
 });
 

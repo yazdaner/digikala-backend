@@ -14,7 +14,7 @@ class {{ModuleName}}Request extends FormRequest
     public function rules()
     {
         return  [
-            'name' => 'required',
+            'name' => ['required','string'],
         ];
     }
 
