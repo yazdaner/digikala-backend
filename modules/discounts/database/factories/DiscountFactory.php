@@ -12,7 +12,13 @@ class DiscountFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->text(10),
+            'code' => fake()->text(5),
+            'expiration_date' => '1403/10/02',
+            'percent' =>  rand(5, 50),
+            'amount' => rand(100000, 1000000),
+            'max_amount' => rand(100000, 1000000),
+            'min_purchase' => rand(1, 10),
+            'category_id' => 0,
         ];
     }
 }

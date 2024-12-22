@@ -10,28 +10,29 @@ use Modules\{{pluralName}}\App\Models\{{ModuleName}};
 
 class {{ModuleName}}Test extends TestCase
 {
-    protected User|null $user = null;
+    protected User|null $admin = null;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = getAdminForTest();
+        $this->admin = getAdminForTest();
     }
 
     public function test_create(): void
     {
-        ${{lowerName}} = {{ModuleName}}::factory()->make();
-        $response = $this->actingAs($this->user)->post('api/admin/{{pluralName}}', [
-            'name' => ${{lowerName}}->name,
+        $data = {{ModuleName}}::factory()->make();
+        $response = $this->actingAs($this->admin)->post('api/admin/{{pluralName}}', [
+            'name' => $data->name,
         ]);
         ${{lowerName}} = {{ModuleName}}::latest()->first();
         //
+        $this->assertEquals(${{lowerName}}->name, $data->name);
         $response->assertOk();
     }
 
     public function test_index(): void
     {
-        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}');
+        $response = $this->actingAs($this->admin)->get('api/admin/{{pluralName}}');
         $body = $response->json();
         //
         $this->assertArrayHasKey('{{pluralName}}', $body);
@@ -40,7 +41,7 @@ class {{ModuleName}}Test extends TestCase
 
     public function test_index_search(): void
     {
-        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}?trashed=true&name=app');
+        $response = $this->actingAs($this->admin)->get('api/admin/{{pluralName}}?trashed=true&name=app');
         $body = $response->json();
         $count = {{ModuleName}}::onlyTrashed()->where('name', 'like', '%app%')->count();
         //
@@ -51,7 +52,7 @@ class {{ModuleName}}Test extends TestCase
     public function test_show(): void
     {
         ${{lowerName}} = {{ModuleName}}::factory()->create();
-        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
+        $response = $this->actingAs($this->admin)->get('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
         $body = json_decode($response->getContent());
         //
         $this->assertEquals(${{lowerName}}->id, $body->id);
@@ -62,7 +63,7 @@ class {{ModuleName}}Test extends TestCase
     {
         $name = Str::random(10);
         ${{lowerName}} = {{ModuleName}}::factory()->create();
-        $response = $this->actingAs($this->user)->put('api/admin/{{pluralName}}/' . ${{lowerName}}->id, [
+        $response = $this->actingAs($this->admin)->put('api/admin/{{pluralName}}/' . ${{lowerName}}->id, [
             'name' => $name,
         ]);
         //
@@ -76,7 +77,7 @@ class {{ModuleName}}Test extends TestCase
     public function test_destroy(): void
     {
         ${{lowerName}} = {{ModuleName}}::factory()->create();
-        $response = $this->actingAs($this->user)->delete('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
+        $response = $this->actingAs($this->admin)->delete('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
         $this->assertDatabaseMissing('products__{{pluralName}}', [
             'id' => ${{lowerName}}->id,
             'deleted_at' => null,
@@ -89,7 +90,7 @@ class {{ModuleName}}Test extends TestCase
         ${{lowerName}} = {{ModuleName}}::factory()->create([
             'deleted_at' => Carbon::now()
         ]);
-        $response = $this->actingAs($this->user)->post('api/admin/{{pluralName}}/' . ${{lowerName}}->id . '/restore');
+        $response = $this->actingAs($this->admin)->post('api/admin/{{pluralName}}/' . ${{lowerName}}->id . '/restore');
         $this->assertDatabaseHas('products__{{pluralName}}', [
             'id' => ${{lowerName}}->id,
             'deleted_at' => null,

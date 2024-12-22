@@ -28,15 +28,14 @@ class {{ModuleName}}Controller extends CrudController
         return ['status' => 'ok'];
     }
 
-    public function show($id)
+    public function show({{ModuleName}} ${{lowerName}})
     {
-        return {{ModuleName}}::findOrFail($id);
+        return ${{lowerName}};
     }
 
-    public function update($id,{{ModuleName}}Request $request)
+    public function update({{ModuleName}} ${{lowerName}},{{ModuleName}}Request $request)
     {
         $data = $request->all();
-        ${{lowerName}} = {{ModuleName}}::findOrFail($id);
         ${{lowerName}}->update($data);
         return ['status' => 'ok'];
     }

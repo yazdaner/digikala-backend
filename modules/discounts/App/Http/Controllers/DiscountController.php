@@ -23,20 +23,24 @@ class DiscountController extends CrudController
 
     public function store(DiscountRequest $request)
     {
-        $discount = new Discount($request->all());
+        $discount = new Discount($request->validated());
+        $dataArray = explode('/',$request->post('expiration_date'));
+        $discount->expiration_date = timestamp($dataArray[0],$dataArray[1],$dataArray[2],23,59,59);
         $discount->saveOrFail();
         return ['status' => 'ok'];
     }
 
-    public function show($id)
+    public function show(Discount $discount)
     {
-        return Discount::findOrFail($id);
+        return $discount;
     }
 
-    public function update($id,DiscountRequest $request)
+    public function update(Discount $discount,DiscountRequest $request)
     {
         $data = $request->all();
-        $discount = Discount::findOrFail($id);
+        $dataArray = explode('/',$request->post('expiration_date'));
+        $discount->expiration_date = timestamp($dataArray[0],$dataArray[1],$dataArray[2],23,59,59);
+        unset($data['expiration_date']);
         $discount->update($data);
         return ['status' => 'ok'];
     }

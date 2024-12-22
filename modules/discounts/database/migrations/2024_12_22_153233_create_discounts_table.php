@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->integer('expiration_time');
+            $table->integer('expiration_date');
             $table->tinyInteger('percent')->nullable();
             $table->integer('amount')->nullable();
             $table->integer('max_amount')->nullable();
