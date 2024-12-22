@@ -1,0 +1,108 @@
+<?php
+
+namespace Tests\Feature\{{pluralName}};
+
+use Carbon\Carbon;
+use Tests\TestCase;
+use Illuminate\Support\Str;
+use Modules\users\App\Models\User;
+use Modules\{{pluralName}}\App\Models\{{ModuleName}};
+
+class {{ModuleName}}Test extends TestCase
+{
+    protected User|null $user = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = getAdminForTest();
+    }
+
+    public function test_create(): void
+    {
+        ${{lowerName}} = {{ModuleName}}::factory()->make();
+        $response = $this->actingAs($this->user)->post('api/admin/{{pluralName}}', [
+            'name' => ${{lowerName}}->name,
+        ]);
+        ${{lowerName}} = {{ModuleName}}::latest()->first();
+        //
+        $response->assertOk();
+    }
+
+    public function test_index(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}');
+        $body = $response->json();
+        //
+        $this->assertArrayHasKey('{{pluralName}}', $body);
+        $response->assertOk();
+    }
+
+    public function test_index_search(): void
+    {
+        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}?trashed=true&name=app');
+        $body = $response->json();
+        $count = {{ModuleName}}::onlyTrashed()->where('name', 'like', '%app%')->count();
+        //
+        $this->assertEquals($body['{{pluralName}}']['total'], $count);
+        $this->assertArrayHasKey('{{pluralName}}', $body);
+        $response->assertOk();
+    }
+    public function test_show(): void
+    {
+        ${{lowerName}} = {{ModuleName}}::factory()->create();
+        $response = $this->actingAs($this->user)->get('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
+        $body = json_decode($response->getContent());
+        //
+        $this->assertEquals(${{lowerName}}->id, $body->id);
+        $response->assertOk();
+    }
+
+    public function test_update(): void
+    {
+        $name = Str::random(10);
+        ${{lowerName}} = {{ModuleName}}::factory()->create();
+        $response = $this->actingAs($this->user)->put('api/admin/{{pluralName}}/' . ${{lowerName}}->id, [
+            'name' => $name,
+        ]);
+        //
+        $this->assertDatabaseHas('products__{{pluralName}}', [
+            'id' => ${{lowerName}}->id,
+            'name' => $name,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_destroy(): void
+    {
+        ${{lowerName}} = {{ModuleName}}::factory()->create();
+        $response = $this->actingAs($this->user)->delete('api/admin/{{pluralName}}/' . ${{lowerName}}->id);
+        $this->assertDatabaseMissing('products__{{pluralName}}', [
+            'id' => ${{lowerName}}->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_restore(): void
+    {
+        ${{lowerName}} = {{ModuleName}}::factory()->create([
+            'deleted_at' => Carbon::now()
+        ]);
+        $response = $this->actingAs($this->user)->post('api/admin/{{pluralName}}/' . ${{lowerName}}->id . '/restore');
+        $this->assertDatabaseHas('products__{{pluralName}}', [
+            'id' => ${{lowerName}}->id,
+            'deleted_at' => null,
+        ]);
+        $response->assertOk();
+    }
+
+    public function test_all(): void
+    {
+        $response = $this->get('api/{{pluralName}}/all');
+        $body = $response->json();
+        ${{pluralName}} = {{ModuleName}}::get();
+        $this->assertEquals(sizeof(${{pluralName}}), sizeof($body));
+        $response->assertOk();
+    }
+}

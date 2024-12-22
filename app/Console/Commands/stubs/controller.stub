@@ -1,0 +1,50 @@
+<?php
+
+namespace Modules\{{pluralName}}\App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Modules\{{pluralName}}\App\Models\{{ModuleName}};
+use Modules\{{pluralName}}\App\Http\Requests\{{ModuleName}}Request;
+use Modules\core\App\Http\Controllers\CrudController;
+
+class {{ModuleName}}Controller extends CrudController
+{
+
+    protected string $model = {{ModuleName}}::class;
+
+    public function index(Request $request)
+    {
+        ${{pluralName}} = {{ModuleName}}::search($request->all());
+        return [
+            '{{pluralName}}' => ${{pluralName}},
+            'trashCount' => {{ModuleName}}::onlyTrashed()->count(),
+        ];
+    }
+
+    public function store({{ModuleName}}Request $request)
+    {
+        ${{lowerName}} = new {{ModuleName}}($request->all());
+        ${{lowerName}}->saveOrFail();
+        return ['status' => 'ok'];
+    }
+
+    public function show($id)
+    {
+        return {{ModuleName}}::findOrFail($id);
+    }
+
+    public function update($id,{{ModuleName}}Request $request)
+    {
+        $data = $request->all();
+        ${{lowerName}} = {{ModuleName}}::findOrFail($id);
+        ${{lowerName}}->update($data);
+        return ['status' => 'ok'];
+    }
+
+    public function all()
+    {
+        return {{ModuleName}}::select(['id','name'])->get();
+    }
+}
+
+

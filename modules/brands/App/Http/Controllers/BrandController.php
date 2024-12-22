@@ -23,6 +23,7 @@ class BrandController extends CrudController
 
     public function store(BrandRequest $request)
     {
+        // return $request->all();
         $brand = new Brand($request->all());
         $image = upload_file($request,'icon','upload');
         if($image){

@@ -45,7 +45,36 @@ function upload_file($request, $name, $dir, $pix = '')
 
 function replaceSpace($string)
 {
-    $string = str_replace('-', ' ', $string);
+    $string = str_replace(' ', '-', $string);
+    $string = str_replace('/', '-', $string);
+    $string = str_replace('\\', '-', $string);
+    $string = str_replace('!', '-', $string);
+    $string = str_replace('#', '-', $string);
+    $string = str_replace('$', '-', $string);
+    $string = str_replace('%', '-', $string);
+    $string = str_replace('^', '-', $string);
+    $string = str_replace('&', '-', $string);
+    $string = str_replace('*', '-', $string);
+    $string = str_replace('(', '-', $string);
+    $string = str_replace(')', '-', $string);
+    $string = str_replace('_', '-', $string);
+    $string = str_replace('+', '-', $string);
+    $string = str_replace('=', '-', $string);
+    $string = str_replace('.', '-', $string);
+    $string = str_replace(',', '-', $string);
+    $string = str_replace('?', '-', $string);
+    $string = str_replace('<', '-', $string);
+    $string = str_replace('>', '-', $string);
+    $string = str_replace('`', '-', $string);
+    $string = str_replace('~', '-', $string);
+    $string = str_replace('--', '-', $string);
+    $string = str_replace('---', '-', $string);
+    $string = str_replace('----', '-', $string);
+    $string = str_replace('-----', '-', $string);
+    $string = str_replace('------', '-', $string);
+    $string = str_replace('-------', '-', $string);
+    $string = str_replace('-------', '-', $string);
+    $string = str_replace('---------', '-', $string);
     return preg_replace('/\s+/', '-', $string);
 }
 
@@ -160,4 +189,25 @@ function replaceFaNumber($number)
     $number = str_replace('٨', '8', $number);
     $number = str_replace('٩', '9', $number);
     return $number;
+}
+
+function singularToPlural($word)
+{
+    $lastLetter = substr($word, -1);
+    $lastTwoLetters = substr($word, -2);
+    if ($lastTwoLetters === 'us') {
+        return substr($word, 0, -2) . 'i';
+    } elseif ($lastTwoLetters === 'is') {
+        return substr($word, 0, -2) . 'es';
+    } elseif ($lastLetter === 'y' && !preg_match('/[aeiou]y$/i', $word)) {
+        return substr($word, 0, -1) . 'ies';
+    } elseif ($lastTwoLetters === 'fe') {
+        return substr($word, 0, -2) . 'ves';
+    } elseif ($lastLetter === 'f') {
+        return substr($word, 0, -1) . 'ves';
+    } elseif (in_array($lastLetter, ['s', 'x', 'z']) || in_array($lastTwoLetters, ['sh', 'ch'])) {
+        return $word . 'es';
+    } else {
+        return $word . 's';
+    }
 }
