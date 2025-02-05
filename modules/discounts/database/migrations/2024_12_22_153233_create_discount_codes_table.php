@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('discount_codes', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->integer('expiration_date');

@@ -2,10 +2,11 @@
 
 namespace Modules\cart\App\Providers;
 
+use Modules\cart\App\Events\CartItems;
 use Illuminate\Support\ServiceProvider;
-use Modules\cart\App\Events\ReturnProductsByOrderId;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\cart\App\Models\OrderProduct;
+use Modules\cart\App\Events\ReturnProductsByOrderId;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(base_path('modules/cart/database/migrations'));
         require_once base_path('modules/cart/helpers.php');
         addEvent('order:products', ReturnProductsByOrderId::class);
+        addEvent('cart:items', CartItems::class);
     }
 
     public function boot(): void

@@ -2,16 +2,17 @@
 
 namespace Modules\discounts\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\discounts\database\factories\DiscountFactory;
 
 class Discount extends Model
 {
     use SoftDeletes,HasFactory;
 
-    protected $table = 'discounts';
+    protected $table = 'discount_codes';
     protected $guarded = [];
 
     protected static function newFactory()
@@ -31,6 +32,11 @@ class Discount extends Model
             $discounts = $discounts->where('code','like','%'.$data['code'].'%');
         }
         return $discounts->paginate(env('PAGINATE'));
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->timestamp;
     }
 }
 

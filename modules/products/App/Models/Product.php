@@ -2,9 +2,10 @@
 
 namespace Modules\products\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\products\database\factories\ProductFactory;
 
 class Product extends Model
@@ -41,5 +42,10 @@ class Product extends Model
     public function categories()
     {
         return $this->hasMany(ProductCategory::class, 'product_id', 'id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->timestamp;
     }
 }

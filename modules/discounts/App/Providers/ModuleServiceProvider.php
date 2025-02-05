@@ -2,7 +2,6 @@
 namespace Modules\discounts\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder;
 
 class ModuleServiceProvider extends ServiceProvider
 {
