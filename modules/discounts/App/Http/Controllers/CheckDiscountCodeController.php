@@ -5,7 +5,6 @@ namespace Modules\discounts\App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\discounts\App\Models\Discount;
-use SebastianBergmann\CodeUnit\FunctionUnit;
 
 class CheckDiscountCodeController extends Controller
 {
@@ -49,7 +48,7 @@ class CheckDiscountCodeController extends Controller
     {
         $discountAmount = 0;
         foreach ($this->grouped as $i => $group) {
-            $this->grouped[$i]['totalPrice'] =
+            $group['totalPrice'] =
                 $this->getVariationsTotalPrice($group['variationsId']);
             $amount = $this->getGruopDiscountAmount($group);
             if (
@@ -73,7 +72,8 @@ class CheckDiscountCodeController extends Controller
         return runEvent('variation:query', function ($query) use ($variationsId) {
             return $query->whereIn('id', $variationsId)
                 ->get()
-                ->keyBy('id');
+                ->keyBy('id')
+                ->toArray();
         }, true);
     }
 
@@ -81,7 +81,7 @@ class CheckDiscountCodeController extends Controller
     {
         $productsId = [];
         foreach ($variations as $variation) {
-            $productsId[] = $variation->product_id;
+            $productsId[] = $variation['product_id'];
         }
         return runEvent('product:query', function ($query) use ($productsId) {
             return $query->whereIn('id', $productsId)
@@ -108,7 +108,7 @@ class CheckDiscountCodeController extends Controller
     {
         $totalPrice = 0;
         foreach ($variationsId as $id) {
-            $totalPrice += $this->variations[$id]->price2;
+            $totalPrice += $this->variations[$id]['price2'];
         }
         return $totalPrice;
     }
@@ -116,10 +116,10 @@ class CheckDiscountCodeController extends Controller
     protected function getGruopDiscountAmount($data)
     {
         $amount = 0;
-        if (intval($data['discount']->amount) > 0) {
-            $amount = intval($data['discount']->amount);
+        if (intval($data['discount']['amount']) > 0) {
+            $amount = intval($data['discount']['amount']);
         } else {
-            $amount = ($data['totalPrice'] * intval($data['discount']->percent) / 100);
+            $amount = ($data['totalPrice'] * intval($data['discount']['percent']) / 100);
         }
         if (intval($data['discount']['max_amount']) > $amount) {
             $amount = $data['discount']['max_amount'];
