@@ -11,6 +11,7 @@ class CheckDiscountCodeController extends Controller
     protected array $products = [];
     protected array $variations = [];
     protected array $grouped = [];
+    protected array $cartItems = [];
 
     public function __invoke(Request $request)
     {
@@ -24,9 +25,9 @@ class CheckDiscountCodeController extends Controller
             ->orderBy('min_purchase', 'DESC')
             ->get();
         if (sizeof($discounts)) {
-            $cartItems = runEvent('cart:items', 1, true);
-            if (sizeof($cartItems) > 0) {
-                $this->variations = $this->getVariations($cartItems);
+            $this->cartItems = runEvent('cart:items', 1, true);
+            if (sizeof($this->cartItems) > 0) {
+                $this->variations = $this->getVariations($this->cartItems);
                 $this->products = $this->getProducts($this->variations);
                 foreach ($discounts as $discount) {
                     $this->grouped[] =
@@ -68,6 +69,7 @@ class CheckDiscountCodeController extends Controller
             unset($this->grouped[$i]);
             $i++;
         }
+        return $discountAmount;
     }
 
     protected function getVariations($cartItems)
@@ -102,9 +104,11 @@ class CheckDiscountCodeController extends Controller
             $productsId = array_keys(array_filter($this->products, function ($value) use ($category_id) {
                 return $value == $category_id;
             }));
-            return array_filter($this->variations, function ($variation) use ($productsId) {
-                return array_key_exists($variation->product_id, $productsId);
-            });
+            return array_keys(
+                array_filter($this->variations, function ($variation) use ($productsId) {
+                    return array_search($variation['product_id'], $productsId) !== false;
+                })
+            );
         }
     }
 
@@ -112,7 +116,7 @@ class CheckDiscountCodeController extends Controller
     {
         $totalPrice = 0;
         foreach ($variationsId as $id) {
-            $totalPrice += $this->variations[$id]['price2'];
+            $totalPrice += ($this->variations[$id]['price2'] * $this->cartItems[$id]);
         }
         return $totalPrice;
     }
@@ -120,13 +124,14 @@ class CheckDiscountCodeController extends Controller
     protected function getGruopDiscountAmount($data)
     {
         $amount = 0;
+        $max_amount = intval($data['discount']['max_amount']);
         if (intval($data['discount']['amount']) > 0) {
             $amount = intval($data['discount']['amount']);
         } else {
             $amount = ($data['totalPrice'] * intval($data['discount']['percent']) / 100);
         }
-        if (intval($data['discount']['max_amount']) > $amount) {
-            $amount = $data['discount']['max_amount'];
+        if ($max_amount != 0 && $max_amount < $amount) {
+            $amount = $max_amount;
         }
         return intval($amount);
     }

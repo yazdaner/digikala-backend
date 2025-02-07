@@ -17,4 +17,5 @@ Route::prefix('admin')->middleware(AdminMiddleware)->group(function(){
 });
 
 Route::get('product/yzd-{id}/{slug}',[ShopController::class,'product']);
-Route::get('product/{id}/categories',[ShopController::class,'productCategories']);
+Route::get('product/{product_id}/categories',[ShopController::class,'productCategories']);
+Route::get('product/{product_id}/gallery',[ShopController::class,'gallery']);

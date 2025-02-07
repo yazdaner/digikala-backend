@@ -10,7 +10,7 @@ class FileManagerController extends Controller
     public function __invoke(Request $request)
     {
         $this->validate($request, ['path' => ['string', 'required']], [], ['path' => 'مسیر پوشه']);
-        $path = fileDirectory($request->post('path'));
+        $path = fileDirectory($request->get('path'));
         return array_diff(scandir($path),['.','..']);
     }
 }

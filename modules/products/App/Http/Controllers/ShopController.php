@@ -26,11 +26,19 @@ class ShopController extends Controller
         return $result;
     }
 
-    public function productCategories($id)
+    public function productCategories($product_id)
     {
-        return ProductCategory::where('product_id', $id)
+        return ProductCategory::where('product_id', $product_id)
             ->orderBy('category_id', 'ASC')
             ->pluck('category_id')
             ->toArray();
+    }
+
+    public function gallery($product_id)
+    {
+        return runEvent('gallery:files', [
+            'type' => Product::class,
+            'id' => $product_id
+        ], true);
     }
 }

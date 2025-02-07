@@ -16,21 +16,15 @@ class InformationRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [
+        return [
             'nationalCode' => [
                 'required',
                 new CheckNationalCode(),
                 Rule::unique('sellers__information', 'value')->where('name', 'nationalCode')
             ],
-            'brandName' => ['required', 'string']
+            'brandName' => ['required', 'string'],
+            'cartNumber' => ['nullable', new CheckBankCartNumber(),]
         ];
-        if ($this->get('cartNumber') !== '') {
-            $rules['cartNumber'] = [
-                new CheckBankCartNumber(),
-                Rule::unique('sellers__bank_cart_numbers', 'number')
-            ];
-        }
-        return $rules;
     }
 
     public function attributes(): array
@@ -40,5 +34,11 @@ class InformationRequest extends FormRequest
             'brandName' => 'نام فروشگاه',
             'cartNumber' => 'شماره کارت',
         ];
+    }
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cartNumber' => str_replace('-', '', $this->cartNumber)
+        ]);
     }
 }
