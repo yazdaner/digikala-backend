@@ -23,7 +23,7 @@ class CheckDiscountTest extends TestCase
         )->post('/api/discount/check', [
             'code' => $discount->code
         ]);
-        $this->assertEquals(0, $response->json['discount']);
+        $this->assertEquals(0, $response->json()['discount']);
         $response->assert5tatus(200);
     }
 }

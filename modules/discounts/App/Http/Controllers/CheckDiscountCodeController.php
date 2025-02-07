@@ -47,7 +47,9 @@ class CheckDiscountCodeController extends Controller
     protected function getDiscountAmount()
     {
         $discountAmount = 0;
-        foreach ($this->grouped as $i => $group) {
+        $i = 0;
+        while (sizeof($this->grouped)) {
+            $group = $this->grouped[$i];
             $group['totalPrice'] =
                 $this->getVariationsTotalPrice($group['variationsId']);
             $amount = $this->getGruopDiscountAmount($group);
@@ -57,12 +59,13 @@ class CheckDiscountCodeController extends Controller
                     intval($group['totalPrice']) >=
                     intval($group['discount']->min_perchase))
             ) {
-                unset($this->grouped[$i]);
                 if ($amount > 0) {
                     $this->removeVariationsIdOfGroups($group);
                     $discountAmount += $amount;
                 }
             }
+            unset($this->grouped[$i]);
+            $i++;
         }
     }
 
