@@ -46,7 +46,7 @@ class ManageDiscountTest extends TestCase
         ]);
         $discount = Discount::latest()->first();
         //
-        $this->assertEquals($data->code, $discount->code);
+        $this->assertEquals($discount->code, $data->code);
         $response->assertOk();
     }
 }

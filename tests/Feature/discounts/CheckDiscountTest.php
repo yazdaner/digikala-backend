@@ -24,6 +24,6 @@ class CheckDiscountTest extends TestCase
             'code' => $discount->code
         ]);
         $this->assertEquals(0, $response->json()['discount']);
-        $response->assert5tatus(200);
+        $response->assertOk();
     }
 }

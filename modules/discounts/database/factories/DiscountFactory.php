@@ -13,7 +13,7 @@ class DiscountFactory extends Factory
     {
         return [
             'code' => fake()->text(5),
-            'expiration_date' => '1403/10/02',
+            'expiration_date' => '1404/10/02',
             'percent' =>  rand(5, 50),
             'amount' => rand(100000, 1000000),
             'max_amount' => rand(100000, 1000000),

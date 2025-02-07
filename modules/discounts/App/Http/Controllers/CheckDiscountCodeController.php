@@ -20,6 +20,7 @@ class CheckDiscountCodeController extends Controller
         ]);
         $discounts = Discount::where('code', $request->post('code'))
             ->where('expiration_date', '>=', time())
+            ->orderBy('category_id', 'DESC')
             ->orderBy('min_purchase', 'DESC')
             ->get();
         if (sizeof($discounts)) {
@@ -88,7 +89,7 @@ class CheckDiscountCodeController extends Controller
         }
         return runEvent('product:query', function ($query) use ($productsId) {
             return $query->whereIn('id', $productsId)
-                ->pluck(['id', 'category_id'])
+                ->pluck('id', 'category_id')
                 ->toArray();
         }, true);
     }
