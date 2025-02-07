@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Modules\sellers\App\Models\Seller;
 
-class SellerPasswordContoller extends Controller
+class SellerPasswordController extends Controller
 {
     public function __invoke(Request $request)
     {

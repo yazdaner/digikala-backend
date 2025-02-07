@@ -7,7 +7,7 @@ use Modules\sellers\App\Models\Seller;
 use Modules\sellers\App\Actions\AddAddress;
 use Modules\sellers\App\Http\Requests\RegisterFinalStepRequest;
 
-class RegisterFinalStepContoller extends Controller
+class RegisterFinalStepController extends Controller
 {
     public function __invoke(RegisterFinalStepRequest $request, AddAddress $addAddress)
     {

@@ -10,7 +10,7 @@ use Modules\sellers\App\Actions\UpdateInformation;
 use Modules\sellers\App\Models\SellerBankCardNumber;
 use Modules\sellers\App\Http\Requests\InformationRequest;
 
-class RegisterAddInfoContoller extends Controller
+class RegisterAddInfoController extends Controller
 {
     public function __invoke(
         InformationRequest $request,

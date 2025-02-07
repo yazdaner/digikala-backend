@@ -10,14 +10,19 @@ use Modules\sellers\App\Models\Seller;
 use Illuminate\Validation\ValidationException;
 use Modules\sellers\App\Actions\RegisterSeller;
 use Modules\sellers\App\Http\Requests\LoginRequest;
+use Modules\sellers\App\Actions\UpdateOnTimePassword;
 
-class AuthenticationContoller extends Controller
+class AuthenticationController extends Controller
 {
-    public function signIn(Request $request, RegisterSeller $registerSeller)
-    {
+    public function signIn(
+        Request $request,
+        RegisterSeller $registerSeller,
+        UpdateOnTimePassword $updateOnTimePassword
+    ) {
         $username = $request->get('username');
         $seller = Seller::where('username', $username)->first();
         if ($seller && $seller->status >= -1) {
+            $updateOnTimePassword($seller);
             return ['status' => 'login'];
         } else {
             $registerSeller($request);
