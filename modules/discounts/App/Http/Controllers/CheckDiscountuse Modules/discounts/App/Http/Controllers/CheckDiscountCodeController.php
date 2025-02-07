@@ -5,12 +5,13 @@ namespace Modules\discounts\App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\discounts\App\Models\Discount;
+use SebastianBergmann\CodeUnit\FunctionUnit;
 
 class CheckDiscountCodeController extends Controller
 {
-    protected $products = [];
-    protected $variations = [];
-    protected $grouped = [];
+    protected array $products = [];
+    protected array $variations = [];
+    protected array $grouped = [];
 
     public function __invoke(Request $request)
     {
@@ -28,44 +29,42 @@ class CheckDiscountCodeController extends Controller
                 $this->variations = $this->getVariations($cartItems);
                 $this->products = $this->getProducts($this->variations);
                 foreach ($discounts as $discount) {
-                    $variationsId = $this->getVariationsIdBasedCategory(
-                        $discount->category_id
-                    );
                     $this->grouped[] =
                         [
                             'category_id' => $discount->category_id,
-                            'variationsId' => $variationsId,
-                            'totalPrice' => $this->getVariationsTotalPrice(
-                                $variationsId
+                            'variationsId' => $this->getVariationsIdBasedCategory(
+                                $discount->category_id
                             ),
                             'discount' => $discount
                         ];
                 }
-                $discountAmount = 0;
-                $i = 0;
-                while (sizeof($this->grouped) > 0) {
-                    $amount = $this->getGruopDiscountAmount(
-                        $this->grouped[$i]
-                    );
-                    if ($this->grouped[$i]['discount']->min_perchase > 0) {
-                        if (
-                            intval($this->grouped[$i]['totalPrice']) <
-                            intval($this->grouped[$i]['discount']->min_perchase)
-                        ) {
-                            $amount = 0;
-                        }
-                    }
-                    if ($amount > 0) {
-                        $discountAmount += $amount;
-                    }
-                    unset($this->grouped[$i]);
-                }
-
-
+                $discountAmount = $this->getDiscountAmount();
                 return ['discount' => $discountAmount];
             }
         }
         return $result;
+    }
+
+    protected function getDiscountAmount()
+    {
+        $discountAmount = 0;
+        foreach ($this->grouped as $i => $group) {
+            $this->grouped[$i]['totalPrice'] =
+                $this->getVariationsTotalPrice($group['variationsId']);
+            $amount = $this->getGruopDiscountAmount($group);
+            if (
+                $group['totalPrice'] > 0 &&
+                ($group['discount']->min_perchase == 0 ||
+                    intval($group['totalPrice']) >=
+                    intval($group['discount']->min_perchase))
+            ) {
+                unset($this->grouped[$i]);
+                if ($amount > 0) {
+                    $this->removeVariationsIdOfGroups($group);
+                    $discountAmount += $amount;
+                }
+            }
+        }
     }
 
     protected function getVariations($cartItems)
@@ -105,6 +104,15 @@ class CheckDiscountCodeController extends Controller
         }
     }
 
+    protected function getVariationsTotalPrice($variationsId)
+    {
+        $totalPrice = 0;
+        foreach ($variationsId as $id) {
+            $totalPrice += $this->variations[$id]->price2;
+        }
+        return $totalPrice;
+    }
+
     protected function getGruopDiscountAmount($data)
     {
         $amount = 0;
@@ -117,5 +125,16 @@ class CheckDiscountCodeController extends Controller
             $amount = $data['discount']['max_amount'];
         }
         return intval($amount);
+    }
+
+    protected function removeVariationsIdOfGroups($data)
+    {
+        foreach ($data['variationsId'] as $id) {
+            foreach ($this->grouped as $key => $group) {
+                if ($index = array_search($id, $group['variationsId']) !== false) {
+                    unset($this->grouped[$key]['variationsId'][$index]);
+                }
+            }
+        }
     }
 }
