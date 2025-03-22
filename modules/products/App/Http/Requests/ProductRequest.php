@@ -12,11 +12,13 @@ class ProductRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules()
     {
         $rules = [
             'title' => ['required','string','max:255'],
             'en_title' => ['required','string','max:255'],
+            'description' => ['nullable','string'],
+            'content' => ['nullable','string'],
         ];
         return runEvent('create-product-rules',$rules,true);
     }

@@ -14,23 +14,19 @@ class BrandRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [
-            'name' => ['required','string'],
-            'en_name' => ['required','string'],
+        return [
+            'name' => ['required', 'string'],
+            'en_name' => ['required', 'string'],
+            'icon' => ['nullable', 'image', 'max:512']
         ];
-
-        if($this->hasFile('icon')){
-            $rules['icon'] = ['image','max:512'];
-        }
-
-        return $rules;
     }
 
-    public function attributes() :array
+    public function attributes(): array
     {
-       return [
+        return [
             'name' => 'نام',
             'en_name' => 'نام انگلیسی',
-       ];
+            'icon' => 'آیکون',
+        ];
     }
 }

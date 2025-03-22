@@ -25,7 +25,6 @@ class CheckDiscountTest extends TestCase
         )->post('/api/discount/check', [
             'code' => $discount->code
         ]);
-        dd($response->json());
         $this->assertEquals(0, $response->json()['discount']);
         $response->assertOk();
     }
