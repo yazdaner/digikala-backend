@@ -9,15 +9,18 @@ class CreateProduct
 {
     public function __invoke(Request $request)
     {
+        $user = $request->user();
         $data = $request->all();
-        if(auth()->check() && auth()->user()->role != 'admin')
-        {
-            if(array_key_exists('status',$data)){
-                unset($data['status']);
-            }
-            $data['status'] = -3;
-        }
+        // if(auth()->check() && auth()->user()->role != 'admin')
+        // {
+        //     if(array_key_exists('status',$data)){
+        //         unset($data['status']);
+        //     }
+        //     $data['status'] = -3;
+        // }
         $product = new Product($data);
+        $product->user_id = $user->id;
+        $product->user_type = $user::class;
         $product->fake = $request->fake ?? 0;
         $product->slug = replaceSpace($request->en_title);
         $product->saveOrFail();

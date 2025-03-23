@@ -2,10 +2,11 @@
 
 namespace Modules\products\database\factories;
 
+use Modules\brands\App\Models\Brand;
+use Modules\sellers\App\Models\Seller;
 use Modules\products\App\Models\Product;
 use Modules\categories\App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\brands\App\Models\Brand;
 
 class ProductFactory extends Factory
 {
@@ -22,7 +23,9 @@ class ProductFactory extends Factory
             'en_title' => fake()->text(12),
             'description' => fake()->paragraph(),
             'content' => fake()->paragraph(),
-            'status' => 1
+            'status' => 1,
+            'user_id' => 1,
+            'user_type' => Seller::class
         ];
     }
 }

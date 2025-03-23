@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('fake')->default(false);
             $table->integer('product_count')->default(0);
             $table->integer('lowest_price')->default(0);
+            $table->morphs('user');  
             $table->softDeletes();
             $table->timestamps();
         });

@@ -7,6 +7,7 @@ use Tests\TestCase;
 use Illuminate\Support\Str;
 use Modules\users\App\Models\User;
 use Modules\products\App\Models\Product;
+use Modules\sellers\App\Models\Seller;
 
 class ProductTest extends TestCase
 {
@@ -37,7 +38,9 @@ class ProductTest extends TestCase
             'barcode' => fake()->ean13(),
             'gallery' => $gallery,
             'product_dimensions' => 'medium',
-            'keywords' => 'tag1,tag2'
+            'keywords' => 'tag1,tag2',
+            'user_id' => 1,
+            'user_type' => Seller::class
         ]);
         $latest = Product::latest('id')->first();
         //
@@ -71,9 +74,8 @@ class ProductTest extends TestCase
             'slug' => 'test'
         ]);
         $response = $this->actingAs($this->user)->get('api/admin/products/' . $product->id);
-        $body = json_decode($response->getContent());
-        //
-        $this->assertEquals($product->id, $body->id);
+         //
+        $this->assertEquals($product->id, $response->json()['id']);
         $response->assertOk();
     }
 

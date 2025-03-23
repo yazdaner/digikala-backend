@@ -151,14 +151,115 @@ function createTimestampFromDate($date, $time = '0:0:0')
     }
 }
 
+// function create_fit_pic($path, $fileName, $width = 350, $height = 350)
+// {
+//     if ($fileName != null) {
+//         $image = ImageManager::imagick()->read(fileDirectory($path));
+//         $image->resize($width, $height);
+//         $image->save(fileDirectory('thumbnails/' . $fileName));
+//     }
+// }
+
 function create_fit_pic($path, $fileName, $width = 350, $height = 350)
 {
-    if ($fileName != null) {
-        $image = ImageManager::imagick()->read(fileDirectory($path));
-        $image->resize($width, $height);
-        $image->save(fileDirectory('thumbnails/' . $fileName));
+    if ($fileName === null) {
+        return false; // Return early if fileName is null
     }
+
+    // Ensure the thumbnails directory exists
+    $thumbnailDir = fileDirectory('thumbnails');
+    if (!is_dir($thumbnailDir)) {
+        mkdir($thumbnailDir, 0755, true); // Create the directory if it doesn't exist
+    }
+
+    // Get the full path to the source image
+    $sourcePath = fileDirectory($path);
+
+    // Get the image type and create an image resource
+    $imageInfo = getimagesize($sourcePath);
+    if ($imageInfo === false) {
+        error_log("Unsupported image type or file not found: " . $sourcePath);
+        return false;
+    }
+
+    $imageType = $imageInfo[2]; // Get the image type (IMAGETYPE_JPEG, IMAGETYPE_PNG, etc.)
+
+    // Create an image resource based on the image type
+    switch ($imageType) {
+        case IMAGETYPE_JPEG:
+            $sourceImage = imagecreatefromjpeg($sourcePath);
+            break;
+        case IMAGETYPE_PNG:
+            $sourceImage = imagecreatefrompng($sourcePath);
+            break;
+        case IMAGETYPE_GIF:
+            $sourceImage = imagecreatefromgif($sourcePath);
+            break;
+        default:
+            error_log("Unsupported image type: " . $imageType);
+            return false;
+    }
+
+    if ($sourceImage === false) {
+        error_log("Failed to create image resource: " . $sourcePath);
+        return false;
+    }
+
+    // Get the original dimensions of the image
+    $originalWidth = imagesx($sourceImage);
+    $originalHeight = imagesy($sourceImage);
+
+    // Calculate the aspect ratio
+    $aspectRatio = $originalWidth / $originalHeight;
+
+    // Calculate new dimensions while maintaining the aspect ratio
+    if ($width / $height > $aspectRatio) {
+        $newWidth = $height * $aspectRatio;
+        $newHeight = $height;
+    } else {
+        $newWidth = $width;
+        $newHeight = $width / $aspectRatio;
+    }
+
+    // Create a new true color image with the desired dimensions
+    $thumbnail = imagecreatetruecolor($newWidth, $newHeight);
+
+    // Resize the image
+    imagecopyresampled(
+        $thumbnail,          // Destination image
+        $sourceImage,       // Source image
+        0,
+        0,              // Destination x, y
+        0,
+        0,              // Source x, y
+        $newWidth,          // Destination width
+        $newHeight,         // Destination height
+        $originalWidth,     // Source width
+        $originalHeight     // Source height
+    );
+
+    // Save the resized image to the thumbnails directory
+    $thumbnailPath = fileDirectory('thumbnails/' . $fileName);
+
+    switch ($imageType) {
+        case IMAGETYPE_JPEG:
+            imagejpeg($thumbnail, $thumbnailPath, 90); // Save as JPEG with 90% quality
+            break;
+        case IMAGETYPE_PNG:
+            imagepng($thumbnail, $thumbnailPath, 9); // Save as PNG with maximum compression
+            break;
+        case IMAGETYPE_GIF:
+            imagegif($thumbnail, $thumbnailPath); // Save as GIF
+            break;
+    }
+
+    // Free up memory
+    imagedestroy($sourceImage);
+    imagedestroy($thumbnail);
+
+    return true; // Return true on success
 }
+
 
 function fileDirectory($path = '')
 {
